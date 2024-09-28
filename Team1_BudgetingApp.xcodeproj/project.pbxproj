@@ -11,6 +11,7 @@
 		B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */; };
 		B4E44DFA2CA7D0FB00C219B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */; };
 		B4E44DFD2CA7D0FB00C219B6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4E44DFC2CA7D0FB00C219B6 /* Preview Assets.xcassets */; };
+		B4E44E042CA7D4AA00C219B6 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E44E032CA7D4AA00C219B6 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B4E44DFC2CA7D0FB00C219B6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B4E44E032CA7D4AA00C219B6 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				B4E44DF52CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift */,
 				B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */,
+				B4E44E032CA7D4AA00C219B6 /* LoginView.swift */,
 				B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */,
 				B4E44DFB2CA7D0FB00C219B6 /* Preview Content */,
 			);
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4E44E042CA7D4AA00C219B6 /* LoginView.swift in Sources */,
 				B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */,
 				B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */,
 			);
