@@ -1,5 +1,5 @@
 //
-//  SignupView.swift
+//  ResetPasswordView.swift
 //  Team1_BudgetingApp
 //
 //  Created by reem alkhalily on 9/28/24.
@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-struct SignupView: View {
+struct ResetPasswordView: View {
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var paswordConfirmation: String = ""
-    @State private var firstName: String = ""
-    @State private var lastName: String = ""
+    @State private var code: String = ""
+    @State private var passwordConfirmation: String = ""
     
     var body: some View {
         ZStack {
@@ -27,8 +26,8 @@ struct SignupView: View {
                 Image("Piggy_logo_signin")
                     .padding(.bottom, 12)
                 
-                // Sign Up Title
-                Text("Sign Up")
+                // Sign In Title
+                Text("Reset Password")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
@@ -48,9 +47,10 @@ struct SignupView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
                 
-                // Password Input
+                
+                // Code Input
                 HStack {
-                    SecureField("Password", text: $password)
+                    SecureField("Enter Code", text: $code)
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
@@ -63,9 +63,9 @@ struct SignupView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 15)
                 
-                // Confirm password
+                // Password Input
                 HStack {
-                    TextField("Confirm Password", text: $paswordConfirmation)
+                    SecureField("Enter New Password", text: $password)
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
@@ -76,37 +76,28 @@ struct SignupView: View {
                 .cornerRadius(20)
                 .shadow(radius: 1)
                 .padding(.horizontal, 30)
-                .padding(.top, 14)
+                .padding(.top, 15)
                 
-                // First Name
+                // Password Confirmation Input
                 HStack {
-                    TextField("First Name", text: $firstName)
+                    SecureField("Confirm New Password", text: $password)
                         .padding(.vertical, 2)
                         .padding(12)
+                    Image(systemName: "lock")
+                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                        .padding(.trailing, 15)
                 }
                 .background(Color.white)
                 .cornerRadius(20)
                 .shadow(radius: 1)
                 .padding(.horizontal, 30)
-                .padding(.top, 14)
+                .padding(.top, 15)
                 
-                // Last Name
-                HStack {
-                    TextField("Last Name", text: $lastName)
-                        .padding(.vertical, 2)
-                        .padding(12)
-                }
-                .background(Color.white)
-                .cornerRadius(20)
-                .shadow(radius: 1)
-                .padding(.horizontal, 30)
-                .padding(.top, 12)
-                
-                // Create Account Button
+                // Sign In Button
                 Button(action: {
-                    // Handle Create Account action
+                    // Handle sign-in action
                 }) {
-                    Text("Create Account")
+                    Text("Reset")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
@@ -117,15 +108,14 @@ struct SignupView: View {
                 }
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
-                
 
                 Spacer()
                 
-                //Sign In
+                //Sign up
                 Button(action: {
-                    // Handle Sign In action
+                    // Handle Sign Up action
                 }) {
-                    Text("Already an account? ")
+                    Text("Back to")
                     Text("Sign In")
                         .fontWeight(.bold)
                 }
@@ -137,5 +127,5 @@ struct SignupView: View {
 }
 
 #Preview {
-    SignupView()
+    ResetPasswordView()
 }
