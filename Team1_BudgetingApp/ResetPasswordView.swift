@@ -1,9 +1,18 @@
+//
+//  ResetPasswordView.swift
+//  Team1_BudgetingApp
+//
+//  Created by reem alkhalily on 9/28/24.
+//
+
 import SwiftUI
 
-struct LoginView: View {
+struct ResetPasswordView: View {
     @State private var email: String = ""
     @State private var password: String = ""
-
+    @State private var code: String = ""
+    @State private var passwordConfirmation: String = ""
+    
     var body: some View {
         ZStack {
             Color(red: 255/255, green: 242/255, blue: 227/255)
@@ -18,7 +27,7 @@ struct LoginView: View {
                     .padding(.bottom, 12)
                 
                 // Sign In Title
-                Text("Sign In")
+                Text("Reset Password")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
@@ -38,9 +47,40 @@ struct LoginView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
                 
+                
+                // Code Input
+                HStack {
+                    SecureField("Enter Code", text: $code)
+                        .padding(.vertical, 2)
+                        .padding(12)
+                    Image(systemName: "lock")
+                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                        .padding(.trailing, 15)
+                }
+                .background(Color.white)
+                .cornerRadius(20)
+                .shadow(radius: 1)
+                .padding(.horizontal, 30)
+                .padding(.top, 15)
+                
                 // Password Input
                 HStack {
-                    SecureField("Password", text: $password)
+                    SecureField("Enter New Password", text: $password)
+                        .padding(.vertical, 2)
+                        .padding(12)
+                    Image(systemName: "lock")
+                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                        .padding(.trailing, 15)
+                }
+                .background(Color.white)
+                .cornerRadius(20)
+                .shadow(radius: 1)
+                .padding(.horizontal, 30)
+                .padding(.top, 15)
+                
+                // Password Confirmation Input
+                HStack {
+                    SecureField("Confirm New Password", text: $password)
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
@@ -57,7 +97,7 @@ struct LoginView: View {
                 Button(action: {
                     // Handle sign-in action
                 }) {
-                    Text("Sign in")
+                    Text("Reset")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
@@ -68,16 +108,6 @@ struct LoginView: View {
                 }
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
-                
-                //Forgot Password
-                Button(action: {
-                    // Handle Forgot password action
-                }) {
-                    Text("Forgot Password?")
-                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
-                        .fontWeight(.semibold)
-                        .font(.callout)
-                }
 
                 Spacer()
                 
@@ -85,8 +115,8 @@ struct LoginView: View {
                 Button(action: {
                     // Handle Sign Up action
                 }) {
-                    Text("Don’t have an account? ")
-                    Text("Sign Up")
+                    Text("Back to")
+                    Text("Sign In")
                         .fontWeight(.bold)
                 }
                 .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
@@ -97,5 +127,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    ResetPasswordView()
 }

@@ -1,9 +1,19 @@
+//
+//  SignupView.swift
+//  Team1_BudgetingApp
+//
+//  Created by reem alkhalily on 9/28/24.
+//
+
 import SwiftUI
 
-struct LoginView: View {
+struct SignupView: View {
     @State private var email: String = ""
     @State private var password: String = ""
-
+    @State private var paswordConfirmation: String = ""
+    @State private var firstName: String = ""
+    @State private var lastName: String = ""
+    
     var body: some View {
         ZStack {
             Color(red: 255/255, green: 242/255, blue: 227/255)
@@ -17,8 +27,8 @@ struct LoginView: View {
                 Image("Piggy_logo_signin")
                     .padding(.bottom, 12)
                 
-                // Sign In Title
-                Text("Sign In")
+                // Sign Up Title
+                Text("Sign Up")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
@@ -53,11 +63,50 @@ struct LoginView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 15)
                 
-                // Sign In Button
+                // Confirm password
+                HStack {
+                    TextField("Confirm Password", text: $paswordConfirmation)
+                        .padding(.vertical, 2)
+                        .padding(12)
+                    Image(systemName: "lock")
+                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                        .padding(.trailing, 15)
+                }
+                .background(Color.white)
+                .cornerRadius(20)
+                .shadow(radius: 1)
+                .padding(.horizontal, 30)
+                .padding(.top, 14)
+                
+                // First Name
+                HStack {
+                    TextField("First Name", text: $firstName)
+                        .padding(.vertical, 2)
+                        .padding(12)
+                }
+                .background(Color.white)
+                .cornerRadius(20)
+                .shadow(radius: 1)
+                .padding(.horizontal, 30)
+                .padding(.top, 14)
+                
+                // Last Name
+                HStack {
+                    TextField("Last Name", text: $lastName)
+                        .padding(.vertical, 2)
+                        .padding(12)
+                }
+                .background(Color.white)
+                .cornerRadius(20)
+                .shadow(radius: 1)
+                .padding(.horizontal, 30)
+                .padding(.top, 12)
+                
+                // Create Account Button
                 Button(action: {
-                    // Handle sign-in action
+                    // Handle Create Account action
                 }) {
-                    Text("Sign in")
+                    Text("Create Account")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
@@ -69,24 +118,15 @@ struct LoginView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
                 
-                //Forgot Password
-                Button(action: {
-                    // Handle Forgot password action
-                }) {
-                    Text("Forgot Password?")
-                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
-                        .fontWeight(.semibold)
-                        .font(.callout)
-                }
 
                 Spacer()
                 
-                //Sign up
+                //Sign In
                 Button(action: {
-                    // Handle Sign Up action
+                    // Handle Sign In action
                 }) {
-                    Text("Don’t have an account? ")
-                    Text("Sign Up")
+                    Text("Already an account? ")
+                    Text("Sign In")
                         .fontWeight(.bold)
                 }
                 .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
@@ -97,5 +137,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    SignupView()
 }
