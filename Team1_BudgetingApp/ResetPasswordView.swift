@@ -15,7 +15,7 @@ struct ResetPasswordView: View {
     
     var body: some View {
         ZStack {
-            Color(red: 255/255, green: 242/255, blue: 227/255)
+            Color("secondaryYellow")
                 .ignoresSafeArea()
 
             VStack {
@@ -23,14 +23,17 @@ struct ResetPasswordView: View {
                     .frame(height: 60)
                 
                 // Piggy logo
-                Image("Piggy_logo_signin")
+                Image("piggyPalLogoSvg")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 130)
                     .padding(.bottom, 12)
                 
                 // Sign In Title
                 Text("Reset Password")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                    .foregroundColor(Color("primaryPink"))
                 
                 // Email Input
                 HStack {
@@ -38,7 +41,7 @@ struct ResetPasswordView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "envelope")
-                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -54,7 +57,7 @@ struct ResetPasswordView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
-                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -69,7 +72,7 @@ struct ResetPasswordView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
-                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -84,7 +87,7 @@ struct ResetPasswordView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
-                        .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -101,7 +104,7 @@ struct ResetPasswordView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
-                        .background(Color(red: 255/255, green: 158/255, blue: 182/255))
+                        .background(Color("primaryPink"))
                         .cornerRadius(20)
                         .fontWeight(.bold)
                         .font(.title3)
@@ -119,7 +122,7 @@ struct ResetPasswordView: View {
                     Text("Sign In")
                         .fontWeight(.bold)
                 }
-                .foregroundColor(Color(red: 255/255, green: 158/255, blue: 182/255))
+                .foregroundColor(Color("primaryPink"))
 
             }
         }
