@@ -185,20 +185,16 @@
 				804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */,
 				B4338EB72CA7E306007DB349 /* ResetPasswordView.swift in Sources */,
 				B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */,
-<<<<<<< HEAD
-				807639172CC46ECC00F80452 /* FinanceViewModel.swift in Sources */,
-				807639192CC477A500F80452 /* TransactionDetailView.swift in Sources */,
-				807639152CC4675100F80452 /* DataModel.swift in Sources */,
-				B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */,
-				803283842CAF447F00D8922A /* MyFinancesView.swift in Sources */,
-=======
 				B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */,
 				B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */,
 				B4998C982CC4747B0079B12C /* FinanceMonthView.swift in Sources */,
 				B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */,
 				B4998C9A2CC4895A0079B12C /* FinanceYearView.swift in Sources */,
 				B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */,
->>>>>>> main
+				807639172CC46ECC00F80452 /* FinanceViewModel.swift in Sources */,
+				807639192CC477A500F80452 /* TransactionDetailView.swift in Sources */,
+				807639152CC4675100F80452 /* DataModel.swift in Sources */,
+				803283842CAF447F00D8922A /* MyFinancesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
