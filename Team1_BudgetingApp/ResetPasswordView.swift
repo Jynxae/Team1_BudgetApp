@@ -33,7 +33,7 @@ struct ResetPasswordView: View {
                 Text("Reset Password")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(Color("PrimaryPink"))
+                    .foregroundColor(Color("primaryPink"))
                 
                 // Email Input
                 HStack {
@@ -41,7 +41,7 @@ struct ResetPasswordView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "envelope")
-                        .foregroundColor(Color("PrimaryPink"))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -57,7 +57,7 @@ struct ResetPasswordView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
-                        .foregroundColor(Color("PrimaryPink"))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -72,7 +72,7 @@ struct ResetPasswordView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
-                        .foregroundColor(Color("PrimaryPink"))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -87,7 +87,7 @@ struct ResetPasswordView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
-                        .foregroundColor(Color("PrimaryPink"))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -104,7 +104,7 @@ struct ResetPasswordView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
-                        .background(Color("PrimaryPink"))
+                        .background(Color("primaryPink"))
                         .cornerRadius(20)
                         .fontWeight(.bold)
                         .font(.title3)
@@ -122,7 +122,7 @@ struct ResetPasswordView: View {
                     Text("Sign In")
                         .fontWeight(.bold)
                 }
-                .foregroundColor(Color("PrimaryPink"))
+                .foregroundColor(Color("primaryPink"))
 
             }
         }

@@ -14,7 +14,7 @@ struct FinanceMonthView: View {
     var body: some View {
         ScrollView {
             VStack {
-                HeaderView(title: "Finance Report", color: "PrimaryLightPink")
+                HeaderView(title: "Finance Report", color: "primaryLightPink")
                 
                 SegmentedControlView(tabs: tabs, selectedTab: $selectedTab)
                 
@@ -99,7 +99,7 @@ struct SegmentedControlView: View {
 struct FinanceMonthContentView: View {
     var body: some View {
         VStack {
-            SectionTitleView(title: "September Summary", color: "PrimaryPink")
+            SectionTitleView(title: "September Summary", color: "primaryPink")
             
             // Donut Chart Placeholder
             DonutChartView()
@@ -134,7 +134,7 @@ struct DonutChartView: View {
             Circle().trim(from: 0.53, to: 0.67).stroke(Color("GasColor"), lineWidth: 20)
             Circle().trim(from: 0.67, to: 0.75).stroke(Color("EntertainmentColor"), lineWidth: 20)
             Circle().trim(from: 0.75, to: 0.85).stroke(Color("MiscellaneousColor"), lineWidth: 20)
-            Circle().trim(from: 0.85, to: 1.0).stroke(Color("PrimaryLightPink"), lineWidth: 20)
+            Circle().trim(from: 0.85, to: 1.0).stroke(Color("primaryLightPink"), lineWidth: 20)
             
             // Text in the center of the donut chart
             VStack {
@@ -168,7 +168,7 @@ struct SectionTitleView: View {
 struct SpendingCategoriesList: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            SpendingCategoryView(color: "PrimaryPink", label: "Groceries", amount: "$233.00")
+            SpendingCategoryView(color: "primaryPink", label: "Groceries", amount: "$233.00")
             SpendingCategoryView(color: "EntertainmentColor", label: "Entertainment", amount: "$56.78")
             SpendingCategoryView(color: "BillsColor", label: "Bills/Utilities", amount: "$289.29")
             SpendingCategoryView(color: "GasColor", label: "Gas", amount: "$40.00")
