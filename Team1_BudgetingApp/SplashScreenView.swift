@@ -12,9 +12,9 @@ struct SplashScreenView: View {
                 // Static background gradient
                 LinearGradient(
                     gradient: Gradient(stops: [
-                        .init(color: Color("PrimaryLightPink"), location: 0.0),
+                        .init(color: Color("primaryLightPink"), location: 0.0),
                         .init(color: Color("secondaryYellow"), location: 0.5),
-                        .init(color: Color("PrimaryLightPink"), location: 1.0)
+                        .init(color: Color("primaryLightPink"), location: 1.0)
                     ]),
                     startPoint: .top, endPoint: .bottom
                 )

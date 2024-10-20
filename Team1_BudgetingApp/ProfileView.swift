@@ -29,7 +29,7 @@ struct ProfileView: View {
                     .padding(.bottom, 10)
             }
             .frame(maxWidth: .infinity)
-            .background(Color("PrimaryLightPink"))
+            .background(Color("primaryLightPink"))
 
             Spacer()
                 .frame(height: 50)
@@ -38,7 +38,7 @@ struct ProfileView: View {
             Image(systemName: "person.circle.fill")
                 .resizable()
                 .frame(width: 80, height: 80)
-                .foregroundColor(Color("PrimaryPink"))
+                .foregroundColor(Color("primaryPink"))
                 .background(Circle().fill(Color.white))
                 .padding(.top, -30)
                 .padding(.bottom, 30)
@@ -60,7 +60,7 @@ struct ProfileView: View {
                 }) {
                     Text("Reset Password")
                         .font(.footnote).bold()
-                        .foregroundColor(Color("PrimaryPink"))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.top, 5)
                 }
             }
@@ -77,7 +77,7 @@ struct ProfileView: View {
                     .frame(maxWidth: 190)
                     .padding(.horizontal, 30)
                     .padding(.vertical, 10)
-                    .background(Color("PrimaryPink"))
+                    .background(Color("primaryPink"))
                     .cornerRadius(20)
                     
             }
@@ -151,7 +151,7 @@ struct LabeledPasswordField: View {
                     isVisible.toggle()
                 }) {
                     Image(systemName: isVisible ? "eye.slash" : "eye")
-                        .foregroundColor(Color("PrimaryPink"))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
             }
