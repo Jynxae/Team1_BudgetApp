@@ -18,30 +18,12 @@ struct FinanceMonthView: View {
                 
                 SegmentedControlView(tabs: tabs, selectedTab: $selectedTab)
                 
-                // September Summary Title
-                SectionTitleView(title: "September Summary", color: "PrimaryPink")
-                    .font(.title2).bold()
-                
-                // Donut Chart Placeholder
-                DonutChartView()
-                    .padding(.top, 20)
-                
-                // Spending Categories List
-                VStack(alignment: .leading, spacing: 10) {
-                    SectionTitleView(title: "Your Spending Categories", color: "PrimaryBlack")
-                    
-                    SpendingCategoriesList()
-                }
-                .padding(.horizontal)
-                
-                // Savings & Wants Status
-                VStack(alignment: .leading, spacing: 10) {
-                    SectionTitleView(title: "You Saved", color: "PrimaryBlack")
-                        .padding(.horizontal)
-                    StatusView(amount: "$1,145.40", message: "Target Reached!", color: .green)
-                    SectionTitleView(title: "Amount Spent on Wants", color: "PrimaryBlack")
-                        .padding(.horizontal)
-                    StatusView(amount: "$1,845.40", message: "Amount Exceeded", color: .red)
+                if selectedTab == "Current Month" {
+                    // Display the Monthly Finance View
+                    FinanceMonthContentView()
+                } else {
+                    // Display the Yearly Finance View
+                    FinanceYearView()
                 }
                 
                 Spacer().frame(height: 30)
@@ -53,14 +35,15 @@ struct FinanceMonthView: View {
     }
 }
 
-// Reusable Header Component
+// Reusable Component for Header
 struct HeaderView: View {
     var title: String
     var color: String
     
     var body: some View {
         VStack {
-            Spacer().frame(height: 15)
+            Spacer()
+                .frame(height: 15)
             Text(title)
                 .font(.title2)
                 .fontWeight(.bold)
@@ -73,7 +56,7 @@ struct HeaderView: View {
     }
 }
 
-// Reusable Segmented Control Component
+// Reusable Component for Segmented Control
 struct SegmentedControlView: View {
     let tabs: [String]
     @Binding var selectedTab: String
@@ -81,16 +64,26 @@ struct SegmentedControlView: View {
     var body: some View {
         HStack(spacing: 0) {
             ForEach(tabs, id: \.self) { tab in
-                Button(action: { selectedTab = tab }) {
+                Button(action: {
+                    selectedTab = tab
+                }) {
                     Text(tab)
-                        .font(.footnote)
+                        .font(.footnote) // Smaller text size
                         .fontWeight(.bold)
                         .foregroundColor(selectedTab == tab ? Color("PrimaryBlack") : Color.gray)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 8)
-                        .background(selectedTab == tab ? Color.white : Color.clear)
-                        .cornerRadius(10)
-                        .shadow(color: selectedTab == tab ? Color.gray.opacity(0.4) : Color.clear, radius: 2, x: 0, y: 1)
+                        .background(
+                            ZStack {
+                                if selectedTab == tab {
+                                    Color.white
+                                        .cornerRadius(10)
+                                        .shadow(color: Color.gray.opacity(0.4), radius: 2, x: 0, y: 1)
+                                } else {
+                                    Color.clear
+                                }
+                            }
+                        )
                 }
             }
         }
@@ -102,19 +95,37 @@ struct SegmentedControlView: View {
     }
 }
 
-// Reusable Section Title Component
-struct SectionTitleView: View {
-    var title: String
-    var color: String
-    
+// Reusable Component for Monthly Finance Content
+struct FinanceMonthContentView: View {
     var body: some View {
-        Text(title)
-            .foregroundColor(Color(color))
-            .padding(.top, 5)
+        VStack {
+            SectionTitleView(title: "September Summary", color: "PrimaryPink")
+            
+            // Donut Chart Placeholder
+            DonutChartView()
+                .padding(.top, 20)
+            
+            // Spending Categories List
+            VStack(alignment: .leading, spacing: 10) {
+                SectionTitleView(title: "Your Spending Categories", color: "PrimaryBlack")
+                    .padding(.top, 20)
+                
+                SpendingCategoriesList()
+            }
+            .padding(.horizontal)
+            
+            // Savings & Wants Status
+            VStack {
+                SectionTitleView(title: "You Saved", color: "PrimaryBlack")
+                StatusView(amount: "$1,145.40", message: "Target Reached!", color: .green)
+                StatusView(amount: "$1,845.40", message: "Amount Exceeded", color: .red)
+            }
+            .padding(.top, 20)
+        }
     }
 }
 
-// Reusable Donut Chart View
+// Reusable Component for Donut Chart
 struct DonutChartView: View {
     var body: some View {
         ZStack {
@@ -125,6 +136,7 @@ struct DonutChartView: View {
             Circle().trim(from: 0.75, to: 0.85).stroke(Color("MiscellaneousColor"), lineWidth: 20)
             Circle().trim(from: 0.85, to: 1.0).stroke(Color("PrimaryLightPink"), lineWidth: 20)
             
+            // Text in the center of the donut chart
             VStack {
                 Text("You've Spent")
                     .foregroundColor(Color("PrimaryBlack"))
@@ -139,7 +151,20 @@ struct DonutChartView: View {
     }
 }
 
-// Reusable Spending Categories List
+// Reusable Component for Section Titles
+struct SectionTitleView: View {
+    var title: String
+    var color: String
+    
+    var body: some View {
+        Text(title)
+            .font(.title3).bold()
+            .foregroundColor(Color(color))
+            .padding(.top, 5)
+    }
+}
+
+// Reusable Component for Spending Categories List
 struct SpendingCategoriesList: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {

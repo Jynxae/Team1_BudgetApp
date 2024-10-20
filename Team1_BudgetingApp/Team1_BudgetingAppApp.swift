@@ -11,7 +11,7 @@ import SwiftUI
 struct Team1_BudgetingAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashScreenView() // No arguments needed here
         }
     }
 }
