@@ -24,7 +24,7 @@ struct LoginView: View {
                 Text("Sign In")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(Color("primaryPink"))
+                    .foregroundColor(Color("PrimaryPink"))
                 
                 // Email Input
                 HStack {
@@ -32,7 +32,7 @@ struct LoginView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "envelope")
-                        .foregroundColor(Color("primaryPink"))
+                        .foregroundColor(Color("PrimaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -47,7 +47,7 @@ struct LoginView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
-                        .foregroundColor(Color("primaryPink"))
+                        .foregroundColor(Color("PrimaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -64,7 +64,7 @@ struct LoginView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
-                        .background(Color("primaryPink"))
+                        .background(Color("PrimaryPink"))
                         .cornerRadius(20)
                         .fontWeight(.bold)
                         .font(.title3)
@@ -77,7 +77,7 @@ struct LoginView: View {
                     // Handle Forgot password action
                 }) {
                     Text("Forgot Password?")
-                        .foregroundColor(Color("primaryPink"))
+                        .foregroundColor(Color("PrimaryPink"))
                         .fontWeight(.semibold)
                         .font(.callout)
                 }
@@ -92,7 +92,7 @@ struct LoginView: View {
                     Text("Sign Up")
                         .fontWeight(.bold)
                 }
-                .foregroundColor(Color("primaryPink"))
+                .foregroundColor(Color("PrimaryPink"))
 
             }
         }
