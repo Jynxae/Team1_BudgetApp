@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		803283842CAF447F00D8922A /* MyFinancesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803283832CAF447F00D8922A /* MyFinancesView.swift */; };
+		804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CE99C2CBC871F00886E44 /* BudgetIcons.swift */; };
+		807639152CC4675100F80452 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807639142CC4675100F80452 /* DataModel.swift */; };
+		807639172CC46ECC00F80452 /* FinanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807639162CC46ECC00F80452 /* FinanceViewModel.swift */; };
+		807639192CC477A500F80452 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807639182CC477A500F80452 /* TransactionDetailView.swift */; };
+		8076391B2CC4780600F80452 /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076391A2CC4780600F80452 /* AddTransactionView.swift */; };
 		B4338EB52CA7E009007DB349 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4338EB42CA7E009007DB349 /* SignupView.swift */; };
 		B4338EB72CA7E306007DB349 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4338EB62CA7E306007DB349 /* ResetPasswordView.swift */; };
 		B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C912CC4501C0079B12C /* ProfileView.swift */; };
@@ -22,6 +28,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		803283832CAF447F00D8922A /* MyFinancesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFinancesView.swift; sourceTree = "<group>"; };
+		804CE99C2CBC871F00886E44 /* BudgetIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetIcons.swift; sourceTree = "<group>"; };
+		807639142CC4675100F80452 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		807639162CC46ECC00F80452 /* FinanceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceViewModel.swift; sourceTree = "<group>"; };
+		807639182CC477A500F80452 /* TransactionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailView.swift; sourceTree = "<group>"; };
+		8076391A2CC4780600F80452 /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
 		B4338EB42CA7E009007DB349 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		B4338EB62CA7E306007DB349 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		B4998C912CC4501C0079B12C /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -77,6 +89,12 @@
 				B4E44E032CA7D4AA00C219B6 /* LoginView.swift */,
 				B4338EB42CA7E009007DB349 /* SignupView.swift */,
 				B4338EB62CA7E306007DB349 /* ResetPasswordView.swift */,
+				803283832CAF447F00D8922A /* MyFinancesView.swift */,
+				807639182CC477A500F80452 /* TransactionDetailView.swift */,
+				8076391A2CC4780600F80452 /* AddTransactionView.swift */,
+				807639142CC4675100F80452 /* DataModel.swift */,
+				807639162CC46ECC00F80452 /* FinanceViewModel.swift */,
+				804CE99C2CBC871F00886E44 /* BudgetIcons.swift */,
 				B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */,
 				B4E44DFB2CA7D0FB00C219B6 /* Preview Content */,
 			);
@@ -162,7 +180,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4338EB52CA7E009007DB349 /* SignupView.swift in Sources */,
+				8076391B2CC4780600F80452 /* AddTransactionView.swift in Sources */,
 				B4E44E042CA7D4AA00C219B6 /* LoginView.swift in Sources */,
+				804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */,
 				B4338EB72CA7E306007DB349 /* ResetPasswordView.swift in Sources */,
 				B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */,
 				B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */,
@@ -171,6 +191,10 @@
 				B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */,
 				B4998C9A2CC4895A0079B12C /* FinanceYearView.swift in Sources */,
 				B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */,
+				807639172CC46ECC00F80452 /* FinanceViewModel.swift in Sources */,
+				807639192CC477A500F80452 /* TransactionDetailView.swift in Sources */,
+				807639152CC4675100F80452 /* DataModel.swift in Sources */,
+				803283842CAF447F00D8922A /* MyFinancesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
