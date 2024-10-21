@@ -51,7 +51,7 @@ struct MyFinancesView: View {
                         .frame(maxWidth: .infinity, alignment: .trailing)
                         .padding()
                         .onTapGesture {
-                            selectedTab = 1 // Switches to the FinanceMonthView tab
+                            selectedTab = 3 // Switches to the FinanceMonthView tab
                         }
                     }
                     .background(

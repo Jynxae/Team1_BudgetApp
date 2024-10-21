@@ -6,7 +6,7 @@ struct SplashScreenView: View {
     var body: some View {
         if isActive {
             // Navigate to the main ContentView once the splash screen is done
-            ContentView()
+            LoginView()
         } else {
             ZStack {
                 // Static background gradient
