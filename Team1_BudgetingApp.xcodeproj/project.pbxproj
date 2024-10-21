@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,18 +13,13 @@
 		807639172CC46ECC00F80452 /* FinanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807639162CC46ECC00F80452 /* FinanceViewModel.swift */; };
 		8076391B2CC4780600F80452 /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076391A2CC4780600F80452 /* AddTransactionView.swift */; };
 		8076391D2CC5CA1000F80452 /* EditTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076391C2CC5CA1000F80452 /* EditTransactionView.swift */; };
-		B4338EB52CA7E009007DB349 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4338EB42CA7E009007DB349 /* SignupView.swift */; };
-		B4338EB72CA7E306007DB349 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4338EB62CA7E306007DB349 /* ResetPasswordView.swift */; };
 		B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C912CC4501C0079B12C /* ProfileView.swift */; };
 		B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C932CC457EF0079B12C /* EditBudgetView.swift */; };
-		B4998C982CC4747B0079B12C /* FinanceMonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C972CC4747B0079B12C /* FinanceMonthView.swift */; };
-		B4998C9A2CC4895A0079B12C /* FinanceYearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C992CC4895A0079B12C /* FinanceYearView.swift */; };
 		B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */; };
 		B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E44DF52CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift */; };
 		B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */; };
 		B4E44DFA2CA7D0FB00C219B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */; };
 		B4E44DFD2CA7D0FB00C219B6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4E44DFC2CA7D0FB00C219B6 /* Preview Assets.xcassets */; };
-		B4E44E042CA7D4AA00C219B6 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E44E032CA7D4AA00C219B6 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,20 +29,32 @@
 		807639162CC46ECC00F80452 /* FinanceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceViewModel.swift; sourceTree = "<group>"; };
 		8076391A2CC4780600F80452 /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
 		8076391C2CC5CA1000F80452 /* EditTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionView.swift; sourceTree = "<group>"; };
-		B4338EB42CA7E009007DB349 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
-		B4338EB62CA7E306007DB349 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		B4998C912CC4501C0079B12C /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B4998C932CC457EF0079B12C /* EditBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBudgetView.swift; sourceTree = "<group>"; };
-		B4998C972CC4747B0079B12C /* FinanceMonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceMonthView.swift; sourceTree = "<group>"; };
-		B4998C992CC4895A0079B12C /* FinanceYearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceYearView.swift; sourceTree = "<group>"; };
 		B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		B4E44DF22CA7D0FA00C219B6 /* Team1_BudgetingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Team1_BudgetingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4E44DF52CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team1_BudgetingAppApp.swift; sourceTree = "<group>"; };
 		B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B4E44DFC2CA7D0FB00C219B6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B4E44E032CA7D4AA00C219B6 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		807639222CC7197C00F80452 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LoginView.swift,
+				ResetPasswordView.swift,
+				SignupView.swift,
+			);
+			target = B4E44DF12CA7D0FA00C219B6 /* Team1_BudgetingApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		8076391E2CC717E400F80452 /* FinanceReportView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FinanceReportView; sourceTree = "<group>"; };
+		807639212CC7194200F80452 /* LoginSignup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (807639222CC7197C00F80452 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = LoginSignup; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B4E44DEF2CA7D0FA00C219B6 /* Frameworks */ = {
@@ -84,14 +91,11 @@
 				B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */,
 				B4998C912CC4501C0079B12C /* ProfileView.swift */,
 				B4998C932CC457EF0079B12C /* EditBudgetView.swift */,
-				B4998C972CC4747B0079B12C /* FinanceMonthView.swift */,
-				B4998C992CC4895A0079B12C /* FinanceYearView.swift */,
-				B4E44E032CA7D4AA00C219B6 /* LoginView.swift */,
-				B4338EB42CA7E009007DB349 /* SignupView.swift */,
-				B4338EB62CA7E306007DB349 /* ResetPasswordView.swift */,
-				803283832CAF447F00D8922A /* MyFinancesView.swift */,
+				807639212CC7194200F80452 /* LoginSignup */,
+				8076391E2CC717E400F80452 /* FinanceReportView */,
 				8076391A2CC4780600F80452 /* AddTransactionView.swift */,
 				8076391C2CC5CA1000F80452 /* EditTransactionView.swift */,
+				803283832CAF447F00D8922A /* MyFinancesView.swift */,
 				807639142CC4675100F80452 /* DataModel.swift */,
 				807639162CC46ECC00F80452 /* FinanceViewModel.swift */,
 				804CE99C2CBC871F00886E44 /* BudgetIcons.swift */,
@@ -123,6 +127,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8076391E2CC717E400F80452 /* FinanceReportView */,
 			);
 			name = Team1_BudgetingApp;
 			productName = Team1_BudgetingApp;
@@ -179,17 +186,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4338EB52CA7E009007DB349 /* SignupView.swift in Sources */,
 				8076391B2CC4780600F80452 /* AddTransactionView.swift in Sources */,
-				B4E44E042CA7D4AA00C219B6 /* LoginView.swift in Sources */,
 				804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */,
-				B4338EB72CA7E306007DB349 /* ResetPasswordView.swift in Sources */,
 				B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */,
 				B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */,
 				B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */,
-				B4998C982CC4747B0079B12C /* FinanceMonthView.swift in Sources */,
 				B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */,
-				B4998C9A2CC4895A0079B12C /* FinanceYearView.swift in Sources */,
 				B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */,
 				807639172CC46ECC00F80452 /* FinanceViewModel.swift in Sources */,
 				8076391D2CC5CA1000F80452 /* EditTransactionView.swift in Sources */,

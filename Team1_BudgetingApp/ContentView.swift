@@ -17,17 +17,29 @@ struct ContentView: View {
                     Image(systemName: "house.fill")
                     Text("Home")
                 }
-                .tag(2)
+                .tag(1)
                 
                 EditBudgetView().tabItem {
-                    if selectedTab == 1 {
+                    if selectedTab == 2 {
                         Image("piggybank-fill") // Use "filled" version from assets if available
                     } else {
                         Image("piggybank") // Default piggybank image from assets
                     }
                     Text("Budget")
                 }
-                .tag(1)
+                .tag(2)
+                
+                FinanceMonthView().tabItem {
+                    Image(systemName: "chart.bar.xaxis")
+                    Text("Reports")
+                }
+                .tag(3)
+                
+                ProfileView().tabItem {
+                    Image(systemName: "person.fill")
+                    Text("My Profile")
+                }
+                .tag(4)
             }
         }
         .onAppear {
