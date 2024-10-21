@@ -10,17 +10,10 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedTab: Int = 0
     
-    // adjusts background color for tabview
-    init() {
-        UITabBar.appearance().backgroundColor = UIColor(named: "primaryLightPink") // Use your custom color
-        UITabBar.appearance().barTintColor = UIColor(named: "primaryLightPink") // Ensures compatibility with dark mode
-    }
-
-    
     var body: some View {
         VStack {
             TabView(selection: $selectedTab) {
-                MyFinancesView().tabItem {
+                MyFinancesView(selectedTab: $selectedTab).tabItem {
                     Image(systemName: "house.fill")
                     Text("Home")
                 }
@@ -37,9 +30,13 @@ struct ContentView: View {
                 .tag(1)
             }
         }
+        .onAppear {
+            UITabBar.appearance().backgroundColor = UIColor(named: "primaryLightPink") // Use your custom color
+            UITabBar.appearance().barTintColor = UIColor(named: "primaryLightPink") // Ensures compatibility with dark mode
+        }
     }
 }
 
-#Preview {
-    ContentView()
-}
+//#Preview {
+//    ContentView()
+//}
