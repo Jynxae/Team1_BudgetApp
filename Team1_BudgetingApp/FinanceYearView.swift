@@ -8,7 +8,7 @@ struct FinanceYearView: View {
         ScrollView {
             VStack {
                 // Reusing HeaderView
-                HeaderView(title: "Finance Report", color: "PrimaryLightPink")
+                HeaderView(title: "Finance Report", color: "primaryLightPink")
                 
                 // Reusing SegmentedControlView
                 SegmentedControlView(tabs: tabs, selectedTab: $selectedTab)
@@ -16,11 +16,11 @@ struct FinanceYearView: View {
                 // Content based on selected tab
                 if selectedTab == "Current Year" {
                     
-                    SectionTitleView(title: "\(getCurrentYear()) Summary", color: "PrimaryPink")
+                    SectionTitleView(title: "\(getCurrentYear()) Summary", color: "primaryPink")
                     
                     VStack(spacing: 20) {
-                        YearlySummaryChart(title: "Overall Spending Per Month", color: "PrimaryPink")
-                        YearlySummaryChart(title: "Overall Savings Per Month", color: "PrimaryPink")
+                        YearlySummaryChart(title: "Overall Spending Per Month", color: "primaryPink")
+                        YearlySummaryChart(title: "Overall Savings Per Month", color: "primaryPink")
                     }
 
                     // New section: Total and Top Spending Categories
@@ -88,7 +88,7 @@ struct SpendingSummaryView: View {
             VStack(alignment: .leading) {
                 Text("Total Spent Overall")
                     .font(.headline)
-                    .foregroundColor(Color("PrimaryPink"))
+                    .foregroundColor(Color("primaryPink"))
                     .padding(.bottom, 5)
                 
                 VStack(alignment: .leading) {
@@ -106,7 +106,7 @@ struct SpendingSummaryView: View {
             VStack(alignment: .leading) {
                 Text("Top 5 Spending Categories")
                     .font(.headline)
-                    .foregroundColor(Color("PrimaryPink"))
+                    .foregroundColor(Color("primaryPink"))
                     .padding(.bottom, 5)
                 
                 VStack(alignment: .leading) {

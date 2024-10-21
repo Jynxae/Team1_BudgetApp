@@ -34,7 +34,7 @@ struct SignupView: View {
                 Text("Sign Up")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(Color("PrimaryPink"))
+                    .foregroundColor(Color("primaryPink"))
                 
                 // Email Input
                 HStack {
@@ -42,7 +42,7 @@ struct SignupView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "envelope")
-                        .foregroundColor(Color("PrimaryPink"))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -57,7 +57,7 @@ struct SignupView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
-                        .foregroundColor(Color("PrimaryPink"))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -72,7 +72,7 @@ struct SignupView: View {
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
-                        .foregroundColor(Color("PrimaryPink"))
+                        .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
                 }
                 .background(Color.white)
@@ -113,7 +113,7 @@ struct SignupView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
-                        .background(Color("PrimaryPink"))
+                        .background(Color("primaryPink"))
                         .cornerRadius(20)
                         .fontWeight(.bold)
                         .font(.title3)
@@ -132,7 +132,7 @@ struct SignupView: View {
                     Text("Sign In")
                         .fontWeight(.bold)
                 }
-                .foregroundColor(Color("PrimaryPink"))
+                .foregroundColor(Color("primaryPink"))
 
             }
         }

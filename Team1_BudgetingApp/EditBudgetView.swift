@@ -55,7 +55,7 @@ struct EditBudgetView: View {
                         .padding(.bottom, 10)
                 }
                 .frame(maxWidth: .infinity)
-                .background(Color("PrimaryLightPink"))
+                .background(Color("primaryLightPink"))
 
                 Spacer()
                     .frame(height: 30)
@@ -117,7 +117,7 @@ struct EditBudgetView: View {
                             Spacer()
                             
                             Image(systemName: "chevron.down")
-                                .foregroundColor(Color("PrimaryPink"))
+                                .foregroundColor(Color("primaryPink"))
                                 .padding(.trailing, 10)
                         }
                         .frame(width: 340, height: 40) // Fixed width and height for the frame
@@ -155,7 +155,7 @@ struct EditBudgetView: View {
                                 HStack {
                                     Spacer()
                                     Image(systemName: "pencil")
-                                        .foregroundColor(Color("PrimaryPink"))
+                                        .foregroundColor(Color("primaryPink"))
                                         .padding(.trailing, 10)
                                 }
                             )
@@ -185,7 +185,7 @@ struct EditBudgetView: View {
                         HStack(spacing: 0) {
                             // Needs segment with rounded left corners
                             Rectangle()
-                                .fill(Color("PrimaryPink"))
+                                .fill(Color("primaryPink"))
                                 .frame(width: geometry.size.width * (needsGoal / 100), height: 50)
                                 .cornerRadius(10, corners: [.topLeft, .bottomLeft])
                             
@@ -207,7 +207,7 @@ struct EditBudgetView: View {
 
 
                     HStack {
-                        LabelView(color: "PrimaryPink", label: "Needs")
+                        LabelView(color: "primaryPink", label: "Needs")
                         Spacer()
                         LabelView(color: "WantsColor", label: "Wants")
                         Spacer()
@@ -283,7 +283,7 @@ struct GoalSlider: View {
                     }
                 }
             ), in: 0...100, step: 1)
-            .accentColor(Color("PrimaryPink"))
+            .accentColor(Color("primaryPink"))
             .padding(.horizontal, 30)
             
             Spacer()
