@@ -20,14 +20,14 @@ enum TransactionType: String, Codable, CaseIterable, Identifiable {
 }
 
 // Define the Transaction model
-struct Transaction: Identifiable, Codable {
+struct Transaction: Identifiable, Codable, Hashable {
     var id = UUID() // Unique identifier for each transaction
-    let name: String
-    let type: TransactionType
-    let subcategory: String
-    let date: Date
-    let notes: String
-    let amount: Double // New property
+    var name: String
+    var type: TransactionType
+    var subcategory: String
+    var date: Date
+    var notes: String
+    var amount: Double 
 }
 
 // Sample Data for Transactions

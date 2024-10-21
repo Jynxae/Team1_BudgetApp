@@ -1,19 +1,20 @@
 import SwiftUI
 
-struct AddTransactionView: View {
-    
+struct EditTransactionView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: FinanceViewModel
-    
+
+    let transactionId: UUID
+
     // Input Fields
-    @State private var name: String = ""
-    @State private var type: TransactionType = .need
-    @State private var subcategory: String = ""
-    @State private var date: Date = Date()
-    @State private var notes: String = "Enter your note here..."
-    @State private var amount: String = ""
+    @State private var name: String
+    @State private var type: TransactionType
+    @State private var subcategory: String
+    @State private var date: Date
+    @State private var notes: String
+    @State private var amount: String
     @State private var isExpanded: Bool = false
-        
+
     // Subcategories based on Transaction Type
     var subcategories: [String] {
         switch type {
@@ -23,6 +24,30 @@ struct AddTransactionView: View {
             return ["Dining Out", "Entertainment", "Shopping", "Travel", "Hobbies", "Other"]
         case .savings:
             return ["Emergency Fund", "Retirement", "Investments", "Other"]
+        }
+    }
+
+    // Custom initializer with Transaction ID and initial data
+    init(viewModel: FinanceViewModel, transactionId: UUID) {
+        self.viewModel = viewModel
+        self.transactionId = transactionId // This assigns the parameter to the instance property
+
+        // Retrieve the transaction from the view model using the ID
+        if let transaction = viewModel.transactions.first(where: { $0.id == transactionId }) {
+            _name = State(initialValue: transaction.name)
+            _type = State(initialValue: transaction.type)
+            _subcategory = State(initialValue: transaction.subcategory)
+            _date = State(initialValue: transaction.date)
+            _notes = State(initialValue: transaction.notes)
+            _amount = State(initialValue: String(transaction.amount))
+        } else {
+            // Provide default values if the transaction is not found
+            _name = State(initialValue: "")
+            _type = State(initialValue: .need)
+            _subcategory = State(initialValue: "")
+            _date = State(initialValue: Date())
+            _notes = State(initialValue: "")
+            _amount = State(initialValue: "0")
         }
     }
     
@@ -35,9 +60,10 @@ struct AddTransactionView: View {
                     endPoint: .bottom
                 )
                 .ignoresSafeArea()
-                
+
                 VStack(spacing: 15) {
                     Spacer()
+                    
                     // Transaction Name
                     VStack {
                         TextField("Transaction Name", text: $name)
@@ -239,13 +265,12 @@ struct AddTransactionView: View {
                             .fill(Color.white)
                             .shadow(radius: 1)
                     )
-                    
-                    
-                    // Add transaction button
+
+                    // Save Changes Button
                     Button(action: {
-                        print("add transactions")
+                        saveTransaction()
                     }) {
-                        Text("Add Transaction")
+                        Text("Save Changes")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)
@@ -256,9 +281,8 @@ struct AddTransactionView: View {
                     }
                     .padding(.horizontal, 30)
                     .padding(.top, 20)
-
                 }
-                .navigationTitle("Add New Transaction")
+                .navigationTitle("Edit Transaction")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -267,22 +291,40 @@ struct AddTransactionView: View {
                         }
                     }
                     ToolbarItem(placement: .principal) {
-                        Text("Add New Transaction")
+                        Text("Edit Transaction")
                             .foregroundColor(Color.primaryPink)
                             .fontWeight(.bold)
                     }
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Add") {
-                            addTransaction()
+                        Button("Save") {
+                            saveTransaction()
                         }
                         .disabled(!isFormValid)
                     }
                 }
             }
-            
         }
     }
-    
+
+    // Function to Save Edited Transaction
+    private func saveTransaction() {
+        guard let amountDouble = Double(amount) else { return }
+
+        // Find the transaction in the view model using its ID and update it directly
+        if let index = viewModel.transactions.firstIndex(where: { $0.id == transactionId }) {
+            viewModel.transactions[index].name = name.trimmingCharacters(in: .whitespaces)
+            viewModel.transactions[index].type = type
+            viewModel.transactions[index].subcategory = subcategory
+            viewModel.transactions[index].date = date
+            viewModel.transactions[index].notes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
+            viewModel.transactions[index].amount = amountDouble
+        }
+
+        // Recalculate the totals if necessary
+        viewModel.recalculateTotals()
+        presentationMode.wrappedValue.dismiss()
+    }
+
     // Validation for Form
     var isFormValid: Bool {
         !name.trimmingCharacters(in: .whitespaces).isEmpty &&
@@ -290,112 +332,6 @@ struct AddTransactionView: View {
         Double(amount) != nil &&
         Double(amount)! > 0
     }
-    
-    // Function to Add Transaction
-    private func addTransaction() {
-        guard let amountDouble = Double(amount) else { return }
-        
-        let newTransaction = Transaction(
-            name: name.trimmingCharacters(in: .whitespaces),
-            type: type,
-            subcategory: subcategory,
-            date: date,
-            notes: notes.trimmingCharacters(in: .whitespacesAndNewlines),
-            amount: amountDouble
-        )
-        
-        viewModel.addTransaction(newTransaction)
-        presentationMode.wrappedValue.dismiss()
-    }
-}
-
-struct DropDownMenu: View {
-    
-    let options: [String]
-    
-    var menuWdith: CGFloat  =  150
-    var buttonHeight: CGFloat  =  50
-    var maxItemDisplayed: Int  =  3
-    
-    @Binding  var selectedOptionIndex: Int
-    @Binding  var showDropdown: Bool
-    
-    @State  private  var scrollPosition: Int?
-    
-    var body: some  View {
-        VStack {
-            
-            VStack(spacing: 0) {
-                // selected item
-                Button(action: {
-                    withAnimation {
-                        showDropdown.toggle()
-                    }
-                }, label: {
-                    HStack(spacing: nil) {
-                        Text(options[selectedOptionIndex])
-                        Spacer()
-                        Image(systemName: "chevron.down")
-                            .rotationEffect(.degrees((showDropdown ?  -180 : 0)))
-                    }
-                })
-                .padding(.horizontal, 20)
-                .frame(width: menuWdith, height: buttonHeight, alignment: .leading)
-                
-                
-                // selection menu
-                if (showDropdown) {
-                    let scrollViewHeight: CGFloat  = options.count > maxItemDisplayed ? (buttonHeight*CGFloat(maxItemDisplayed)) : (buttonHeight*CGFloat(options.count))
-                    ScrollView {
-                        LazyVStack(spacing: 0) {
-                            ForEach(0..<options.count, id: \.self) { index in
-                                Button(action: {
-                                    withAnimation {
-                                        selectedOptionIndex = index
-                                        showDropdown.toggle()
-                                    }
-                                    
-                                }, label: {
-                                    HStack {
-                                        Text(options[index])
-                                        Spacer()
-                                        if (index == selectedOptionIndex) {
-                                            Image(systemName: "checkmark.circle.fill")
-                                            
-                                        }
-                                    }
-                                    
-                                })
-                                .padding(.horizontal, 20)
-                                .frame(width: menuWdith, height: buttonHeight, alignment: .leading)
-                                
-                            }
-                        }
-                        .scrollTargetLayout()
-                    }
-                    .scrollPosition(id: $scrollPosition)
-                    .scrollDisabled(options.count <=  3)
-                    .frame(height: scrollViewHeight)
-                    .onAppear {
-                        scrollPosition = selectedOptionIndex
-                    }
-                    
-                }
-                
-            }
-            .foregroundStyle(Color.white)
-            .background(RoundedRectangle(cornerRadius: 16).fill(Color.black))
-            
-        }
-        .frame(width: menuWdith, height: buttonHeight, alignment: .top)
-        .zIndex(100)
-        
-    }
 }
 
 
-struct AddTransactionView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddTransactionView(viewModel: FinanceViewModel())
-    }
-}

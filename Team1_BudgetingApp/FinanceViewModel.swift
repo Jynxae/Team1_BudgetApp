@@ -70,8 +70,11 @@ class FinanceViewModel: ObservableObject {
     
     // Determine if the selected date is in the future
     var isFutureDate: Bool {
-        return selectedDate > Date()
+        let currentDate = Calendar.current.startOfDay(for: Date())
+        let selectedDateStartOfDay = Calendar.current.startOfDay(for: selectedDate)
+        return selectedDateStartOfDay >= currentDate
     }
+
     
     // Add a new transaction
     func addTransaction(_ transaction: Transaction) {
@@ -85,8 +88,15 @@ class FinanceViewModel: ObservableObject {
         recalculateTotals()
     }
     
+    func updateTransaction(transaction: Transaction) {
+        if let index = transactions.firstIndex(where: { $0.id == transaction.id }) {
+            transactions[index] = transaction
+        }
+    }
+
+    
     // Recalculate Totals based on transactions
-    private func recalculateTotals() {
+    func recalculateTotals() {
         needsTotal = transactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
         wantsTotal = transactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
         savingsTotal = transactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }

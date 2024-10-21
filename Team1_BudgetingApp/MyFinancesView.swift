@@ -5,24 +5,28 @@ struct MyFinancesView: View {
     @StateObject private var viewModel = FinanceViewModel()
     @State private var showingAddTransaction = false // State to control sheet presentation
     
+    @Binding var selectedTab: Int
+    
     var body: some View {
-        ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: [Color.gradientWhite, Color.gradientOrange]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
                         
-            NavigationStack {
+        NavigationStack {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.gradientWhite, Color.gradientOrange]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
+                
                 VStack(spacing: 0) {
                     MyFinancesHeaderView()
                     // Progress Section
                     VStack {
                         Text("Your Current Progress")
-                            .font(.headline)
+                            .font(.system(size: 23))
                             .foregroundColor(Color.primaryPink)
                             .padding(.top)
+                            .fontWeight(.semibold)
                         
                         HStack {
                             // Custom progress bar sections with dynamic percentages
@@ -34,7 +38,21 @@ struct MyFinancesView: View {
                             )
                         }
                         .padding()
-                        .frame(maxWidth: .infinity, maxHeight: 150)
+                        .frame(maxWidth: .infinity, maxHeight: 100)
+                        
+                        HStack {
+                            Text("View Details")
+                                .foregroundColor(Color.primaryPink)
+                                .fontWeight(.semibold)
+                                .font(.subheadline)
+                            Image(systemName: "ellipsis.circle")
+                                .foregroundColor(Color.primaryPink)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding()
+                        .onTapGesture {
+                            selectedTab = 1 // Switches to the FinanceMonthView tab
+                        }
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 12)
@@ -67,24 +85,25 @@ struct MyFinancesView: View {
                                 }
                             }
                             .sheet(isPresented: $showingAddTransaction) {
-                                                            AddTransactionView(viewModel: viewModel)
-                                                        }
+                                AddTransactionView(viewModel: viewModel)
+                            }
                         }
                         .padding(.horizontal)
                         .padding(.top, 10)
                         
                         List {
-                            ForEach(transactionRows) { transaction in
-                                NavigationLink(destination: TransactionDetailView(transaction: transaction)) {
+                            ForEach(viewModel.transactions) { transaction in
+                                NavigationLink(destination: EditTransactionView(
+                                    viewModel: viewModel,
+                                    transactionId: transaction.id
+                                )) {
                                     TransactionRow(transaction: transaction)
                                 }
                             }
                         }
-//                        .listStyle(PlainListStyle()) // Optional: Adjust list style
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
                     }
-                    // Transactions List
                 }
                 .background(LinearGradient(
                     gradient: Gradient(colors: [Color.gradientWhite, Color.gradientOrange]),
@@ -93,8 +112,8 @@ struct MyFinancesView: View {
                 ))
                 .navigationBarTitleDisplayMode(.inline)
             }
-            .background(Color.clear)
         }
+        .background(Color.clear)
     }
     
     var transactionDateNav: some View {
@@ -242,8 +261,8 @@ struct MyFinancesHeaderView: View {
     }
 }
 
-struct FinanceView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyFinancesView()
-    }
-}
+//struct FinanceView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MyFinancesView(selectedTab: .constant(2))
+//    }
+//}
