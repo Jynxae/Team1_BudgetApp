@@ -7,11 +7,6 @@ struct FinanceYearView: View {
     var body: some View {
         ScrollView {
             VStack {
-                // Reusing HeaderView
-                HeaderView(title: "Finance Report", color: "primaryLightPink")
-                
-                // Reusing SegmentedControlView
-                SegmentedControlView(tabs: tabs, selectedTab: $selectedTab)
 
                 // Content based on selected tab
                 if selectedTab == "Current Year" {

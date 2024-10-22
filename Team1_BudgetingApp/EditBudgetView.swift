@@ -191,12 +191,12 @@ struct EditBudgetView: View {
                             
                             // Wants segment (no rounding)
                             Rectangle()
-                                .fill(Color("WantsColor"))
+                                .fill(Color("wantsColor"))
                                 .frame(width: geometry.size.width * (wantsGoal / 100), height: 50)
                             
                             // Savings segment with rounded right corners
                             Rectangle()
-                                .fill(Color("SavingsColor"))
+                                .fill(Color("savingsColor"))
                                 .frame(width: geometry.size.width * (savingsGoal / 100), height: 50)
                                 .cornerRadius(10, corners: [.topRight, .bottomRight])
                         }
@@ -209,9 +209,9 @@ struct EditBudgetView: View {
                     HStack {
                         LabelView(color: "primaryPink", label: "Needs")
                         Spacer()
-                        LabelView(color: "WantsColor", label: "Wants")
+                        LabelView(color: "wantsColor", label: "Wants")
                         Spacer()
-                        LabelView(color: "SavingsColor", label: "Savings")
+                        LabelView(color: "savingsColor", label: "Savings")
                     }
                     .padding(.horizontal, 50)
                 }
