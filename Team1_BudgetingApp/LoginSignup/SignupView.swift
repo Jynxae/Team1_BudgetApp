@@ -1,10 +1,3 @@
-//
-//  SignupView.swift
-//  Team1_BudgetingApp
-//
-//  Created by reem alkhalily on 9/28/24.
-//
-
 import SwiftUI
 
 struct SignupView: View {
@@ -14,6 +7,8 @@ struct SignupView: View {
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     
+    @Environment(\.presentationMode) var presentationMode // To dismiss the view
+
     var body: some View {
         ZStack {
             Color("secondaryYellow")
@@ -108,6 +103,8 @@ struct SignupView: View {
                 // Create Account Button
                 Button(action: {
                     // Handle Create Account action
+                    // After successful account creation, go back to LoginView
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Create Account")
                         .foregroundColor(.white)
@@ -124,11 +121,12 @@ struct SignupView: View {
 
                 Spacer()
                 
-                //Sign In
+                //Sign In - Using NavigationLink to go back
                 Button(action: {
-                    // Handle Sign In action
+                    // Dismiss the current view, going back to the LoginView
+                    presentationMode.wrappedValue.dismiss()
                 }) {
-                    Text("Already an account? ")
+                    Text("Already have an account? ")
                     Text("Sign In")
                         .fontWeight(.bold)
                 }
