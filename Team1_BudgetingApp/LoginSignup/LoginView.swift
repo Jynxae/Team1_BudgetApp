@@ -3,13 +3,10 @@ import SwiftUI
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var navigateToFinances = false
+    @Binding var isSignedIn: Bool
 
     var body: some View {
-        if navigateToFinances {
-            ContentView()
-        }
-        else {
+        NavigationView { // Wrap everything in a NavigationView
             ZStack {
                 Color("secondaryYellow")
                     .ignoresSafeArea()
@@ -64,7 +61,7 @@ struct LoginView: View {
                     // Sign In Button
                     Button(action: {
                         // Handle sign-in action
-                        navigateToFinances = true
+                        isSignedIn = true
                     }) {
                         Text("Sign in")
                             .foregroundColor(.white)
@@ -78,10 +75,8 @@ struct LoginView: View {
                     .padding(.horizontal, 30)
                     .padding(.top, 20)
                     
-                    //Forgot Password
-                    Button(action: {
-                        // Handle Forgot password action
-                    }) {
+                    // Forgot Password - Using NavigationLink
+                    NavigationLink(destination: ResetPasswordView()) {
                         Text("Forgot Password?")
                             .foregroundColor(Color("primaryPink"))
                             .fontWeight(.semibold)
@@ -90,23 +85,19 @@ struct LoginView: View {
                     
                     Spacer()
                     
-                    //Sign up
-                    Button(action: {
-                        // Handle Sign Up action
-                    }) {
+                    // Sign up using NavigationLink
+                    NavigationLink(destination: SignupView()) {
                         Text("Don’t have an account?")
                         Text("Sign Up")
                             .fontWeight(.bold)
                     }
                     .foregroundColor(Color("primaryPink"))
-                    
                 }
             }
         }
-
     }
 }
 
 #Preview {
-    LoginView()
+    LoginView(isSignedIn: .constant(false))
 }
