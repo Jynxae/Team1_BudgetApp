@@ -1,10 +1,3 @@
-//
-//  ResetPasswordView.swift
-//  Team1_BudgetingApp
-//
-//  Created by reem alkhalily on 9/28/24.
-//
-
 import SwiftUI
 
 struct ResetPasswordView: View {
@@ -12,7 +5,8 @@ struct ResetPasswordView: View {
     @State private var password: String = ""
     @State private var code: String = ""
     @State private var passwordConfirmation: String = ""
-    
+    @Environment(\.presentationMode) var presentationMode // To dismiss the view
+
     var body: some View {
         ZStack {
             Color("secondaryYellow")
@@ -50,7 +44,6 @@ struct ResetPasswordView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
                 
-                
                 // Code Input
                 HStack {
                     SecureField("Enter Code", text: $code)
@@ -83,7 +76,7 @@ struct ResetPasswordView: View {
                 
                 // Password Confirmation Input
                 HStack {
-                    SecureField("Confirm New Password", text: $password)
+                    SecureField("Confirm New Password", text: $passwordConfirmation)
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "lock")
@@ -96,9 +89,10 @@ struct ResetPasswordView: View {
                 .padding(.horizontal, 30)
                 .padding(.top, 15)
                 
-                // Sign In Button
+                // Reset Button
                 Button(action: {
-                    // Handle sign-in action
+                    // Handle reset action, then navigate back to LoginView
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Reset")
                         .foregroundColor(.white)
@@ -114,9 +108,10 @@ struct ResetPasswordView: View {
 
                 Spacer()
                 
-                //Sign up
+                // Back to Sign In
                 Button(action: {
-                    // Handle Sign Up action
+                    // Dismiss ResetPasswordView and go back to LoginView
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Back to")
                     Text("Sign In")
