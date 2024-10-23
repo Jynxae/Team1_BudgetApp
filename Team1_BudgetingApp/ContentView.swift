@@ -44,6 +44,8 @@ struct ContentView: View {
                         }
                     .tag(4)
                 }
+                .transition(.opacity)
+                .animation(.easeInOut, value: isSignedIn)
             } else {
                 LoginView(isSignedIn: $isSignedIn)
             }
