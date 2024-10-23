@@ -1,10 +1,3 @@
-//
-//  ProfileView.swift
-//  Team1_BudgetingApp
-//
-//  Created by reem alkhalily on 10/19/24.
-//
-
 import SwiftUI
 
 struct ProfileView: View {
@@ -16,76 +9,75 @@ struct ProfileView: View {
     @State private var isPasswordVisible = false
 
     var body: some View {
-        VStack {
-            // Header
-            Spacer()
-                .frame(height: 15)
+        NavigationView {
             VStack {
-                Text("My Profile")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding(.top, 50)
-                    .padding(.bottom, 10)
-            }
-            .frame(maxWidth: .infinity)
-            .background(Color("primaryLightPink"))
+                Spacer().frame(height: 15)
 
-            Spacer()
-                .frame(height: 50)
-
-            // Profile Icon
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .frame(width: 80, height: 80)
-                .foregroundColor(Color("primaryPink"))
-                .background(Circle().fill(Color.white))
-                .padding(.top, -30)
-                .padding(.bottom, 30)
-
-            // Form Fields (Refactored to Reduce Repetition)
-            LabeledFormField(label: "First Name", placeholder: "First Name", text: $firstName)
-            LabeledFormField(label: "Last Name", placeholder: "Last Name", text: $lastName)
-            LabeledFormField(label: "Email", placeholder: "Email", text: $email)
-            LabeledFormField(label: "Phone Number", placeholder: "Phone Number", text: $phoneNumber)
-
-            // Password Field
-            LabeledPasswordField(label: "Password", placeholder: "Password", text: $password, isVisible: $isPasswordVisible)
-
-            // Reset Password Button
-            HStack {
-                Spacer()
-                Button(action: {
-                    // Add reset password action here
-                }) {
-                    Text("Reset Password")
-                        .font(.footnote).bold()
-                        .foregroundColor(Color("primaryPink"))
-                        .padding(.top, 5)
+                // Header
+                VStack {
+                    Text("My Profile")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top, 50)
+                        .padding(.bottom, 10)
                 }
-            }
-            .padding(.horizontal, 30)
-            .padding(.bottom, 20)
+                .frame(maxWidth: .infinity)
+                .background(Color("primaryLightPink"))
 
-            // Logout Button
-            Button(action: {
-                // Add logout action here
-            }) {
-                Text("Logout")
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: 190)
-                    .padding(.horizontal, 30)
-                    .padding(.vertical, 10)
-                    .background(Color("primaryPink"))
-                    .cornerRadius(20)
-                    
-            }
-            .padding(.bottom, 40)
+                Spacer().frame(height: 50)
 
-            Spacer()
+                // Profile Icon
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                    .foregroundColor(Color("primaryPink"))
+                    .background(Circle().fill(Color.white))
+                    .padding(.top, -30)
+                    .padding(.bottom, 30)
+
+                // Form Fields (Refactored to Reduce Repetition)
+                LabeledFormField(label: "First Name", placeholder: "First Name", text: $firstName)
+                LabeledFormField(label: "Last Name", placeholder: "Last Name", text: $lastName)
+                LabeledFormField(label: "Email", placeholder: "Email", text: $email)
+                LabeledFormField(label: "Phone Number", placeholder: "Phone Number", text: $phoneNumber)
+
+                // Password Field
+                LabeledPasswordField(label: "Password", placeholder: "Password", text: $password, isVisible: $isPasswordVisible)
+
+                // Reset Password Button
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        // Add reset password action here
+                    }) {
+                        Text("Reset Password")
+                            .font(.footnote).bold()
+                            .foregroundColor(Color("primaryPink"))
+                            .padding(.top, 5)
+                    }
+                }
+                .padding(.horizontal, 30)
+                .padding(.bottom, 20)
+
+                // Save Button (Bottom of the Screen)
+                Button(action: {
+                    // Add save action here
+                }) {
+                    Text("Save")
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: 190)
+                        .padding(.horizontal, 30)
+                        .padding(.vertical, 10)
+                        .background(Color("primaryPink"))
+                        .cornerRadius(20)
+                }
+                .padding(.bottom, 40)
+            }
+            .edgesIgnoringSafeArea(.top)
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .edgesIgnoringSafeArea(.top)
     }
 }
 
