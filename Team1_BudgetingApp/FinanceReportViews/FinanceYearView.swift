@@ -1,16 +1,13 @@
 import SwiftUI
 
 struct FinanceYearView: View {
-    @State private var selectedTab: String = "Current Year"
-    let tabs = ["Current Month", "Current Year"]
+//    @State private var selectedTab: String = "Current Year"
+//    let tabs = ["Current Month", "Current Year"]
 
     var body: some View {
-        ScrollView {
-            VStack {
-
-                // Content based on selected tab
-                if selectedTab == "Current Year" {
-                    
+            ScrollView {
+                VStack {
+                    // Example content for the yearly report
                     SectionTitleView(title: "\(getCurrentYear()) Summary", color: "primaryPink")
                     
                     VStack(spacing: 20) {
@@ -18,7 +15,6 @@ struct FinanceYearView: View {
                         YearlySummaryChart(title: "Overall Savings Per Month", color: "primaryPink")
                     }
 
-                    // New section: Total and Top Spending Categories
                     SpendingSummaryView(
                         totalSpent: "$50,793.56",
                         categories: [
@@ -29,18 +25,14 @@ struct FinanceYearView: View {
                             ("Gas", "$26.00")
                         ]
                     )
-                } else {
-                    // Redirect to Monthly View if "Current Month" is selected
-                    FinanceMonthContentView()
+                    
+                    Spacer().frame(height: 30)
                 }
-
-                Spacer().frame(height: 30)
+                .padding(.bottom, 30)
             }
-            .padding(.bottom, 30)
+            .background(Color.white)
+            .edgesIgnoringSafeArea(.top)
         }
-        .background(Color.white)
-        .edgesIgnoringSafeArea(.top)
-    }
 
     // Function to get the current year
     func getCurrentYear() -> String {
@@ -55,20 +47,25 @@ struct YearlySummaryChart: View {
     var color: String
 
     var body: some View {
-        VStack {
+        VStack(spacing: 15) {
             Text(title)
                 .font(.headline)
                 .foregroundColor(Color(color))
-                .padding(.top, 15)
             
             // Placeholder for a chart
-            Rectangle()
-                .fill(Color(color))
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color(color).opacity(0.3))
                 .frame(height: 200)
-                .padding()
+                .overlay(
+                    Text("Chart Placeholder")
+                        .foregroundColor(Color(color))
+                        .font(.subheadline)
+                )
         }
+        .padding()
         .background(Color("secondaryYellow"))
-        .cornerRadius(10)
+        .cornerRadius(12)
+        .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
         .padding(.horizontal)
     }
 }
