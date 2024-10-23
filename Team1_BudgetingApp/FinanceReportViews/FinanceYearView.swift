@@ -16,7 +16,7 @@ struct FinanceYearView: View {
                     }
 
                     SpendingSummaryView(
-                        totalSpent: "$50,793.56",
+                        totalSpent: "50,793.56",
                         categories: [
                             ("Groceries", "$360.43"),
                             ("Entertainment", "$289.29"),
@@ -65,7 +65,7 @@ struct YearlySummaryChart: View {
         .padding()
         .background(Color("secondaryYellow"))
         .cornerRadius(12)
-        .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
+        .shadow(color: .gray.opacity(0.1), radius: 5, x: 0, y: 2)
         .padding(.horizontal)
     }
 }
@@ -75,51 +75,84 @@ struct SpendingSummaryView: View {
     var categories: [(String, String)]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            // Total Spent Overall
-            VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 20) {
+            // Total Spent Overall Section
+            VStack(alignment: .leading, spacing: 10) {
                 Text("Total Spent Overall")
                     .font(.headline)
                     .foregroundColor(Color("primaryPink"))
-                    .padding(.bottom, 5)
                 
-                VStack(alignment: .leading) {
+                HStack {
+                    Image(systemName: "dollarsign.circle.fill")
+                        .font(.title)
+                        .foregroundColor(Color("primaryPink"))
+                    
                     Text(totalSpent)
-                        .font(.title3)
-                        .foregroundColor(Color("PrimaryBlack"))
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color("secondaryYellow"))
-                        .cornerRadius(10)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.primaryBlack)
+                    
+                    Spacer()
                 }
+                .padding()
+                .background(Color("secondaryYellow"))
+                .cornerRadius(12)
+                .shadow(color: .gray.opacity(0.1), radius: 5, x: 0, y: 2)
             }
-
-            // Top 5 Spending Categories
-            VStack(alignment: .leading) {
+            
+            // Top 5 Spending Categories Section
+            VStack(alignment: .leading, spacing: 10) {
                 Text("Top 5 Spending Categories")
                     .font(.headline)
                     .foregroundColor(Color("primaryPink"))
-                    .padding(.bottom, 5)
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 10) {
                     ForEach(categories.indices, id: \.self) { index in
-                        HStack {
-                            Text("\(index + 1). \(categories[index].0)")
+                        HStack(spacing: 10) {
+                            // Icon with background circle
+                            ZStack {
+                                Circle()
+                                    .fill(Color("primaryPink").opacity(0.2))
+                                    .frame(width: 36, height: 36)
+                                
+                                Text("\(index + 1)")
+                                    .font(.footnote)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color("primaryPink"))
+                            }
+                            
+                            // Category name and amount
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(categories[index].0)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(Color("PrimaryBlack"))
+                                
+                                Text(categories[index].1)
+                                    .font(.footnote)
+                                    .foregroundColor(Color("GrayText"))
+                            }
+                            
                             Spacer()
-                            Text(categories[index].1)
                         }
                         .padding(.horizontal)
-                        .padding(.vertical, 1)
+                        .padding(.vertical, 8)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .shadow(color: .gray.opacity(0.1), radius: 2, x: 0, y: 1)
                     }
                 }
+                .padding()
                 .background(Color("secondaryYellow"))
-                .cornerRadius(10)
+                .cornerRadius(12)
+                .shadow(color: .gray.opacity(0.1), radius: 5, x: 0, y: 2)
             }
         }
         .padding(.horizontal)
         .padding(.top, 20)
     }
 }
+
 
 // Preview
 #Preview {
