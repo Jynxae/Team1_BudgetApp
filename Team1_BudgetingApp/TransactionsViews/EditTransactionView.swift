@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct EditTransactionView: View {
+    
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: FinanceViewModel
 
@@ -259,37 +260,52 @@ struct EditTransactionView: View {
                                 }
                         }
                     }
-                    .frame(maxWidth: 345, maxHeight: 150)
+                    .padding(.bottom)
+                    .frame(maxWidth: 345, maxHeight: 130)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.white)
                             .shadow(radius: 1)
                     )
-
-                    // Save Changes Button
-                    Button(action: {
-                        saveTransaction()
-                    }) {
-                        Text("Save Changes")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(Color.primaryPink)
-                            .cornerRadius(20)
-                            .fontWeight(.bold)
-                            .font(.title3)
-                    }
-                    .padding(.horizontal, 30)
-                    .padding(.top, 20)
+                    
+                    Spacer()
+                    
+//                    HStack {
+//                        // Delete Button
+//                        Button(action: {
+//                            deleteTransaction()
+//                        }) {
+//                            Text("Delete")
+//                                .foregroundColor(.white)
+//                                .frame(maxWidth: .infinity)
+//                                .padding(.vertical, 10)
+//                                .background(Color.primaryPink)
+//                                .cornerRadius(20)
+//                                .fontWeight(.bold)
+//                                .font(.headline)
+//                        }
+//                        
+//                        // Save Changes Button
+//                        Button(action: {
+//                            saveTransaction()
+//                        }) {
+//                            Text("Save Changes")
+//                                .foregroundColor(.white)
+//                                .frame(maxWidth: .infinity)
+//                                .padding(.vertical, 10)
+//                                .background(Color.primaryPink)
+//                                .cornerRadius(20)
+//                                .fontWeight(.bold)
+//                                .font(.headline)
+//                        }
+//                    }
+//                    .frame(maxWidth: 345)
+//                    .padding(.horizontal, 10)
+                    
                 }
                 .navigationTitle("Edit Transaction")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
                     ToolbarItem(placement: .principal) {
                         Text("Edit Transaction")
                             .foregroundColor(Color.primaryPink)
@@ -300,6 +316,11 @@ struct EditTransactionView: View {
                             saveTransaction()
                         }
                         .disabled(!isFormValid)
+                    }
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     }
                 }
             }
@@ -323,6 +344,15 @@ struct EditTransactionView: View {
         // Recalculate the totals if necessary
         viewModel.recalculateTotals()
         presentationMode.wrappedValue.dismiss()
+    }
+    
+    // Delete transactions
+    private func deleteTransaction() {
+        if let index = viewModel.transactions.firstIndex(where: { $0.id == transactionId }) {
+            viewModel.transactions.remove(at: index)
+            viewModel.recalculateTotals()
+            presentationMode.wrappedValue.dismiss() // Dismiss the view after deletion
+        }
     }
 
     // Validation for Form

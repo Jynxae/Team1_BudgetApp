@@ -8,7 +8,7 @@ struct SplashScreenView: View {
             ZStack {
                 // Show LoginView after the splash screen
                 if isActive {
-                    LoginView(isSignedIn: .constant(false)) // Pass any necessary bindings here
+                    ContentView()
                 } else {
                     // Static background gradient
                     LinearGradient(

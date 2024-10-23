@@ -17,14 +17,20 @@ struct ContentView: View {
                     EditBudgetView().tabItem {
                         if selectedTab == 2 {
                             Image("piggybank-fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 15, height: 15)
                         } else {
                             Image("piggybank")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 15, height: 15)
                         }
                         Text("Budget")
                     }
                     .tag(2)
                     
-                    FinanceMonthView().tabItem {
+                    FinanceReportsView().tabItem {
                         Image(systemName: "chart.bar.xaxis")
                         Text("Reports")
                     }

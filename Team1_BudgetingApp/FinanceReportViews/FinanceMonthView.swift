@@ -8,23 +8,14 @@
 import SwiftUI
 
 struct FinanceMonthView: View {
-    @State private var selectedTab: String = "Current Month"
-    let tabs = ["Current Month", "Current Year"]
+//    @State private var selectedTab: String = "Current Month"
+//    let tabs = ["Current Month", "Current Year"]
     
     var body: some View {
         ScrollView {
             VStack {
-                HeaderView(title: "Finance Report", color: "primaryLightPink")
-                
-                SegmentedControlView(tabs: tabs, selectedTab: $selectedTab)
-                
-                if selectedTab == "Current Month" {
-                    // Display the Monthly Finance View
+//                SegmentedControlView(tabs: tabs, selectedTab: $selectedTab)
                     FinanceMonthContentView()
-                } else {
-                    // Display the Yearly Finance View
-                    FinanceYearView()
-                }
                 
                 Spacer().frame(height: 30)
             }
@@ -32,27 +23,6 @@ struct FinanceMonthView: View {
         }
         .background(Color.white)
         .edgesIgnoringSafeArea(.top)
-    }
-}
-
-// Reusable Component for Header
-struct HeaderView: View {
-    var title: String
-    var color: String
-    
-    var body: some View {
-        VStack {
-            Spacer()
-                .frame(height: 15)
-            Text(title)
-                .font(.title2)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .padding(.top, 50)
-                .padding(.bottom, 10)
-        }
-        .frame(maxWidth: .infinity)
-        .background(Color(color))
     }
 }
 
