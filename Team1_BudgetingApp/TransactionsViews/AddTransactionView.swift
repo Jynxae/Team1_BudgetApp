@@ -243,7 +243,7 @@ struct AddTransactionView: View {
                     
                     // Add transaction button
                     Button(action: {
-                        print("add transactions")
+                        addTransaction()
                     }) {
                         Text("Add Transaction")
                             .foregroundColor(.white)
