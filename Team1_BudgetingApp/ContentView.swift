@@ -30,10 +30,11 @@ struct ContentView: View {
                     }
                     .tag(3)
                     
-                    ProfileView().tabItem {
-                        Image(systemName: "person.fill")
-                        Text("My Profile")
-                    }
+                    SettingsView(isSignedIn: $isSignedIn) // Pass the binding
+                        .tabItem {
+                            Image(systemName: "gearshape")
+                            Text("Settings")
+                        }
                     .tag(4)
                 }
             } else {

@@ -16,6 +16,8 @@
 		B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C912CC4501C0079B12C /* ProfileView.swift */; };
 		B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C932CC457EF0079B12C /* EditBudgetView.swift */; };
 		B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */; };
+		B4998CBF2CC86B980079B12C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998CBE2CC86B980079B12C /* SettingsView.swift */; };
+		B4998CC12CC871EA0079B12C /* AboutUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998CC02CC871EA0079B12C /* AboutUsView.swift */; };
 		B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E44DF52CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift */; };
 		B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */; };
 		B4E44DFA2CA7D0FB00C219B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */; };
@@ -32,6 +34,8 @@
 		B4998C912CC4501C0079B12C /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B4998C932CC457EF0079B12C /* EditBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBudgetView.swift; sourceTree = "<group>"; };
 		B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		B4998CBE2CC86B980079B12C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B4998CC02CC871EA0079B12C /* AboutUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsView.swift; sourceTree = "<group>"; };
 		B4E44DF22CA7D0FA00C219B6 /* Team1_BudgetingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Team1_BudgetingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4E44DF52CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team1_BudgetingAppApp.swift; sourceTree = "<group>"; };
 		B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -88,6 +92,8 @@
 			children = (
 				B4E44DF52CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift */,
 				B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */,
+				B4998CBE2CC86B980079B12C /* SettingsView.swift */,
+				B4998CC02CC871EA0079B12C /* AboutUsView.swift */,
 				B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */,
 				B4998C912CC4501C0079B12C /* ProfileView.swift */,
 				B4998C932CC457EF0079B12C /* EditBudgetView.swift */,
@@ -187,6 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8076391B2CC4780600F80452 /* AddTransactionView.swift in Sources */,
+				B4998CBF2CC86B980079B12C /* SettingsView.swift in Sources */,
 				804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */,
 				B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */,
 				B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */,
@@ -196,6 +203,7 @@
 				807639172CC46ECC00F80452 /* FinanceViewModel.swift in Sources */,
 				8076391D2CC5CA1000F80452 /* EditTransactionView.swift in Sources */,
 				807639152CC4675100F80452 /* DataModel.swift in Sources */,
+				B4998CC12CC871EA0079B12C /* AboutUsView.swift in Sources */,
 				803283842CAF447F00D8922A /* MyFinancesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
