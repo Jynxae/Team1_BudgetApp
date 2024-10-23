@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct FinanceMonthView: View {
-//    @State private var selectedTab: String = "Current Month"
-//    let tabs = ["Current Month", "Current Year"]
     
     var body: some View {
         ScrollView {
@@ -79,19 +77,105 @@ struct FinanceMonthContentView: View {
             VStack(alignment: .leading, spacing: 10) {
                 SectionTitleView(title: "Your Spending Categories", color: "PrimaryBlack")
                     .padding(.top, 20)
+                    .padding(.horizontal)
                 
                 SpendingCategoriesList()
             }
-            .padding(.horizontal)
             
             // Savings & Wants Status
-            VStack {
-                SectionTitleView(title: "You Saved", color: "PrimaryBlack")
-                StatusView(amount: "$1,145.40", message: "Target Reached!", color: .green)
-                StatusView(amount: "$1,845.40", message: "Amount Exceeded", color: .red)
-            }
-            .padding(.top, 20)
+           VStack(spacing: 20) {
+               SectionTitleView(title: "You Saved", color: "PrimaryBlack")
+                   .frame(alignment: .leading)
+               
+               SavingsProgressView(
+                   title: "Savings Goal",
+                   icon: "checkmark.seal.fill",
+                   amount: "$1,145.40",
+                   percentage: 75,
+                   message: "Target Reached!",
+                   color: .green
+               )
+               
+               SavingsProgressView(
+                   title: "Wants Spending",
+                   icon: "exclamationmark.triangle.fill",
+                   amount: "$1,845.40",
+                   percentage: 120,
+                   message: "Amount Exceeded",
+                   color: .red
+               )
+           }
+           .padding(.top, 20)
         }
+    }
+}
+
+struct SavingsProgressView: View {
+    var title: String
+    var icon: String
+    var amount: String
+    var percentage: Double
+    var message: String
+    var color: Color
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Image(systemName: icon)
+                    .foregroundColor(color)
+                    .font(.system(size: 20))
+                
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(Color("PrimaryBlack"))
+                
+                Spacer()
+                
+                Text(amount)
+                    .font(.headline)
+                    .bold()
+                    .foregroundColor(color)
+            }
+            
+            // Progress Bar
+            ReportProgressBar(value: percentage, color: color)
+            
+            // Status message
+            Text(message)
+                .font(.subheadline)
+                .foregroundColor(color)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(color.opacity(0.1))
+                .cornerRadius(8)
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(12)
+        .shadow(color: .gray.opacity(0.1), radius: 4, x: 0, y: 2)
+        .padding(.horizontal, 15)
+    }
+}
+
+struct ReportProgressBar: View {
+    var value: Double
+    var color: Color
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .frame(width: geometry.size.width, height: 8)
+                    .cornerRadius(4)
+                    .foregroundColor(Color.gray.opacity(0.2))
+                
+                Rectangle()
+                    .frame(width: CGFloat(min(self.value, 100) / 100) * geometry.size.width, height: 8)
+                    .cornerRadius(4)
+                    .foregroundColor(color)
+            }
+        }
+        .frame(height: 8)
     }
 }
 
@@ -134,36 +218,108 @@ struct SectionTitleView: View {
     }
 }
 
-// Reusable Component for Spending Categories List
 struct SpendingCategoriesList: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            SpendingCategoryView(color: "primaryPink", label: "Groceries", amount: "$233.00")
-            SpendingCategoryView(color: "EntertainmentColor", label: "Entertainment", amount: "$56.78")
-            SpendingCategoryView(color: "BillsColor", label: "Bills/Utilities", amount: "$289.29")
-            SpendingCategoryView(color: "GasColor", label: "Gas", amount: "$40.00")
-            SpendingCategoryView(color: "HealthColor", label: "Health/Wellness", amount: "$26.00")
-            SpendingCategoryView(color: "MiscellaneousColor", label: "Miscellaneous", amount: "$79.00")
+        VStack(alignment: .leading, spacing: 10) {
+            SpendingCategoryView(
+                icon: "cart.fill",
+                color: "primaryPink",
+                label: "Groceries",
+                amount: "$233.00",
+                percentage: "32%"
+            )
+            SpendingCategoryView(
+                icon: "film.fill",
+                color: "EntertainmentColor",
+                label: "Entertainment",
+                amount: "$56.78",
+                percentage: "8%"
+            )
+            SpendingCategoryView(
+                icon: "bolt.fill",
+                color: "BillsColor",
+                label: "Bills/Utilities",
+                amount: "$289.29",
+                percentage: "40%"
+            )
+            SpendingCategoryView(
+                icon: "car.fill",
+                color: "GasColor",
+                label: "Gas",
+                amount: "$40.00",
+                percentage: "5%"
+            )
+            SpendingCategoryView(
+                icon: "heart.fill",
+                color: "HealthColor",
+                label: "Health/Wellness",
+                amount: "$26.00",
+                percentage: "4%"
+            )
+            SpendingCategoryView(
+                icon: "ellipsis.circle.fill",
+                color: "MiscellaneousColor",
+                label: "Miscellaneous",
+                amount: "$79.00",
+                percentage: "11%"
+            )
         }
         .padding()
         .background(Color("secondaryYellow"))
-        .cornerRadius(10)
+        .cornerRadius(12)
+        .shadow(color: .gray.opacity(0.2), radius: 4, x: 0, y: 2)
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity)
     }
 }
 
-// Reusable Component for Spending Categories
 struct SpendingCategoryView: View {
+    var icon: String
     var color: String
     var label: String
     var amount: String
+    var percentage: String
     
     var body: some View {
-        HStack {
-            Circle().fill(Color(color)).frame(width: 15, height: 15)
-            Text(label).foregroundColor(Color("SecondaryBlack")).font(.subheadline)
+        HStack(spacing: 15) {
+            // Icon inside colored circle
+            ZStack {
+                Circle()
+                    .fill(Color(color))
+                    .frame(width: 32, height: 32)
+                Image(systemName: icon)
+                    .foregroundColor(.white)
+                    .font(.system(size: 16))
+            }
+            
+            // Category name and amount
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .foregroundColor(Color("SecondaryBlack"))
+                    .font(.subheadline)
+                    .bold()
+                Text(amount)
+                    .foregroundColor(Color("GrayText"))
+                    .font(.footnote)
+            }
+            
             Spacer()
-            Text(amount).foregroundColor(Color("SecondaryBlack")).font(.subheadline)
+            
+            // Display percentage
+            Text(percentage)
+                .foregroundColor(Color("GrayText"))
+                .font(.footnote)
+                .bold()
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.white.opacity(0.7))
+                .cornerRadius(5)
         }
+        .padding(.vertical, 10)
+        .padding(.horizontal, 15)
+        .background(Color.white)
+        .cornerRadius(8)
+        .shadow(color: .gray.opacity(0.1), radius: 2, x: 0, y: 1)
     }
 }
 

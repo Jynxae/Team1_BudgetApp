@@ -10,6 +10,7 @@ struct ContentView: View {
                 TabView(selection: $selectedTab) {
                     MyFinancesView(selectedTab: $selectedTab).tabItem {
                         Image(systemName: "house.fill")
+                            .font(.system(size: 24)) // Adjust the size as needed
                         Text("Home")
                     }
                     .tag(1)
