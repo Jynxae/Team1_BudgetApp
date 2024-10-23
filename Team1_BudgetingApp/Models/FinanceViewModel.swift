@@ -75,7 +75,6 @@ class FinanceViewModel: ObservableObject {
         return selectedDateStartOfDay >= currentDate
     }
 
-    
     // Add a new transaction
     func addTransaction(_ transaction: Transaction) {
         transactions.append(transaction)
@@ -88,15 +87,23 @@ class FinanceViewModel: ObservableObject {
         recalculateTotals()
     }
     
+    // Delete a single transaction
+    func deleteTransaction(_ transaction: Transaction) {
+        if let index = transactions.firstIndex(where: { $0.id == transaction.id }) {
+            transactions.remove(at: index)
+            recalculateTotals()
+        }
+    }
+    
     func updateTransaction(transaction: Transaction) {
         if let index = transactions.firstIndex(where: { $0.id == transaction.id }) {
             transactions[index] = transaction
         }
     }
-
+    
     
     // Recalculate Totals based on transactions
-    func recalculateTotals() {
+     func recalculateTotals() {
         needsTotal = transactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
         wantsTotal = transactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
         savingsTotal = transactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }

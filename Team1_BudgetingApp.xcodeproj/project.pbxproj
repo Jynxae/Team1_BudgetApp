@@ -7,12 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		803283842CAF447F00D8922A /* MyFinancesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803283832CAF447F00D8922A /* MyFinancesView.swift */; };
 		804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CE99C2CBC871F00886E44 /* BudgetIcons.swift */; };
-		807639152CC4675100F80452 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807639142CC4675100F80452 /* DataModel.swift */; };
-		807639172CC46ECC00F80452 /* FinanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807639162CC46ECC00F80452 /* FinanceViewModel.swift */; };
-		8076391B2CC4780600F80452 /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076391A2CC4780600F80452 /* AddTransactionView.swift */; };
-		8076391D2CC5CA1000F80452 /* EditTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076391C2CC5CA1000F80452 /* EditTransactionView.swift */; };
 		B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C912CC4501C0079B12C /* ProfileView.swift */; };
 		B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C932CC457EF0079B12C /* EditBudgetView.swift */; };
 		B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */; };
@@ -23,12 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		803283832CAF447F00D8922A /* MyFinancesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFinancesView.swift; sourceTree = "<group>"; };
 		804CE99C2CBC871F00886E44 /* BudgetIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetIcons.swift; sourceTree = "<group>"; };
-		807639142CC4675100F80452 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
-		807639162CC46ECC00F80452 /* FinanceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceViewModel.swift; sourceTree = "<group>"; };
-		8076391A2CC4780600F80452 /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
-		8076391C2CC5CA1000F80452 /* EditTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionView.swift; sourceTree = "<group>"; };
 		B4998C912CC4501C0079B12C /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B4998C932CC457EF0079B12C /* EditBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBudgetView.swift; sourceTree = "<group>"; };
 		B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
@@ -52,8 +42,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8076391E2CC717E400F80452 /* FinanceReportView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FinanceReportView; sourceTree = "<group>"; };
-		807639212CC7194200F80452 /* LoginSignup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (807639222CC7197C00F80452 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = LoginSignup; sourceTree = "<group>"; };
+		8076391E2CC717E400F80452 /* FinanceReportViews */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FinanceReportViews; sourceTree = "<group>"; };
+		807639212CC7194200F80452 /* LoginSignupViews */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (807639222CC7197C00F80452 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = LoginSignupViews; sourceTree = "<group>"; };
+		807639382CC8575700F80452 /* TransactionsViews */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TransactionsViews; sourceTree = "<group>"; };
+		8076393C2CC857A200F80452 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,13 +83,10 @@
 				B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */,
 				B4998C912CC4501C0079B12C /* ProfileView.swift */,
 				B4998C932CC457EF0079B12C /* EditBudgetView.swift */,
-				807639212CC7194200F80452 /* LoginSignup */,
-				8076391E2CC717E400F80452 /* FinanceReportView */,
-				8076391A2CC4780600F80452 /* AddTransactionView.swift */,
-				8076391C2CC5CA1000F80452 /* EditTransactionView.swift */,
-				803283832CAF447F00D8922A /* MyFinancesView.swift */,
-				807639142CC4675100F80452 /* DataModel.swift */,
-				807639162CC46ECC00F80452 /* FinanceViewModel.swift */,
+				8076393C2CC857A200F80452 /* Models */,
+				807639212CC7194200F80452 /* LoginSignupViews */,
+				8076391E2CC717E400F80452 /* FinanceReportViews */,
+				807639382CC8575700F80452 /* TransactionsViews */,
 				804CE99C2CBC871F00886E44 /* BudgetIcons.swift */,
 				B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */,
 				B4E44DFB2CA7D0FB00C219B6 /* Preview Content */,
@@ -129,7 +118,9 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				8076391E2CC717E400F80452 /* FinanceReportView */,
+				8076391E2CC717E400F80452 /* FinanceReportViews */,
+				807639382CC8575700F80452 /* TransactionsViews */,
+				8076393C2CC857A200F80452 /* Models */,
 			);
 			name = Team1_BudgetingApp;
 			productName = Team1_BudgetingApp;
@@ -186,17 +177,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8076391B2CC4780600F80452 /* AddTransactionView.swift in Sources */,
 				804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */,
 				B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */,
 				B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */,
 				B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */,
 				B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */,
 				B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */,
-				807639172CC46ECC00F80452 /* FinanceViewModel.swift in Sources */,
-				8076391D2CC5CA1000F80452 /* EditTransactionView.swift in Sources */,
-				807639152CC4675100F80452 /* DataModel.swift in Sources */,
-				803283842CAF447F00D8922A /* MyFinancesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

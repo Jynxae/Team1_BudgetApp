@@ -4,7 +4,8 @@ struct MyFinancesView: View {
     
     @StateObject private var viewModel = FinanceViewModel()
     @State private var showingAddTransaction = false // State to control sheet presentation
-    
+    @State private var transactionToDelete: Transaction? = nil
+
     @Binding var selectedTab: Int
     
     var body: some View {
@@ -99,6 +100,13 @@ struct MyFinancesView: View {
                                 )) {
                                     TransactionRow(transaction: transaction)
                                 }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                    Button(role: .destructive) {
+                                        transactionToDelete = transaction // Trigger confirmation
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                }
                             }
                         }
                         .scrollContentBackground(.hidden)
@@ -111,6 +119,19 @@ struct MyFinancesView: View {
                     endPoint: .bottom
                 ))
                 .navigationBarTitleDisplayMode(.inline)
+                .alert(item: $transactionToDelete) { transaction in
+                    Alert(
+                        title: Text("Delete Transaction"),
+                        message: Text("Are you sure you want to delete \"\(transaction.name)\"?"),
+                        primaryButton: .destructive(Text("Delete")) {
+                            viewModel.deleteTransaction(transaction)
+                        },
+                        secondaryButton: .cancel {
+                            transactionToDelete = nil
+                        }
+                    )
+                }
+
             }
         }
         .background(Color.clear)
@@ -137,6 +158,19 @@ struct MyFinancesView: View {
            }
            .disabled(viewModel.isFutureDate)
        }
+    }
+    
+    // Delete transactions
+//    private func deleteTransaction(at offsets: IndexSet) {
+//        viewModel.deleteTransactions(at: offsets)
+//    }
+    
+    // Update the deleteTransaction function
+    private func deleteTransaction(at offsets: IndexSet) {
+        if let index = offsets.first {
+            let transaction = viewModel.transactions[index]
+            transactionToDelete = transaction
+        }
     }
 }
 
