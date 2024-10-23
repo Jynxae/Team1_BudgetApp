@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FinanceReportsView: View {
-    @State private var selectedTab: String = "Current Year"
+    @State private var selectedTab: String = "Current Month"
     let tabs = ["Current Month", "Current Year"]
 
     var body: some View {
@@ -12,10 +12,10 @@ struct FinanceReportsView: View {
             tabSelector
             
             // Content based on selected tab
-            if selectedTab == "Current Year" {
-                FinanceYearView()
-            } else {
+            if selectedTab == "Current Month" {
                 FinanceMonthView()
+            } else {
+                FinanceYearView()
             }
         }
     }
