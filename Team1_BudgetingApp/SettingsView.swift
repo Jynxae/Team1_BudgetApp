@@ -5,21 +5,20 @@ struct SettingsView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
                 VStack {
                     // Header with title
                     VStack{
-                    Spacer()
-                        .frame(height: 70)
-                    Text("Settings")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top, 8)
-                        .padding(.bottom, 10)
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color("primaryLightPink"))
+                        Spacer()
+                            .frame(height: 70)
+                        Text("Settings")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.top, 8)
+                            .padding(.bottom, 10)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background(Color("primaryLightPink"))
                     
                     Spacer()
                         .frame(height: 50)
@@ -57,6 +56,7 @@ struct SettingsView: View {
                     Spacer()
                         .frame(height: 300)
                     
+                    
                     // Logout Button
                     Button(action: {
                         isSignedIn = false // Change the state to show LoginView
@@ -71,8 +71,6 @@ struct SettingsView: View {
                             .cornerRadius(20)
                     }
                     .padding(.bottom, 40)
-                }
-                .padding(.bottom, 30)
             }
             .background(Color.white)
             .edgesIgnoringSafeArea(.top)
