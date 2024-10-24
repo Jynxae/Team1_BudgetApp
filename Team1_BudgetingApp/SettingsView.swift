@@ -8,9 +8,21 @@ struct SettingsView: View {
             ScrollView {
                 VStack {
                     // Header with title
-                    HeaderView(title: "Settings", color: "primaryLightPink")
+                    VStack{
+                    Spacer()
+                        .frame(height: 70)
+                    Text("Settings")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top, 8)
+                        .padding(.bottom, 10)
+                }
+                .frame(maxWidth: .infinity)
+                .background(Color("primaryLightPink"))
                     
-                    Spacer().frame(height: 50)
+                    Spacer()
+                        .frame(height: 50)
                     
                     // Profile Icon and Welcome Text
                     VStack(spacing: 10) {

@@ -5,8 +5,18 @@ struct AboutUsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Use HeaderView for the top section
+                VStack{
                 Spacer()
-                HeaderView(title: "About Us", color: "primaryLightPink")
+                        .frame(height: 70)
+                    Text("About Us")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top, 8)
+                        .padding(.bottom, 10)
+                }
+                .frame(maxWidth: .infinity)
+                .background(Color("primaryLightPink"))
                 
                 // App Description
                 VStack(alignment: .leading, spacing: 10) {
