@@ -2,36 +2,37 @@ import SwiftUI
 
 struct AboutUsView: View {
     var body: some View {
+        // Use HeaderView for the top section
+        VStack{
+            Spacer()
+                    .frame(height: 5)
+                Text("About Us")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.top, 3)
+                    .padding(.bottom, 10)
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color("primaryLightPink"))
+        
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                // Use HeaderView for the top section
-                VStack{
-                Spacer()
-                        .frame(height: 70)
-                    Text("About Us")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top, 8)
-                        .padding(.bottom, 10)
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color("primaryLightPink"))
                 
                 // App Description
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Welcome to Team1 Budgeting App!")
+                    Text("Welcome to PiggyPal, a budgeting app!")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .foregroundColor(Color("primaryPink"))
                         .padding(.top, 20)
                     
                     Text("""
-                    Our app is designed to help you manage your finances effortlessly. Whether you’re tracking expenses, setting budgets, or saving for your goals, Team1 Budgeting App has you covered.
+                    Our app is designed to help you manage your finances effortlessly. Whether you’re tracking expenses, setting budgets, or saving for your goals, PiggyPal has you covered.
                     
                     We aim to make financial management simple, effective, and accessible to everyone. We believe that anyone can take control of their finances with the right tools, and we're here to provide those tools.
                     
-                    Thank you for choosing Team1 Budgeting App. We hope it helps you on your journey to better financial health!
+                    Thank you for choosing PiggyPal. We hope it helps you on your journey to better financial health!
                     """)
                         .font(.body)
                         .foregroundColor(Color("GrayText"))
