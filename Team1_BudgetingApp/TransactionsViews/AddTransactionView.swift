@@ -13,6 +13,10 @@ struct AddTransactionView: View {
     @State private var notes: String = "Enter your note here..."
     @State private var amount: String = ""
     @State private var isExpanded: Bool = false
+    
+    // Recurring Transaction
+    @State private var isRecurring: Bool = false
+    @State private var recurrenceFrequency: RecurrenceFrequency = .monthly
         
     // Subcategories based on Transaction Type
     var subcategories: [String] {
@@ -56,6 +60,7 @@ struct AddTransactionView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .fontWeight(.semibold)
                             .foregroundColor(Color.primaryPink)
+                        
                         HStack(spacing: 40) {
                             ForEach(TransactionType.allCases, id: \.self) { transactionType in
                                 VStack {
