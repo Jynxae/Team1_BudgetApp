@@ -66,6 +66,7 @@ struct MyFinancesView: View {
                     .cornerRadius(12)
                     .padding()
                     
+                    Spacer()
                     // Transactions List Section
                     VStack {
                         HStack {
