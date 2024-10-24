@@ -91,7 +91,7 @@ struct FinanceMonthContentView: View {
                    title: "Savings Goal",
                    icon: "checkmark.seal.fill",
                    amount: "$1,145.40",
-                   percentage: 75,
+                   percentage: 100,
                    message: "Target Reached!",
                    color: .green
                )
