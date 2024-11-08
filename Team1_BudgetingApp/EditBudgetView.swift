@@ -28,7 +28,6 @@ struct RoundedCorner: Shape {
     }
 }
 
-
 struct EditBudgetView: View {
     @State private var monthlyIncome: String = "$5,677.00"
     @State private var earningFrequency: String = "Biweekly"
@@ -41,271 +40,259 @@ struct EditBudgetView: View {
     let earningFrequencies = ["Weekly", "Biweekly", "Semimonthly", "Monthly", "Quarterly", "Annually"]
 
     var body: some View {
-            VStack {
-                // Header with title
-                VStack{
+        NavigationStack { // Replaced NavigationView with NavigationStack
+            VStack(spacing: 0) { // Use VStack with spacing 0 to stack header and content
+                // Header (Sticky)
+                VStack {
                     Spacer()
-                        .frame(height: 70)
+                        .frame(height: 15) // Adjusted spacer height for better positioning
                     Text("Edit Budget")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
-                        .padding(.top, 8)
+                        .padding(.top, 20) // Increased top padding for better alignment
                         .padding(.bottom, 10)
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color("primaryLightPink"))
+                .zIndex(1) // Ensure header stays above other content
 
-                Spacer()
-                    .frame(height: 30)
-                
+                // Scrollable Content
                 ScrollView {
-                    // Monthly Income Input
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Text("Your Monthly Income")
-                                .foregroundColor(Color("PrimaryBlack"))
-                                .font(.title3)
-                            Spacer()
+                    VStack(spacing: 20) { // Adjusted spacing for better layout
+                        // Monthly Income Input
+                        VStack(alignment: .leading, spacing: 10) { // Reduced spacing between label and field
+                            HStack {
+                                Text("Your Monthly Income")
+                                    .foregroundColor(Color("PrimaryBlack"))
+                                    .font(.title3)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 30)
+                            
+                            HStack {
+                                TextField("", text: $monthlyIncome)
+                                    .font(.title)
+                                    .foregroundColor(Color("SecondaryBlack"))
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 12)
+                                    .background(Color("secondaryYellow"))
+                                    .cornerRadius(10)
+                                    .frame(maxWidth: .infinity)
+                                    .shadow(radius: 1)
+                            }
+                            .padding(.horizontal, 30)
+                            .padding(.top, 5) // Reduced top padding
                         }
-                        .padding(.horizontal, 30)
-                            .frame(height: 1)
-                        HStack {
-                            TextField("", text: $monthlyIncome)
-                                .font(.title)
-                                .foregroundColor(Color("SecondaryBlack"))
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 12)
+
+                        // Earning Frequency as Dropdown-like Button
+                        VStack(alignment: .leading, spacing: 10) { // Reduced spacing between label and field
+                            HStack {
+                                Text("Select Earning Frequency")
+                                    .foregroundColor(Color("PrimaryBlack"))
+                                    .font(.title3)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 30)
+                            
+                            // Custom Button to Mimic TextField Look
+                            Menu {
+                                ForEach(earningFrequencies, id: \.self) { frequency in
+                                    Button(action: {
+                                        earningFrequency = frequency
+                                    }) {
+                                        Text(frequency)
+                                    }
+                                }
+                            } label: {
+                                HStack {
+                                    Text(earningFrequency)
+                                        .foregroundColor(Color("SecondaryBlack"))
+                                        .padding(.leading, 12)
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: "chevron.down")
+                                        .foregroundColor(Color("primaryPink"))
+                                        .padding(.trailing, 10)
+                                }
+                                .frame(height: 40) // Removed fixed width to allow flexibility
+                                .frame(maxWidth: .infinity)
                                 .background(Color("secondaryYellow"))
                                 .cornerRadius(10)
-                                .frame(maxWidth: .infinity)
                                 .shadow(radius: 1)
+                                .padding(.horizontal, 30)
+                                .padding(.top, 5) // Reduced top padding
+                            }
                         }
-                        .padding(.horizontal, 30)
-                        .padding(.top, 15)
-                    }
-                    
-                    Spacer()
-                        .frame(height: 35)
 
-                    // Earning Frequency as Dropdown-like Button
-                    VStack {
-                        HStack {
-                            Text("Select Earning Frequency")
-                                .foregroundColor(Color("PrimaryBlack"))
-                                .font(.title3)
-                            Spacer()
+                        // Biweekly Income Input
+                        VStack(alignment: .leading, spacing: 10) { // Reduced spacing between label and field
+                            HStack {
+                                Text("\(earningFrequency) Income")
+                                    .foregroundColor(Color("PrimaryBlack"))
+                                    .font(.title3)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 30)
+                            
+                            HStack {
+                                TextField("", text: $biweeklyIncome)
+                                    .foregroundColor(Color("SecondaryBlack"))
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 12)
+                                    .background(Color("secondaryYellow"))
+                                    .cornerRadius(10)
+                                    .frame(maxWidth: .infinity)
+                                    .overlay(
+                                        HStack {
+                                            Spacer()
+                                            Image(systemName: "pencil")
+                                                .foregroundColor(Color("primaryPink"))
+                                                .padding(.trailing, 10)
+                                        }
+                                    )
+                                    .shadow(radius: 1)
+                            }
+                            .padding(.horizontal, 30)
+                            .padding(.top, 5) // Reduced top padding
                         }
-                        .padding(.horizontal, 30)
-                        .frame(height: 1)
-                        
-                        // Custom Button to Mimic TextField Look
-                        Menu {
-                            ForEach(earningFrequencies, id: \.self) { frequency in
-                                Button(action: {
-                                    earningFrequency = frequency
-                                }) {
-                                    Text(frequency)
+
+                        // Budgeting Goals Section
+                        VStack(alignment: .leading, spacing: 10) { // Reduced spacing between elements
+                            HStack {
+                                Text("Budgeting Goals")
+                                    .foregroundColor(Color("PrimaryBlack"))
+                                    .font(.title3)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 30)
+                            .padding(.top, 30) // Moved top padding here for better spacing
+                            .padding(.bottom, 5) // Reduced bottom padding
+
+                            Spacer()
+                                .frame(height: 1)
+                            
+                            // Multi-Segment Bar for Budget Goals
+                            GeometryReader { geometry in
+                                HStack(spacing: 0) {
+                                    // Needs segment with rounded left corners
+                                    Rectangle()
+                                        .fill(Color("primaryPink"))
+                                        .frame(width: geometry.size.width * (needsGoal / 100), height: 50)
+                                        .cornerRadius(10, corners: [.topLeft, .bottomLeft])
+                                    
+                                    // Wants segment (no rounding)
+                                    Rectangle()
+                                        .fill(Color("wantsColor"))
+                                        .frame(width: geometry.size.width * (wantsGoal / 100), height: 50)
+                                    
+                                    // Savings segment with rounded right corners
+                                    Rectangle()
+                                        .fill(Color("savingsColor"))
+                                        .frame(width: geometry.size.width * (savingsGoal / 100), height: 50)
+                                        .cornerRadius(10, corners: [.topRight, .bottomRight])
                                 }
                             }
-                        } label: {
-                            HStack {
-                                Text(earningFrequency)
-                                    .foregroundColor(Color("SecondaryBlack"))
-                                    .padding(.leading, 12)
-                                
-                                Spacer()
-                                
-                                Image(systemName: "chevron.down")
-                                    .foregroundColor(Color("primaryPink"))
-                                    .padding(.trailing, 10)
-                            }
-                            .frame(width: 340, height: 40) // Fixed width and height for the frame
-                            .background(Color("secondaryYellow")) // Extend the background color
-                            .cornerRadius(10)
-                            .shadow(radius: 1)
+                            .frame(height: 50)
                             .padding(.horizontal, 30)
-                            .padding(.top, 15)
-                        }
-                    }
+                            .padding(.bottom, 5) // Reduced bottom padding
 
-                    
-                    Spacer()
-                        .frame(height: 25)
-
-                    // Biweekly Income Input
-                    VStack {
-                        HStack {
-                            Text("\(earningFrequency) Income")
-                                .foregroundColor(Color("PrimaryBlack"))
-                                .font(.title3)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 30)
-                            .frame(height: 1)
-                        HStack {
-                            TextField("", text: $biweeklyIncome)
-                                .foregroundColor(Color("SecondaryBlack"))
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 12)
-                                .background(Color("secondaryYellow"))
-                                .cornerRadius(10)
-                                .frame(maxWidth: .infinity)
-                                .overlay(
-                                    HStack {
-                                        Spacer()
-                                        Image(systemName: "pencil")
-                                            .foregroundColor(Color("primaryPink"))
-                                            .padding(.trailing, 10)
-                                    }
-                                )
-                                .shadow(radius: 1)
-                        }
-                        .padding(.horizontal, 30)
-                        .padding(.top, 15)
-                    }
-
-                    // Budgeting Goals Section
-                    VStack {
-                        HStack {
-                            Text("Budgeting Goals")
-                                .foregroundColor(Color("PrimaryBlack"))
-                                .font(.title3)
-                                .padding(.top, 30)
-                                .padding(.bottom, 10)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 30)
-
-                        Spacer()
-                            .frame(height: 1)
-                        
-                        // Multi-Segment Bar for Budget Goals
-                        GeometryReader { geometry in
-                            HStack(spacing: 0) {
-                                // Needs segment with rounded left corners
-                                Rectangle()
-                                    .fill(Color("primaryPink"))
-                                    .frame(width: geometry.size.width * (needsGoal / 100), height: 50)
-                                    .cornerRadius(10, corners: [.topLeft, .bottomLeft])
-                                
-                                // Wants segment (no rounding)
-                                Rectangle()
-                                    .fill(Color("wantsColor"))
-                                    .frame(width: geometry.size.width * (wantsGoal / 100), height: 50)
-                                
-                                // Savings segment with rounded right corners
-                                Rectangle()
-                                    .fill(Color("savingsColor"))
-                                    .frame(width: geometry.size.width * (savingsGoal / 100), height: 50)
-                                    .cornerRadius(10, corners: [.topRight, .bottomRight])
+                            // Labels for Budget Goals
+                            HStack {
+                                LabelView(color: "primaryPink", label: "Needs")
+                                Spacer()
+                                LabelView(color: "wantsColor", label: "Wants")
+                                Spacer()
+                                LabelView(color: "savingsColor", label: "Savings")
                             }
+                            .padding(.horizontal, 50)
                         }
-                        .frame(height: 50) // Set the height for the bar
-                        .padding(.horizontal, 30)
-                        .padding(.bottom, 10)
 
-
-                        HStack {
-                            LabelView(color: "primaryPink", label: "Needs")
-                            Spacer()
-                            LabelView(color: "wantsColor", label: "Wants")
-                            Spacer()
-                            LabelView(color: "savingsColor", label: "Savings")
+                        // Sliders for Goals
+                        VStack(spacing: 20) { // Adjusted spacing for better layout
+                            GoalSlider(label: "Needs Goals (%)", amount: "\(Int(needsGoal))%", value: $needsGoal, otherValues: [$wantsGoal, $savingsGoal])
+                            GoalSlider(label: "Wants Goals (%)", amount: "\(Int(wantsGoal))%", value: $wantsGoal, otherValues: [$needsGoal, $savingsGoal])
+                            GoalSlider(label: "Savings Goals (%)", amount: "\(Int(savingsGoal))%", value: $savingsGoal, otherValues: [$needsGoal, $wantsGoal])
                         }
-                        .padding(.horizontal, 50)
+                        .padding(.bottom, 20)
                     }
-
-                    // Sliders for Goals
-                    VStack {
-                        GoalSlider(label: "Needs Goals (%)", amount: "\(Int(needsGoal))%", value: $needsGoal, otherValues: [$wantsGoal, $savingsGoal])
-                        GoalSlider(label: "Wants Goals (%)", amount: "\(Int(wantsGoal))%", value: $wantsGoal, otherValues: [$needsGoal, $savingsGoal])
-                        GoalSlider(label: "Savings Goals (%)", amount: "\(Int(savingsGoal))%", value: $savingsGoal, otherValues: [$needsGoal, $wantsGoal])
-                    }
-
-                    Spacer()
-                        .frame(height: 30)
+                    .padding(.top, 20) 
                 }
             }
-        
-        .edgesIgnoringSafeArea(.top)
-    }
-}
-
-// Reusable Label for Goal Section
-struct LabelView: View {
-    var color: String
-    var label: String
-
-    var body: some View {
-        HStack {
-            Circle()
-                .fill(Color(color))
-                .frame(width: 10, height: 10)
-            Text(label)
-                .font(.footnote)
+            .navigationBarHidden(true) // Hide the default navigation bar to use custom header
         }
     }
-}
 
-// Reusable Slider for Budget Goals
-struct GoalSlider: View {
-    var label: String
-    var amount: String
-    @Binding var value: Double
-    var otherValues: [Binding<Double>]
-    @State private var monthlyIncomeAmount: Double = 5677.00 // Example monthly income
+    // Reusable Label for Goal Section
+    struct LabelView: View {
+        var color: String
+        var label: String
 
-    private func calculateAmount() -> String {
-        let incomeValue = (monthlyIncomeAmount * value) / 100
-        return String(format: "$%.2f", incomeValue)
-    }
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            // Label at the top
-            Text(label)
-                .foregroundColor(Color("PrimaryBlack"))
-                .padding(.top, 5)
-                .padding(.horizontal, 30)
-            
-            Spacer()
-                .frame(height: 1)
-            
-            // Slider view
-            Slider(value: Binding(
-                get: { value },
-                set: { newValue in
-                    let totalOtherValues = otherValues.map { $0.wrappedValue }.reduce(0, +)
-                    if totalOtherValues + newValue > 100 {
-                        value = 100 - totalOtherValues
-                    } else {
-                        value = newValue
-                    }
-                }
-            ), in: 0...100, step: 1)
-            .accentColor(Color("primaryPink"))
-            .padding(.horizontal, 30)
-            
-            Spacer()
-                .frame(height: 1)
-            
-            // Display percentage and calculated amount below the slider
+        var body: some View {
             HStack {
-                Text("\(Int(value))% (\(calculateAmount()))")
-                    .foregroundColor(Color("PrimaryBlack"))
-                Spacer()
+                Circle()
+                    .fill(Color(color))
+                    .frame(width: 10, height: 10)
+                Text(label)
+                    .font(.footnote)
             }
-            .padding(.horizontal, 30)
-            .padding(.bottom, 15)
         }
     }
-}
 
+    // Reusable Slider for Budget Goals
+    struct GoalSlider: View {
+        var label: String
+        var amount: String
+        @Binding var value: Double
+        var otherValues: [Binding<Double>]
 
+        private func calculateAmount() -> String {
+            // Assuming monthlyIncomeAmount is dynamic or passed in
+            // Here, we'll mock it for simplicity
+            let monthlyIncomeAmount = 5677.00
+            let incomeValue = (monthlyIncomeAmount * value) / 100
+            return String(format: "$%.2f", incomeValue)
+        }
 
-// Preview
-#Preview {
-    EditBudgetView()
+        var body: some View {
+            VStack(alignment: .leading, spacing: 5) { // Reduced spacing
+                // Label at the top
+                Text(label)
+                    .foregroundColor(Color("PrimaryBlack"))
+                    .padding(.horizontal, 30)
+
+                // Slider view
+                Slider(value: Binding(
+                    get: { value },
+                    set: { newValue in
+                        let totalOtherValues = otherValues.map { $0.wrappedValue }.reduce(0, +)
+                        if totalOtherValues + newValue > 100 {
+                            value = 100 - totalOtherValues
+                        } else {
+                            value = newValue
+                        }
+                    }
+                ), in: 0...100, step: 1)
+                .accentColor(Color("primaryPink"))
+                .padding(.horizontal, 30)
+
+                // Display percentage and calculated amount below the slider
+                HStack {
+                    Text("\(Int(value))% (\(calculateAmount()))")
+                        .foregroundColor(Color("PrimaryBlack"))
+                    Spacer()
+                }
+                .padding(.horizontal, 30)
+                .padding(.bottom, 15)
+            }
+        }
+    }
+
+    // Preview
+    struct EditBudgetView_Previews: PreviewProvider {
+        static var previews: some View {
+            EditBudgetView()
+        }
+    }
 }
