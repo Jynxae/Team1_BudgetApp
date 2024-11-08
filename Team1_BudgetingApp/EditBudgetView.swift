@@ -62,6 +62,7 @@ struct EditBudgetView: View {
                 ScrollView {
                     // Monthly Income Input
                     VStack {
+                        Spacer()
                         HStack {
                             Text("Your Monthly Income")
                                 .foregroundColor(Color("PrimaryBlack"))
