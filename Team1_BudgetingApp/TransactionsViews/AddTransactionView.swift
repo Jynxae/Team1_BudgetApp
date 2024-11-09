@@ -244,23 +244,6 @@ struct AddTransactionView: View {
                             .fill(Color.white)
                             .shadow(radius: 1)
                     )
-                    
-                    
-                    // Add transaction button
-                    Button(action: {
-                        addTransaction()
-                    }) {
-                        Text("Add Transaction")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(Color.primaryPink)
-                            .cornerRadius(20)
-                            .fontWeight(.bold)
-                            .font(.title3)
-                    }
-                    .padding(.horizontal, 30)
-                    .padding(.top, 20)
 
                 }
                 .navigationTitle("Add New Transaction")
