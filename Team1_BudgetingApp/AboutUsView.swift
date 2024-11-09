@@ -48,7 +48,7 @@ struct AboutUsView: View {
                         .padding(.top, 20)
                     
                     Text("""
-                    We are a group of passionate developers dedicated to building user-friendly and effective solutions. Our team is committed to providing the best experience for our users, continuously improving the app based on your feedback.
+                    We are a group of passionate developers dedicated to building user-friendly and effective solutions. Our team is committed to providing the best experience for our users, continuously improving  the app based on your feedback.
                     
                     Feel free to reach out to us for any suggestions or support. We’d love to hear from you!
                     """)
