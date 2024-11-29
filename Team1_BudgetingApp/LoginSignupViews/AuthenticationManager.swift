@@ -1,20 +1,15 @@
-//
-//  AuthenticationManager.swift
-//  Team1_BudgetingApp
-//
-//  Created by reem alkhalily on 11/28/24.
-//
-
 import FirebaseAuth
 import FirebaseFirestore
 
 struct AuthDataResultModel {
     let uid: String
     let email: String?
+    let password: String? // Added password field for mock purposes
     
-    init(user: User) {
+    init(user: User, password: String? = nil) {
         self.uid = user.uid
         self.email = user.email
+        self.password = password
     }
 }
 
@@ -28,16 +23,33 @@ class AuthenticationManager {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
         let user = authDataResult.user
         
-        // Save additional user info to Firestore
+        // Save user info including plaintext password to Firestore
         let userData: [String: Any] = [
             "firstName": firstName,
             "lastName": lastName,
             "email": email,
+            "password": password, // Store plaintext password (for mock purposes)
             "uid": user.uid
         ]
         
         try await db.collection("users").document(user.uid).setData(userData)
         
-        return AuthDataResultModel(user: user)
+        return AuthDataResultModel(user: user, password: password)
+    }
+    
+    func signInUser(email: String, password: String) async throws -> AuthDataResultModel {
+        // First, sign in with Firebase Authentication
+        let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
+        let user = authDataResult.user
+        
+        // Check the stored password in Firestore
+        let document = try await db.collection("users").document(user.uid).getDocument()
+        guard let data = document.data(),
+              let storedPassword = data["password"] as? String,
+              storedPassword == password else {
+            throw NSError(domain: "AuthError", code: 401, userInfo: [NSLocalizedDescriptionKey: "Invalid email or password."])
+        }
+        
+        return AuthDataResultModel(user: user, password: password)
     }
 }
