@@ -1,9 +1,12 @@
 import SwiftUI
+import FirebaseAuth
+import FirebaseFirestore
 
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @Binding var isSignedIn: Bool
+    @State private var errorMessage: String? // To display error messages
 
     var body: some View {
         ZStack {
@@ -30,6 +33,8 @@ struct LoginView: View {
                 // Email Input
                 HStack {
                     TextField("Email", text: $email)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
                         .padding(.vertical, 2)
                         .padding(12)
                     Image(systemName: "envelope")
@@ -59,8 +64,15 @@ struct LoginView: View {
                 
                 // Sign In Button
                 Button(action: {
-                    // Handle sign-in action
-                    isSignedIn = true
+                    Task {
+                        do {
+                            let authResult = try await AuthenticationManager.shared.signInUser(email: email, password: password)
+                            print("User signed in: \(authResult.uid)")
+                            isSignedIn = true
+                        } catch {
+                            print("Failed to sign in: \(error.localizedDescription)")
+                        }
+                    }
                 }) {
                     Text("Sign in")
                         .foregroundColor(.white)
@@ -73,6 +85,15 @@ struct LoginView: View {
                 }
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
+
+                
+                // Display error message
+                if let errorMessage = errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .font(.callout)
+                        .padding(.top, 10)
+                }
                 
                 // Forgot Password - Using NavigationLink
                 NavigationLink(destination: ResetPasswordView()) {
@@ -92,6 +113,31 @@ struct LoginView: View {
                 }
                 .foregroundColor(Color("primaryPink"))
             }
+        }
+    }
+
+    // Sign in function
+    private func signInUser() async {
+        do {
+            // Sign in using Firebase Authentication
+            let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
+            print("User signed in: \(authResult.user.uid)")
+            
+            // Check if the user exists in Firestore
+            let db = Firestore.firestore()
+            let document = try await db.collection("users").document(authResult.user.uid).getDocument()
+            
+            if document.exists {
+                // User exists, mark as signed in
+                isSignedIn = true
+            } else {
+                // User does not exist in Firestore
+                errorMessage = "User not found in database."
+                try await Auth.auth().signOut() // Sign out the user
+            }
+        } catch {
+            print("Failed to sign in: \(error.localizedDescription)")
+            errorMessage = error.localizedDescription // Show error to the user
         }
     }
 }

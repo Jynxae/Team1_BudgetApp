@@ -102,9 +102,27 @@ struct SignupView: View {
                 
                 // Create Account Button
                 Button(action: {
-                    // Handle Create Account action
-                    // After successful account creation, go back to LoginView
-                    presentationMode.wrappedValue.dismiss()
+                    Task {
+                        do {
+                            guard password == paswordConfirmation else {
+                                print("Passwords do not match")
+                                return
+                            }
+                            
+                            let authResult = try await AuthenticationManager.shared.createUser(
+                                email: email,
+                                password: password,
+                                firstName: firstName,
+                                lastName: lastName
+                            )
+                            
+                            print("User created: \(authResult.uid)")
+                            presentationMode.wrappedValue.dismiss() // Go back to login view
+                            
+                        } catch {
+                            print("Failed to create user: \(error.localizedDescription)")
+                        }
+                    }
                 }) {
                     Text("Create Account")
                         .foregroundColor(.white)
@@ -115,6 +133,7 @@ struct SignupView: View {
                         .fontWeight(.bold)
                         .font(.title3)
                 }
+
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
                 
