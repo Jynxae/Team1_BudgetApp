@@ -7,6 +7,9 @@ struct SignupView: View {
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
+    
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
 
     var body: some View {
@@ -36,6 +39,8 @@ struct SignupView: View {
                     TextField("Email", text: $email)
                         .padding(.vertical, 2)
                         .padding(12)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                     Image(systemName: "envelope")
                         .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
@@ -51,6 +56,8 @@ struct SignupView: View {
                     SecureField("Password", text: $password)
                         .padding(.vertical, 2)
                         .padding(12)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                     Image(systemName: "lock")
                         .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
@@ -66,6 +73,8 @@ struct SignupView: View {
                     TextField("Confirm Password", text: $paswordConfirmation)
                         .padding(.vertical, 2)
                         .padding(12)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                     Image(systemName: "lock")
                         .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
@@ -81,6 +90,8 @@ struct SignupView: View {
                     TextField("First Name", text: $firstName)
                         .padding(.vertical, 2)
                         .padding(12)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                 }
                 .background(Color.white)
                 .cornerRadius(20)
@@ -93,6 +104,8 @@ struct SignupView: View {
                     TextField("Last Name", text: $lastName)
                         .padding(.vertical, 2)
                         .padding(12)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                 }
                 .background(Color.white)
                 .cornerRadius(20)
@@ -104,8 +117,20 @@ struct SignupView: View {
                 Button(action: {
                     Task {
                         do {
+                            // Input Validation
                             guard password == paswordConfirmation else {
-                                print("Passwords do not match")
+                                alertMessage = "Passwords do not match"
+                                showAlert = true
+                                return
+                            }
+                            guard !email.isEmpty, !password.isEmpty, !firstName.isEmpty, !lastName.isEmpty else {
+                                alertMessage = "Please fill in all fields"
+                                showAlert = true
+                                return
+                            }
+                            guard password.count >= 6 else {
+                                alertMessage = "Password must be at least 6 characters"
+                                showAlert = true
                                 return
                             }
                             
@@ -133,9 +158,15 @@ struct SignupView: View {
                         .fontWeight(.bold)
                         .font(.title3)
                 }
-
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("Unable to Create Account"),
+                        message: Text(alertMessage),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
                 
 
                 Spacer()
