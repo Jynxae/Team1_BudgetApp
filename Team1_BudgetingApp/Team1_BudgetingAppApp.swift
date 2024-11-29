@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct Team1_BudgetingAppApp: App {
+    init() {
+            FirebaseApp.configure()
+        }
     var body: some Scene {
         WindowGroup {
             SplashScreenView() // No arguments needed here
