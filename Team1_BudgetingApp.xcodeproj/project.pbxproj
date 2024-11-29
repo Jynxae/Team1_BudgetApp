@@ -63,6 +63,7 @@
 		807639222CC7197C00F80452 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AuthenticationManager.swift,
 				LoginView.swift,
 				ResetPasswordView.swift,
 				SignupView.swift,
