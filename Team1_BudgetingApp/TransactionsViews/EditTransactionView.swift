@@ -1,4 +1,7 @@
 import SwiftUI
+import Firebase
+import FirebaseCore
+import FirebaseAuth
 
 struct EditTransactionView: View {
     
@@ -270,38 +273,6 @@ struct EditTransactionView: View {
                     
                     Spacer()
                     
-//                    HStack {
-//                        // Delete Button
-//                        Button(action: {
-//                            deleteTransaction()
-//                        }) {
-//                            Text("Delete")
-//                                .foregroundColor(.white)
-//                                .frame(maxWidth: .infinity)
-//                                .padding(.vertical, 10)
-//                                .background(Color.primaryPink)
-//                                .cornerRadius(20)
-//                                .fontWeight(.bold)
-//                                .font(.headline)
-//                        }
-//                        
-//                        // Save Changes Button
-//                        Button(action: {
-//                            saveTransaction()
-//                        }) {
-//                            Text("Save Changes")
-//                                .foregroundColor(.white)
-//                                .frame(maxWidth: .infinity)
-//                                .padding(.vertical, 10)
-//                                .background(Color.primaryPink)
-//                                .cornerRadius(20)
-//                                .fontWeight(.bold)
-//                                .font(.headline)
-//                        }
-//                    }
-//                    .frame(maxWidth: 345)
-//                    .padding(.horizontal, 10)
-                    
                 }
                 .navigationTitle("Edit Transaction")
                 .navigationBarTitleDisplayMode(.inline)
@@ -330,8 +301,14 @@ struct EditTransactionView: View {
     // Function to Save Edited Transaction
     private func saveTransaction() {
         guard let amountDouble = Double(amount) else { return }
+        
+        // Get the currently signed-in user's UID
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("Error: User is not signed in.")
+            return
+        }
 
-        // Find the transaction in the view model using its ID and update it directly
+        // Find the transaction in the view model and update it locally
         if let index = viewModel.transactions.firstIndex(where: { $0.id == transactionId }) {
             viewModel.transactions[index].name = name.trimmingCharacters(in: .whitespaces)
             viewModel.transactions[index].type = type
@@ -341,18 +318,36 @@ struct EditTransactionView: View {
             viewModel.transactions[index].amount = amountDouble
         }
 
-        // Recalculate the totals if necessary
+        // Recalculate the totals
         viewModel.recalculateTotals()
+
+        // Prepare the updated transaction data for Firestore
+        let updatedTransaction: [String: Any] = [
+            "id": transactionId.uuidString,
+            "name": name.trimmingCharacters(in: .whitespaces),
+            "type": type.rawValue,
+            "subcategory": subcategory,
+            "date": Timestamp(date: date),
+            "notes": notes.trimmingCharacters(in: .whitespacesAndNewlines),
+            "amount": amountDouble
+        ]
+
+        // Save the updated transaction to Firestore
+        let db = Firestore.firestore()
+        db.collection("users")
+            .document(userId)
+            .collection("transactions")
+            .document(transactionId.uuidString)
+            .updateData(updatedTransaction) { error in
+                if let error = error {
+                    print("Error updating transaction: \(error.localizedDescription)")
+                } else {
+                    print("Transaction successfully updated!")
+                }
+            }
+
+        // Dismiss the view
         presentationMode.wrappedValue.dismiss()
-    }
-    
-    // Delete transactions
-    private func deleteTransaction() {
-        if let index = viewModel.transactions.firstIndex(where: { $0.id == transactionId }) {
-            viewModel.transactions.remove(at: index)
-            viewModel.recalculateTotals()
-            presentationMode.wrappedValue.dismiss() // Dismiss the view after deletion
-        }
     }
 
     // Validation for Form
