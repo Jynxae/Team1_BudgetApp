@@ -75,20 +75,35 @@ class FinanceViewModel: ObservableObject {
         transactions.append(transaction)
         recalculateTotals()
     }
-    
-    // Delete transactions
-    func deleteTransactions(at offsets: IndexSet) {
-        transactions.remove(atOffsets: offsets)
-        recalculateTotals()
-    }
-    
-    // Delete a single transaction
+
+    // Delete a single transaction and remove it from Firestore
     func deleteTransaction(_ transaction: Transaction) {
-        if let index = transactions.firstIndex(where: { $0.id == transaction.id }) {
-            transactions.remove(at: index)
-            recalculateTotals()
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("Error: User is not signed in.")
+            return
         }
+        
+        let db = Firestore.firestore()
+        db.collection("users")
+            .document(userId)
+            .collection("transactions")
+            .document(transaction.id.uuidString)
+            .delete { error in
+                if let error = error {
+                    print("Error deleting transaction from Firestore: \(error.localizedDescription)")
+                } else {
+                    print("Transaction successfully deleted from Firestore.")
+                    DispatchQueue.main.async {
+                        // Remove the transaction locally
+                        if let index = self.transactions.firstIndex(where: { $0.id == transaction.id }) {
+                            self.transactions.remove(at: index)
+                            self.recalculateTotals()
+                        }
+                    }
+                }
+            }
     }
+
     
     func updateTransaction(transaction: Transaction) {
         if let index = transactions.firstIndex(where: { $0.id == transaction.id }) {

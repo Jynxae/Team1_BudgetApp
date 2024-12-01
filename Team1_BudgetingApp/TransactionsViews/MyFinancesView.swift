@@ -163,19 +163,6 @@ struct MyFinancesView: View {
            .disabled(viewModel.isFutureDate)
        }
     }
-    
-    // Delete transactions
-//    private func deleteTransaction(at offsets: IndexSet) {
-//        viewModel.deleteTransactions(at: offsets)
-//    }
-    
-    // Update the deleteTransaction function
-    private func deleteTransaction(at offsets: IndexSet) {
-        if let index = offsets.first {
-            let transaction = viewModel.transactions[index]
-            transactionToDelete = transaction
-        }
-    }
 }
 
 struct ProgressBar: View {
