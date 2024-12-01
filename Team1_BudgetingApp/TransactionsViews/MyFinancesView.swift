@@ -135,6 +135,9 @@ struct MyFinancesView: View {
 
             }
         }
+        .onAppear {
+            viewModel.fetchTransactions()
+        }
         .background(Color.clear)
     }
     

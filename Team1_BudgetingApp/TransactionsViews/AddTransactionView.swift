@@ -1,4 +1,7 @@
 import SwiftUI
+import FirebaseCore
+import Firebase
+import FirebaseAuth
 
 struct AddTransactionView: View {
     
@@ -283,18 +286,58 @@ struct AddTransactionView: View {
     private func addTransaction() {
         guard let amountDouble = Double(amount) else { return }
         
+        // Create a new transaction
         let newTransaction = Transaction(
             name: name.trimmingCharacters(in: .whitespaces),
             type: type,
             subcategory: subcategory,
             date: date,
             notes: notes.trimmingCharacters(in: .whitespacesAndNewlines),
-            amount: amountDouble
+            amount: amountDouble,
+            isRecurring: isRecurring,
+            recurrenceFrequency: isRecurring ? recurrenceFrequency : nil
         )
         
+        // Add the transaction locally to the view model
         viewModel.addTransaction(newTransaction)
+        
+        // Get the currently signed-in user's UID
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("Error: User is not signed in.")
+            return
+        }
+        
+        // Save the transaction to the user's transactions subcollection in Firestore
+        let db = Firestore.firestore()
+        let transactionData: [String: Any] = [
+            "id": newTransaction.id.uuidString,
+            "name": newTransaction.name,
+            "type": newTransaction.type.rawValue,
+            "subcategory": newTransaction.subcategory,
+            "date": Timestamp(date: newTransaction.date),
+            "notes": newTransaction.notes,
+            "amount": newTransaction.amount,
+            "isRecurring": newTransaction.isRecurring,
+            "recurrenceFrequency": newTransaction.recurrenceFrequency?.rawValue ?? ""
+        ]
+        
+        db.collection("users")
+            .document(userId)
+            .collection("transactions")
+            .document(newTransaction.id.uuidString)
+            .setData(transactionData) { error in
+                if let error = error {
+                    print("Error saving transaction: \(error.localizedDescription)")
+                } else {
+                    print("Transaction successfully saved!")
+                }
+            }
+        
+        // Dismiss the view
         presentationMode.wrappedValue.dismiss()
     }
+
+
 }
 
 struct DropDownMenu: View {
