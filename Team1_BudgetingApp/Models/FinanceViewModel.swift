@@ -1,12 +1,7 @@
-//
-//  FinanceViewModel.swift
-//  Team1_BudgetingApp
-//
-//  Created by Sue on 10/19/24.
-//
-
 import Foundation
 import SwiftUI
+import Firebase
+import FirebaseAuth
 import Combine
 
 class FinanceViewModel: ObservableObject {
@@ -18,7 +13,7 @@ class FinanceViewModel: ObservableObject {
     @Published var wantsTotal: Double = 250.00
     @Published var savingsTotal: Double = 150.00
     
-    @Published var transactions: [Transaction] = transactionRows // Initialize with sample data
+    @Published var transactions: [Transaction] = [] // Updated to start empty
     
     // Compute Remaining Income
     var remainingTotal: Double {
@@ -101,12 +96,69 @@ class FinanceViewModel: ObservableObject {
         }
     }
     
+    // Fetch user-specific transactions from Firestore
+    func fetchTransactions() {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("Error: User is not signed in.")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        db.collection("users")
+            .document(userId)
+            .collection("transactions")
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error fetching transactions: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    print("No transactions found.")
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    self.transactions = documents.compactMap { document -> Transaction? in
+                        let data = document.data()
+                        guard
+                            let idString = data["id"] as? String,
+                            let id = UUID(uuidString: idString),
+                            let name = data["name"] as? String,
+                            let typeString = data["type"] as? String,
+                            let type = TransactionType(rawValue: typeString),
+                            let subcategory = data["subcategory"] as? String,
+                            let date = (data["date"] as? Timestamp)?.dateValue(),
+                            let notes = data["notes"] as? String,
+                            let amount = data["amount"] as? Double,
+                            let isRecurring = data["isRecurring"] as? Bool
+                        else {
+                            return nil
+                        }
+                        
+                        let recurrenceFrequency = data["recurrenceFrequency"] as? String
+                        return Transaction(
+                            id: id,
+                            name: name,
+                            type: type,
+                            subcategory: subcategory,
+                            date: date,
+                            notes: notes,
+                            amount: amount,
+                            isRecurring: isRecurring,
+                            recurrenceFrequency: recurrenceFrequency.flatMap { RecurrenceFrequency(rawValue: $0) }
+                        )
+                    }
+                    self.recalculateTotals()
+                }
+            }
+    }
     
     // Recalculate Totals based on transactions
-     func recalculateTotals() {
+    func recalculateTotals() {
         needsTotal = transactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
         wantsTotal = transactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
         savingsTotal = transactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
     }
-}
 
+}
