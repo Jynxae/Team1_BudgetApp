@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		801690702CFD85B700A67DC7 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016906F2CFD85B700A67DC7 /* WelcomeView.swift */; };
 		804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CE99C2CBC871F00886E44 /* BudgetIcons.swift */; };
 		B488C5B62CF951B500125F3B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B488C5B52CF951B500125F3B /* GoogleService-Info.plist */; };
 		B488C5B92CF9526D00125F3B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B488C5B82CF9526D00125F3B /* FirebaseAnalytics */; };
@@ -45,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8016906F2CFD85B700A67DC7 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		804CE99C2CBC871F00886E44 /* BudgetIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetIcons.swift; sourceTree = "<group>"; };
 		B488C5B52CF951B500125F3B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B4998C912CC4501C0079B12C /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */,
 				B488C5B52CF951B500125F3B /* GoogleService-Info.plist */,
 				B4E44DFB2CA7D0FB00C219B6 /* Preview Content */,
+				8016906F2CFD85B700A67DC7 /* WelcomeView.swift */,
 			);
 			path = Team1_BudgetingApp;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 				B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */,
 				B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */,
 				B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */,
+				801690702CFD85B700A67DC7 /* WelcomeView.swift in Sources */,
 				B4998CC12CC871EA0079B12C /* AboutUsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
