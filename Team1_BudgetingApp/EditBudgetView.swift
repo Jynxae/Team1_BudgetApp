@@ -226,9 +226,9 @@ struct EditBudgetView: View {
 
                         // Sliders for Goals
                         VStack(spacing: 20) {
-                            GoalSlider(label: "Needs Goals (%)", amount: "\(Int(viewModel.needsGoal))%", value: $viewModel.needsGoal, otherValues: [$viewModel.wantsGoal, $viewModel.savingsGoal])
-                            GoalSlider(label: "Wants Goals (%)", amount: "\(Int(viewModel.wantsGoal))%", value: $viewModel.wantsGoal, otherValues: [$viewModel.needsGoal, $viewModel.savingsGoal])
-                            GoalSlider(label: "Savings Goals (%)", amount: "\(Int(viewModel.savingsGoal))%", value: $viewModel.savingsGoal, otherValues: [$viewModel.needsGoal, $viewModel.wantsGoal])
+                            GoalSlider(label: "Needs Goals (%)", amount: "\(Int(viewModel.needsGoal))%", value: $viewModel.needsGoal, otherValues: [$viewModel.wantsGoal, $viewModel.savingsGoal], viewModel: viewModel)
+                            GoalSlider(label: "Wants Goals (%)", amount: "\(Int(viewModel.wantsGoal))%", value: $viewModel.wantsGoal, otherValues: [$viewModel.needsGoal, $viewModel.savingsGoal], viewModel: viewModel)
+                            GoalSlider(label: "Savings Goals (%)", amount: "\(Int(viewModel.savingsGoal))%", value: $viewModel.savingsGoal, otherValues: [$viewModel.needsGoal, $viewModel.wantsGoal], viewModel: viewModel)
                         }
                         .padding(.bottom, 20)
                     }
@@ -239,7 +239,6 @@ struct EditBudgetView: View {
         }
     }
 
-    // Reusable Label for Goal Section
     struct LabelView: View {
         var color: String
         var label: String
@@ -255,29 +254,25 @@ struct EditBudgetView: View {
         }
     }
 
-    // Reusable Slider for Budget Goals
     struct GoalSlider: View {
         var label: String
         var amount: String
         @Binding var value: Double
         var otherValues: [Binding<Double>]
+        @ObservedObject var viewModel: BudgetViewModel
 
         private func calculateAmount() -> String {
-            // Assuming monthlyIncomeAmount is dynamic or passed in
-            // Here, we'll mock it for simplicity
-            let monthlyIncomeAmount = 5677.00
+            let monthlyIncomeAmount = Double(viewModel.monthlyIncome.replacingOccurrences(of: "$", with: "")) ?? 0.0
             let incomeValue = (monthlyIncomeAmount * value) / 100
             return String(format: "$%.2f", incomeValue)
         }
 
         var body: some View {
-            VStack(alignment: .leading, spacing: 5) { // Reduced spacing
-                // Label at the top
+            VStack(alignment: .leading, spacing: 5) {
                 Text(label)
                     .foregroundColor(Color("PrimaryBlack"))
                     .padding(.horizontal, 30)
 
-                // Slider view
                 Slider(value: Binding(
                     get: { value },
                     set: { newValue in
