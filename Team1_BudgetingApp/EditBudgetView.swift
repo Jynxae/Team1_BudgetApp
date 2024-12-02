@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 // Extension to round specific corners
 extension View {
@@ -29,29 +30,42 @@ struct RoundedCorner: Shape {
 }
 
 struct EditBudgetView: View {
-    @State private var monthlyIncome: String = "$5,677.00"
-    @State private var earningFrequency: String = "Biweekly"
-    @State private var biweeklyIncome: String = "$2,838.50"
-    @State private var needsGoal: Double = 50
-    @State private var wantsGoal: Double = 30
-    @State private var savingsGoal: Double = 20
+    @StateObject private var viewModel = BudgetViewModel()
 
     // Available options for earning frequency
-    let earningFrequencies = ["Weekly", "Biweekly", "Semimonthly", "Monthly", "Quarterly", "Annually"]
+    let earningFrequencies = ["Weekly", "Biweekly", "Monthly", "Quarterly", "Annually"]
 
     var body: some View {
-        NavigationStack { // Replaced NavigationView with NavigationStack
+        NavigationStack {
             VStack(spacing: 0) { // Use VStack with spacing 0 to stack header and content
                 // Header (Sticky)
                 VStack {
                     Spacer()
                         .frame(height: 15) // Adjusted spacer height for better positioning
-                    Text("Edit Budget")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top, 20) // Increased top padding for better alignment
-                        .padding(.bottom, 10)
+                    
+                    ZStack {
+                        // Centered Title
+                        Text("Edit Budget")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+
+                        // Save Button (Trailing)
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                viewModel.saveUserData()
+                            }) {
+                                Text("Save")
+                                    .font(.headline)
+                                    .foregroundColor(.blue)
+                                    .padding(.horizontal)
+                            }
+                        }
+                    }
+                    .padding(.bottom, 10)
+                    .padding(.top, 20)
+                    .padding(.horizontal)
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color("primaryLightPink"))
@@ -71,18 +85,19 @@ struct EditBudgetView: View {
                             .padding(.horizontal, 30)
                             
                             HStack {
-                                TextField("", text: $monthlyIncome)
+                                Text("$\(viewModel.monthlyIncome)")
                                     .font(.title)
                                     .foregroundColor(Color("SecondaryBlack"))
+                                    .frame(maxWidth: .infinity)
                                     .padding(.vertical, 10)
-                                    .padding(.horizontal, 12)
+                                    .padding(.horizontal)
                                     .background(Color("secondaryYellow"))
                                     .cornerRadius(10)
-                                    .frame(maxWidth: .infinity)
                                     .shadow(radius: 1)
                             }
-                            .padding(.horizontal, 30)
-                            .padding(.top, 5) // Reduced top padding
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal)
+                            .padding(.top, 5)
                         }
 
                         // Earning Frequency as Dropdown-like Button
@@ -99,14 +114,14 @@ struct EditBudgetView: View {
                             Menu {
                                 ForEach(earningFrequencies, id: \.self) { frequency in
                                     Button(action: {
-                                        earningFrequency = frequency
+                                        viewModel.earningFrequency = frequency
                                     }) {
                                         Text(frequency)
                                     }
                                 }
                             } label: {
                                 HStack {
-                                    Text(earningFrequency)
+                                    Text(viewModel.earningFrequency)
                                         .foregroundColor(Color("SecondaryBlack"))
                                         .padding(.leading, 12)
                                     
@@ -129,7 +144,7 @@ struct EditBudgetView: View {
                         // Biweekly Income Input
                         VStack(alignment: .leading, spacing: 10) { // Reduced spacing between label and field
                             HStack {
-                                Text("\(earningFrequency) Income")
+                                Text("\(viewModel.earningFrequency) Income")
                                     .foregroundColor(Color("PrimaryBlack"))
                                     .font(.title3)
                                 Spacer()
@@ -137,7 +152,7 @@ struct EditBudgetView: View {
                             .padding(.horizontal, 30)
                             
                             HStack {
-                                TextField("", text: $biweeklyIncome)
+                                TextField("", text: $viewModel.income)
                                     .foregroundColor(Color("SecondaryBlack"))
                                     .padding(.vertical, 10)
                                     .padding(.horizontal, 12)
@@ -179,18 +194,18 @@ struct EditBudgetView: View {
                                     // Needs segment with rounded left corners
                                     Rectangle()
                                         .fill(Color("primaryPink"))
-                                        .frame(width: geometry.size.width * (needsGoal / 100), height: 50)
+                                        .frame(width: geometry.size.width * (viewModel.needsGoal / 100), height: 50)
                                         .cornerRadius(10, corners: [.topLeft, .bottomLeft])
                                     
                                     // Wants segment (no rounding)
                                     Rectangle()
                                         .fill(Color("wantsColor"))
-                                        .frame(width: geometry.size.width * (wantsGoal / 100), height: 50)
+                                        .frame(width: geometry.size.width * (viewModel.wantsGoal / 100), height: 50)
                                     
                                     // Savings segment with rounded right corners
                                     Rectangle()
                                         .fill(Color("savingsColor"))
-                                        .frame(width: geometry.size.width * (savingsGoal / 100), height: 50)
+                                        .frame(width: geometry.size.width * (viewModel.savingsGoal / 100), height: 50)
                                         .cornerRadius(10, corners: [.topRight, .bottomRight])
                                 }
                             }
@@ -210,17 +225,17 @@ struct EditBudgetView: View {
                         }
 
                         // Sliders for Goals
-                        VStack(spacing: 20) { // Adjusted spacing for better layout
-                            GoalSlider(label: "Needs Goals (%)", amount: "\(Int(needsGoal))%", value: $needsGoal, otherValues: [$wantsGoal, $savingsGoal])
-                            GoalSlider(label: "Wants Goals (%)", amount: "\(Int(wantsGoal))%", value: $wantsGoal, otherValues: [$needsGoal, $savingsGoal])
-                            GoalSlider(label: "Savings Goals (%)", amount: "\(Int(savingsGoal))%", value: $savingsGoal, otherValues: [$needsGoal, $wantsGoal])
+                        VStack(spacing: 20) {
+                            GoalSlider(label: "Needs Goals (%)", amount: "\(Int(viewModel.needsGoal))%", value: $viewModel.needsGoal, otherValues: [$viewModel.wantsGoal, $viewModel.savingsGoal])
+                            GoalSlider(label: "Wants Goals (%)", amount: "\(Int(viewModel.wantsGoal))%", value: $viewModel.wantsGoal, otherValues: [$viewModel.needsGoal, $viewModel.savingsGoal])
+                            GoalSlider(label: "Savings Goals (%)", amount: "\(Int(viewModel.savingsGoal))%", value: $viewModel.savingsGoal, otherValues: [$viewModel.needsGoal, $viewModel.wantsGoal])
                         }
                         .padding(.bottom, 20)
                     }
                     .padding(.top, 20) 
                 }
             }
-            .navigationBarHidden(true) // Hide the default navigation bar to use custom header
+            .navigationBarHidden(true)
         }
     }
 
