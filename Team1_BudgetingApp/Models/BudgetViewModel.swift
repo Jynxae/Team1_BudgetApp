@@ -46,6 +46,7 @@ class BudgetViewModel: ObservableObject {
                     // Parse nested Firestore data
                     self.earningFrequency = userBudget["income_freq"] as? String ?? ""
                     self.income = String(format: "$%.2f", userBudget["income"] as? Double ?? 0.0)
+                    self.monthlyIncome = String(format: "$%.2f", userBudget["monthly_income"] as? Double ?? 0.0)
                     self.needsGoal = userBudget["budget_needs_perc"] as? Double ?? 50
                     self.wantsGoal = userBudget["budget_wants_perc"] as? Double ?? 30
                     self.savingsGoal = userBudget["budget_savings_perc"] as? Double ?? 20
@@ -70,7 +71,8 @@ class BudgetViewModel: ObservableObject {
                 print("Error fetching user data: \(error.localizedDescription)")
                 return
             }
-
+            self.calculateMonthlyIncome()
+            
             if let document = document, document.exists {
                 let data = document.data()
 
@@ -108,12 +110,15 @@ class BudgetViewModel: ObservableObject {
             return
         }
         
+        self.calculateMonthlyIncome()
+        let cleanedMonthlyIncome = Double(monthlyIncome.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: "")) ?? 0.0
         let cleanedIncome = Double(income.replacingOccurrences(of: "$", with: "").replacingOccurrences(of: ",", with: "")) ?? 0.0
         
         db.collection("users").document(userId).setData([
             "user_budget": [
                 "income": cleanedIncome,
                 "income_freq": earningFrequency,
+                "monthly_income": cleanedMonthlyIncome,
                 "budget_needs_perc": needsGoal,
                 "budget_wants_perc": wantsGoal,
                 "budget_savings_perc": savingsGoal

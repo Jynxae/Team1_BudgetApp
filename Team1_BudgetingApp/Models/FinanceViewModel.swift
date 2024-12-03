@@ -8,12 +8,50 @@ class FinanceViewModel: ObservableObject {
     @Published var selectedDate: Date = Date()
     
     // Arbitrary Totals (Could be fetched or modified dynamically)
-    @Published var totalIncome: Double = 1000.00
-    @Published var needsTotal: Double = 400.00
-    @Published var wantsTotal: Double = 250.00
-    @Published var savingsTotal: Double = 150.00
+    @Published var totalIncome: Double = 0.00
+    @Published var needsTotal: Double = 0.00
+    @Published var wantsTotal: Double = 0.00
+    @Published var savingsTotal: Double = 0.00
+    @Published var remainingIncome: Double = 0.00
     
     @Published var transactions: [Transaction] = [] // Updated to start empty
+    
+    let db = Firestore.firestore()
+    
+    init() {
+        fetchIncomeData()
+    }
+    
+    func fetchIncomeData() {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("Error: User not authenticated")
+            return
+        }
+
+        let userDocRef = db.collection("users").document(userId)
+
+        userDocRef.getDocument { [weak self] document, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error fetching user data: \(error.localizedDescription)")
+                return
+            }
+
+            if let document = document, document.exists {
+                if let data = document.data(),
+                   let userBudget = data["user_budget"] as? [String: Any] {
+
+                    // Parse nested Firestore data
+                    self.totalIncome = userBudget["monthly_income"] as? Double ?? 0.0
+                    self.recalculateTotals()
+                } else {
+                    print("User budget data does not exist")
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
     
     // Compute Remaining Income
     var remainingTotal: Double {
@@ -38,7 +76,7 @@ class FinanceViewModel: ObservableObject {
     
     var remainingIncomePercentage: CGFloat {
         guard totalIncome > 0 else { return 0 }
-        return CGFloat(remainingTotal / totalIncome)
+        return CGFloat(remainingIncome / totalIncome)
     }
     
     // Date Navigation Functions
@@ -174,6 +212,7 @@ class FinanceViewModel: ObservableObject {
         needsTotal = transactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
         wantsTotal = transactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
         savingsTotal = transactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
+        remainingIncome = totalIncome - (needsTotal + wantsTotal + savingsTotal)
     }
 
 }

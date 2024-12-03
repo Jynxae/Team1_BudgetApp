@@ -20,6 +20,8 @@ struct AddTransactionView: View {
     // Recurring Transaction
     @State private var isRecurring: Bool = false
     @State private var recurrenceFrequency: RecurrenceFrequency = .monthly
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
         
     // Subcategories based on Transaction Type
     var subcategories: [String] {
@@ -264,14 +266,38 @@ struct AddTransactionView: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Add") {
-                            addTransaction()
+                            handleAddTransaction()
                         }
                         .disabled(!isFormValid)
                     }
                 }
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("Unable to Add Transaction"),
+                        message: Text(alertMessage),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
             }
             
         }
+    }
+    
+    private func handleAddTransaction() {
+        print("remaining income: ")
+        print(viewModel.remainingIncome)
+        guard let amountValue = Double(amount), amountValue > 0 else {
+            alertMessage = "Invalid transaction amount."
+            showAlert = true
+            return
+        }
+        
+        if amountValue > viewModel.remainingIncome {
+            alertMessage = "Amount exceeds remaining income! Please adjust transaction amount or update income."
+            showAlert = true
+            return
+        }
+        addTransaction()
     }
     
     // Validation for Form
