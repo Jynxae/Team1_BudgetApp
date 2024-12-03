@@ -56,4 +56,16 @@ class AuthenticationManager {
     func sendPasswordReset(email: String) async throws {
         try await Auth.auth().sendPasswordReset(withEmail: email)
     }
+    
+    func fetchUserData(uid: String) async throws -> [String: Any] {
+        let document = try await db.collection("users").document(uid).getDocument()
+        guard let data = document.data() else {
+            throw NSError(domain: "AuthError", code: 404, userInfo: [NSLocalizedDescriptionKey: "User data not found."])
+        }
+        return data
+    }
+    
+    func updateUserData(uid: String, data: [String: Any]) async throws {
+        try await db.collection("users").document(uid).updateData(data)
+    }
 }

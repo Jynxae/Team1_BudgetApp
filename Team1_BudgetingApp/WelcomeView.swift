@@ -61,7 +61,7 @@ struct OnboardingCarouselView: View {
     
     @Binding var isSignedIn: Bool
 
-    let frequencies = ["Weekly", "Biweekly", "Monthly", "Yearly"]
+    let frequencies = ["Weekly", "Biweekly", "Monthly", "Quarterly", "Annually"]
     let totalTabs = 3
 
     var body: some View {
