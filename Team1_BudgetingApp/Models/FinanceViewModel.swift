@@ -7,16 +7,55 @@ import Combine
 class FinanceViewModel: ObservableObject {
     @Published var selectedDate: Date = Date()
     @Published var selectedMonth: Date = Date()
-    @Published var totalIncome: Double = 1000.00
-    @Published var needsTotal: Double = 400.00
-    @Published var wantsTotal: Double = 250.00
-    @Published var savingsTotal: Double = 150.00
+
     @Published var transactions: [Transaction] = []
+    
+    // Arbitrary Totals (Could be fetched or modified dynamically)
+    @Published var totalIncome: Double = 0.00
+    @Published var needsTotal: Double = 0.00
+    @Published var wantsTotal: Double = 0.00
+    @Published var savingsTotal: Double = 0.00
+    @Published var remainingIncome: Double = 0.00
     
     // MARK: - Computed Properties
     
-    var remainingTotal: Double {
-        totalIncome - (needsTotal + wantsTotal + savingsTotal)
+    let db = Firestore.firestore()
+    
+    init() {
+        fetchIncomeData()
+    }
+    
+    func fetchIncomeData() {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("Error: User not authenticated")
+            return
+        }
+
+        let userDocRef = db.collection("users").document(userId)
+
+        userDocRef.getDocument { [weak self] document, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error fetching user data: \(error.localizedDescription)")
+                return
+            }
+
+            if let document = document, document.exists {
+                if let data = document.data(),
+                   let userBudget = data["user_budget"] as? [String: Any] {
+
+                    // Parse nested Firestore data
+                    self.totalIncome = userBudget["monthly_income"] as? Double ?? 0.0
+                    DispatchQueue.main.async {
+                        self.recalculateTotals()
+                    }
+                } else {
+                    print("User budget data does not exist")
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
     }
     
     var needsPercentage: CGFloat {
@@ -36,7 +75,7 @@ class FinanceViewModel: ObservableObject {
     
     var remainingIncomePercentage: CGFloat {
         guard totalIncome > 0 else { return 0 }
-        return CGFloat(remainingTotal / totalIncome)
+        return CGFloat(remainingIncome / totalIncome)
     }
     
     // MARK: - Transaction Filtering
@@ -206,6 +245,8 @@ class FinanceViewModel: ObservableObject {
     func recalculateTotals() {
         recalculateDailyTotals()
         recalculateMonthlyTotals()
+  
+        remainingIncome = totalIncome - (needsTotal + wantsTotal + savingsTotal)
     }
     
     private func recalculateDailyTotals() {

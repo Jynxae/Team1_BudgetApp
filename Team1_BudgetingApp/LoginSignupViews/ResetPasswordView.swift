@@ -4,6 +4,7 @@ struct ResetPasswordView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var code: String = ""
+    @State private var resetMessage: String?
     @State private var passwordConfirmation: String = ""
     @Environment(\.presentationMode) var presentationMode // To dismiss the view
 
@@ -45,56 +46,24 @@ struct ResetPasswordView: View {
                 .padding(.top, 20)
                 
                 // Code Input
-                HStack {
-                    SecureField("Enter Code", text: $code)
-                        .padding(.vertical, 2)
-                        .padding(12)
-                    Image(systemName: "lock")
-                        .foregroundColor(Color("primaryPink"))
-                        .padding(.trailing, 15)
-                }
-                .background(Color.white)
-                .cornerRadius(20)
-                .shadow(radius: 1)
-                .padding(.horizontal, 30)
-                .padding(.top, 15)
                 
-                // Password Input
-                HStack {
-                    SecureField("Enter New Password", text: $password)
-                        .padding(.vertical, 2)
-                        .padding(12)
-                    Image(systemName: "lock")
-                        .foregroundColor(Color("primaryPink"))
-                        .padding(.trailing, 15)
-                }
-                .background(Color.white)
-                .cornerRadius(20)
-                .shadow(radius: 1)
-                .padding(.horizontal, 30)
-                .padding(.top, 15)
-                
-                // Password Confirmation Input
-                HStack {
-                    SecureField("Confirm New Password", text: $passwordConfirmation)
-                        .padding(.vertical, 2)
-                        .padding(12)
-                    Image(systemName: "lock")
-                        .foregroundColor(Color("primaryPink"))
-                        .padding(.trailing, 15)
-                }
-                .background(Color.white)
-                .cornerRadius(20)
-                .shadow(radius: 1)
-                .padding(.horizontal, 30)
-                .padding(.top, 15)
+
                 
                 // Reset Button
                 Button(action: {
-                    // Handle reset action, then navigate back to LoginView
-                    presentationMode.wrappedValue.dismiss()
+                    Task {
+                        do {
+                            try await AuthenticationManager.shared.sendPasswordReset(email: email)
+                            print("Password reset email sent!")
+                            resetMessage = "Password reset email sent!"
+//                            presentationMode.wrappedValue.dismiss()
+                        } catch {
+                            resetMessage = "Error sending password reset email."
+                            print("Error sending password reset email: \(error.localizedDescription)")
+                        }
+                    }
                 }) {
-                    Text("Reset")
+                    Text("Reset Password")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
@@ -105,6 +74,14 @@ struct ResetPasswordView: View {
                 }
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
+                
+                // Display reset confirmation message
+                if let resetMessage = resetMessage {
+                    Text(resetMessage)
+                        .foregroundColor(.blue)
+                        .font(.callout)
+                        .padding(.top, 8)
+                }
 
                 Spacer()
                 

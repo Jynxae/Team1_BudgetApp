@@ -52,4 +52,8 @@ class AuthenticationManager {
         
         return AuthDataResultModel(user: user, password: password)
     }
+    
+    func sendPasswordReset(email: String) async throws {
+        try await Auth.auth().sendPasswordReset(withEmail: email)
+    }
 }
