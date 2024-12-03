@@ -46,7 +46,9 @@ class FinanceViewModel: ObservableObject {
 
                     // Parse nested Firestore data
                     self.totalIncome = userBudget["monthly_income"] as? Double ?? 0.0
-                    self.recalculateTotals()
+                    DispatchQueue.main.async {
+                        self.recalculateTotals()
+                    }
                 } else {
                     print("User budget data does not exist")
                 }
@@ -243,8 +245,7 @@ class FinanceViewModel: ObservableObject {
     func recalculateTotals() {
         recalculateDailyTotals()
         recalculateMonthlyTotals()
-      
-
+  
         remainingIncome = totalIncome - (needsTotal + wantsTotal + savingsTotal)
     }
     
