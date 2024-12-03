@@ -7,6 +7,10 @@ import Combine
 class FinanceViewModel: ObservableObject {
     @Published var selectedDate: Date = Date()
     @Published var selectedMonth: Date = Date()
+    @Published var totalIncome: Double = 1000.00
+    @Published var needsTotal: Double = 400.00
+    @Published var wantsTotal: Double = 250.00
+    @Published var savingsTotal: Double = 150.00
     @Published var transactions: [Transaction] = []
     
     // Arbitrary Totals (Could be fetched or modified dynamically)
