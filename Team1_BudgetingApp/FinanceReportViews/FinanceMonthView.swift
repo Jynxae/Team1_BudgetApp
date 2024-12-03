@@ -33,6 +33,29 @@ struct FinanceMonthContentView: View {
     
     var body: some View {
         VStack {
+            // Monthly Navigation
+            HStack {
+                Button(action: {
+                    financeViewModel.moveToPreviousMonth()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.primary)
+                }
+                
+                Text(financeViewModel.monthString(for: financeViewModel.selectedMonth))
+                    .font(.title3)
+                    .bold()
+                    .foregroundColor(Color("primaryPink"))
+                
+                Button(action: {
+                    financeViewModel.moveToNextMonth()
+                }) {
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.primary)
+                }
+            }
+            .padding(.vertical, 10)
+            
             SectionTitleView(title: "Monthly Summary", color: "primaryPink")
             
             DonutChartView()
@@ -53,28 +76,28 @@ struct FinanceMonthContentView: View {
                 SavingsProgressView(
                     title: "Savings Progress",
                     icon: "banknote.fill",
-                    amount: String(format: "$%.2f", financeViewModel.savingsTotal),
+                    amount: String(format: "$%.2f", financeViewModel.transactionsForSelectedMonth.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }),
                     percentage: budgetViewModel.savingsGoal,
                     message: getSavingsMessage(),
-                    color: Color("primaryPink")  // Changed to primaryPink
+                    color: Color("primaryPink")
                 )
                 
                 SavingsProgressView(
                     title: "Needs Budget",
                     icon: "cart.fill",
-                    amount: String(format: "$%.2f", financeViewModel.needsTotal),
+                    amount: String(format: "$%.2f", financeViewModel.transactionsForSelectedMonth.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }),
                     percentage: budgetViewModel.needsGoal,
                     message: getNeedsMessage(),
-                    color: Color("primaryPink")  // Changed to primaryPink
+                    color: Color("primaryPink")
                 )
                 
                 SavingsProgressView(
                     title: "Wants Budget",
                     icon: "gift.fill",
-                    amount: String(format: "$%.2f", financeViewModel.wantsTotal),
+                    amount: String(format: "$%.2f", financeViewModel.transactionsForSelectedMonth.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }),
                     percentage: budgetViewModel.wantsGoal,
                     message: getWantsMessage(),
-                    color: Color("primaryPink")  // Changed to primaryPink
+                    color: Color("primaryPink")
                 )
             }
             .padding(.top, 20)
@@ -82,37 +105,133 @@ struct FinanceMonthContentView: View {
     }
     
     private func getSavingsMessage() -> String {
-        let currentPercentage = financeViewModel.savingsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
+        let monthlyTransactions = financeViewModel.transactionsForSelectedMonth
+        let savingsTotal = monthlyTransactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
+        let currentPercentage = savingsTotal / (Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: "")) ?? 1) * 100
         return currentPercentage >= budgetViewModel.savingsGoal ? "On Track" : "Below Target"
     }
     
     private func getNeedsMessage() -> String {
-        let currentPercentage = financeViewModel.needsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
+        let monthlyTransactions = financeViewModel.transactionsForSelectedMonth
+        let needsTotal = monthlyTransactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
+        let currentPercentage = needsTotal / (Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: "")) ?? 1) * 100
         return currentPercentage <= budgetViewModel.needsGoal ? "Within Budget" : "Over Budget"
     }
     
     private func getWantsMessage() -> String {
-        let currentPercentage = financeViewModel.wantsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
+        let monthlyTransactions = financeViewModel.transactionsForSelectedMonth
+        let wantsTotal = monthlyTransactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
+        let currentPercentage = wantsTotal / (Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: "")) ?? 1) * 100
         return currentPercentage <= budgetViewModel.wantsGoal ? "Within Budget" : "Over Budget"
-    }
-    
-    private func getSavingsColor() -> Color {
-        let currentPercentage = financeViewModel.savingsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
-        return currentPercentage >= budgetViewModel.savingsGoal ? .green : .blue
-    }
-    
-    private func getNeedsColor() -> Color {
-        let currentPercentage = financeViewModel.needsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
-        return currentPercentage <= budgetViewModel.needsGoal ? .blue : .red
-    }
-    
-    private func getWantsColor() -> Color {
-        let currentPercentage = financeViewModel.wantsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
-        return currentPercentage <= budgetViewModel.wantsGoal ? .blue : .red
     }
 }
 
-// MARK: - Progress Views
+// Keeping your existing components with monthly transaction updates:
+
+struct DonutChartView: View {
+    @EnvironmentObject var financeViewModel: FinanceViewModel
+    
+    var monthlyTransactions: [Transaction] {
+        financeViewModel.transactionsForSelectedMonth
+    }
+    
+    var totalSpent: Double {
+        monthlyTransactions.reduce(0) { $0 + $1.amount }
+    }
+    
+    var needsTotal: Double {
+        monthlyTransactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
+    }
+    
+    var wantsTotal: Double {
+        monthlyTransactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
+    }
+    
+    var savingsTotal: Double {
+        monthlyTransactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
+    }
+    
+    var body: some View {
+        ZStack {
+            if totalSpent > 0 {
+                Circle()
+                    .trim(from: 0, to: CGFloat(needsTotal / totalSpent))
+                    .stroke(Color("BillsColor"), lineWidth: 20)
+                    .rotationEffect(.degrees(-90))
+                
+                Circle()
+                    .trim(from: CGFloat(needsTotal / totalSpent),
+                          to: CGFloat((needsTotal + wantsTotal) / totalSpent))
+                    .stroke(Color("wantsColor"), lineWidth: 20)
+                    .rotationEffect(.degrees(-90))
+                
+                Circle()
+                    .trim(from: CGFloat((needsTotal + wantsTotal) / totalSpent),
+                          to: 1)
+                    .stroke(Color("savingsColor"), lineWidth: 20)
+                    .rotationEffect(.degrees(-90))
+            }
+            
+            VStack {
+                Text("Total Spent")
+                    .foregroundColor(Color("PrimaryBlack"))
+                    .font(.subheadline)
+                Text(String(format: "$%.2f", totalSpent))
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("PrimaryBlack"))
+            }
+        }
+        .frame(width: 200, height: 200)
+    }
+}
+
+struct SpendingCategoriesList: View {
+    @EnvironmentObject var financeViewModel: FinanceViewModel
+    
+    var monthlyTransactions: [Transaction] {
+        financeViewModel.transactionsForSelectedMonth
+    }
+    
+    var totalSpent: Double {
+        monthlyTransactions.reduce(0) { $0 + $1.amount }
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SpendingCategoryView(
+                icon: "banknote.fill",
+                color: "savingsColor",
+                label: "Savings",
+                amount: String(format: "$%.2f", monthlyTransactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }),
+                percentage: String(format: "%.0f%%", totalSpent > 0 ? (monthlyTransactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount } / totalSpent) * 100 : 0)
+            )
+            
+            SpendingCategoryView(
+                icon: "cart.fill",
+                color: "BillsColor",
+                label: "Needs",
+                amount: String(format: "$%.2f", monthlyTransactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }),
+                percentage: String(format: "%.0f%%", totalSpent > 0 ? (monthlyTransactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount } / totalSpent) * 100 : 0)
+            )
+            
+            SpendingCategoryView(
+                icon: "gift.fill",
+                color: "wantsColor",
+                label: "Wants",
+                amount: String(format: "$%.2f", monthlyTransactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }),
+                percentage: String(format: "%.0f%%", totalSpent > 0 ? (monthlyTransactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount } / totalSpent) * 100 : 0)
+            )
+        }
+        .padding()
+        .background(Color("secondaryYellow"))
+        .cornerRadius(12)
+        .shadow(color: .gray.opacity(0.2), radius: 4, x: 0, y: 2)
+        .padding(.horizontal)
+    }
+}
+
+// Keep your existing helper views exactly as they are
 struct SavingsProgressView: View {
     var title: String
     var icon: String
@@ -158,7 +277,6 @@ struct SavingsProgressView: View {
     }
 }
 
-// MARK: - Progress Bar
 struct ReportProgressBar: View {
     var value: Double
     var color: Color
@@ -181,91 +299,6 @@ struct ReportProgressBar: View {
     }
 }
 
-// MARK: - Donut Chart
-struct DonutChartView: View {
-    @EnvironmentObject var financeViewModel: FinanceViewModel
-    @EnvironmentObject var budgetViewModel: BudgetViewModel
-    
-    var totalSpent: Double {
-        financeViewModel.needsTotal + financeViewModel.wantsTotal + financeViewModel.savingsTotal
-    }
-    
-    var body: some View {
-        ZStack {
-            Circle()
-                .trim(from: 0, to: CGFloat(financeViewModel.needsTotal / totalSpent))
-                .stroke(Color("BillsColor"), lineWidth: 20)
-                .rotationEffect(.degrees(-90))
-            
-            Circle()
-                .trim(from: CGFloat(financeViewModel.needsTotal / totalSpent),
-                      to: CGFloat((financeViewModel.needsTotal + financeViewModel.wantsTotal) / totalSpent))
-                .stroke(Color("wantsColor"), lineWidth: 20)
-                .rotationEffect(.degrees(-90))
-            
-            Circle()
-                .trim(from: CGFloat((financeViewModel.needsTotal + financeViewModel.wantsTotal) / totalSpent),
-                      to: 1)
-                .stroke(Color("savingsColor"), lineWidth: 20)
-                .rotationEffect(.degrees(-90))
-            
-            VStack {
-                Text("Total Spent")
-                    .foregroundColor(Color("PrimaryBlack"))
-                    .font(.subheadline)
-                Text(String(format: "$%.2f", totalSpent))
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color("PrimaryBlack"))
-            }
-        }
-        .frame(width: 200, height: 200)
-    }
-}
-
-// MARK: - Spending Categories
-struct SpendingCategoriesList: View {
-    @EnvironmentObject var financeViewModel: FinanceViewModel
-    
-    var totalSpent: Double {
-        financeViewModel.needsTotal + financeViewModel.wantsTotal + financeViewModel.savingsTotal
-    }
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            SpendingCategoryView(
-                icon: "banknote.fill",
-                color: "savingsColor",
-                label: "Savings",
-                amount: String(format: "$%.2f", financeViewModel.savingsTotal),
-                percentage: String(format: "%.0f%%", (financeViewModel.savingsTotal / totalSpent) * 100)
-            )
-            
-            SpendingCategoryView(
-                icon: "cart.fill",
-                color: "BillsColor",
-                label: "Needs",
-                amount: String(format: "$%.2f", financeViewModel.needsTotal),
-                percentage: String(format: "%.0f%%", (financeViewModel.needsTotal / totalSpent) * 100)
-            )
-            
-            SpendingCategoryView(
-                icon: "gift.fill",
-                color: "wantsColor",
-                label: "Wants",
-                amount: String(format: "$%.2f", financeViewModel.wantsTotal),
-                percentage: String(format: "%.0f%%", (financeViewModel.wantsTotal / totalSpent) * 100)
-            )
-        }
-        .padding()
-        .background(Color("secondaryYellow"))
-        .cornerRadius(12)
-        .shadow(color: .gray.opacity(0.2), radius: 4, x: 0, y: 2)
-        .padding(.horizontal)
-    }
-}
-
-// MARK: - Category View
 struct SpendingCategoryView: View {
     var icon: String
     var color: String
@@ -313,7 +346,6 @@ struct SpendingCategoryView: View {
     }
 }
 
-// MARK: - Section Title
 struct SectionTitleView: View {
     var title: String
     var color: String
