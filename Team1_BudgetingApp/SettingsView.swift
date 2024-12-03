@@ -5,6 +5,7 @@ import FirebaseFirestore
 class SettingsViewModel: ObservableObject {
     @Published var userName: String = "Loading..."
     private let db = Firestore.firestore()
+    private var listener: ListenerRegistration?
     
     init() {
         fetchUserName()
@@ -16,14 +17,20 @@ class SettingsViewModel: ObservableObject {
             return
         }
         
-        db.collection("users").document(currentUser.uid).getDocument { [weak self] (document, error) in
+        // Add a listener to the Firestore document
+        listener = db.collection("users").document(currentUser.uid).addSnapshotListener { [weak self] (document, error) in
+            guard let self = self else { return }
             if let document = document, document.exists,
                let data = document.data(),
                let firstName = data["firstName"] as? String,
                let lastName = data["lastName"] as? String {
-                self?.userName = "\(firstName) \(lastName)"
+                DispatchQueue.main.async {
+                    self.userName = "\(firstName) \(lastName)"
+                }
             } else {
-                self?.userName = "User"
+                DispatchQueue.main.async {
+                    self.userName = "User"
+                }
             }
         }
     }
