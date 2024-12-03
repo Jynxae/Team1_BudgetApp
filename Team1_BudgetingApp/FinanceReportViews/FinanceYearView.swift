@@ -1,66 +1,152 @@
 import SwiftUI
+import Charts
 
 struct FinanceYearView: View {
-//    @State private var selectedTab: String = "Current Year"
-//    let tabs = ["Current Month", "Current Year"]
-
+    @StateObject private var financeViewModel = FinanceViewModel()
+    @StateObject private var budgetViewModel = BudgetViewModel()
+    
     var body: some View {
-            ScrollView {
-                VStack {
-                    // Example content for the yearly report
-                    SectionTitleView(title: "\(getCurrentYear()) Summary", color: "primaryPink")
-                    
-                    VStack(spacing: 20) {
-                        YearlySummaryChart(title: "Overall Spending Per Month", color: "primaryPink")
-                        YearlySummaryChart(title: "Overall Savings Per Month", color: "primaryPink")
-                    }
-
-                    SpendingSummaryView(
-                        totalSpent: "50,793.56",
-                        categories: [
-                            ("Groceries", "$360.43"),
-                            ("Entertainment", "$289.29"),
-                            ("Bills/Utilities", "$230.96"),
-                            ("Health/Wellness", "$40.00"),
-                            ("Gas", "$26.00")
-                        ]
+        ScrollView {
+            VStack {
+                SectionTitleView(title: "\(getCurrentYear()) Summary", color: "primaryPink")
+                
+                VStack(spacing: 20) {
+                    YearlySummaryChart(
+                        title: "Overall Spending Per Month",
+                        color: "primaryPink",
+                        data: getMonthlySpending()
                     )
                     
-                    Spacer().frame(height: 30)
+                    YearlySummaryChart(
+                        title: "Overall Savings Per Month",
+                        color: "primaryPink",
+                        data: getMonthlySavings()
+                    )
                 }
-                .padding(.bottom, 30)
+                
+                SpendingSummaryView(
+                    totalSpent: getTotalYearlySpent(),
+                    categories: getTopSpendingCategories()
+                )
+                
+                Spacer().frame(height: 30)
             }
-            .background(Color.white)
-            .edgesIgnoringSafeArea(.top)
+            .padding(.bottom, 30)
         }
-
-    // Function to get the current year
+        .background(Color.white)
+        .edgesIgnoringSafeArea(.top)
+        .environmentObject(financeViewModel)
+        .environmentObject(budgetViewModel)
+        .onAppear {
+            financeViewModel.fetchTransactions()
+            budgetViewModel.fetchBudgetData()
+        }
+    }
+    
+    // Helper functions
     func getCurrentYear() -> String {
         let currentYear = Calendar.current.component(.year, from: Date())
         return String(currentYear)
     }
+    
+    func getMonthlySpending() -> [ChartData] {
+        let calendar = Calendar.current
+        let currentYear = calendar.component(.year, from: Date())
+        
+        return (1...12).map { month in
+            let monthName = calendar.shortMonthSymbols[month - 1]
+            let transactions = financeViewModel.transactions.filter { transaction in
+                let components = calendar.dateComponents([.year, .month], from: transaction.date)
+                return components.year == currentYear && components.month == month
+            }
+            let total = transactions.reduce(0) { $0 + $1.amount }
+            return ChartData(label: monthName, value: total)
+        }
+    }
+    
+    func getMonthlySavings() -> [ChartData] {
+        let calendar = Calendar.current
+        let currentYear = calendar.component(.year, from: Date())
+        
+        return (1...12).map { month in
+            let monthName = calendar.shortMonthSymbols[month - 1]
+            let transactions = financeViewModel.transactions.filter { transaction in
+                let components = calendar.dateComponents([.year, .month], from: transaction.date)
+                return components.year == currentYear &&
+                       components.month == month &&
+                       transaction.type == .savings
+            }
+            let total = transactions.reduce(0) { $0 + $1.amount }
+            return ChartData(label: monthName, value: total)
+        }
+    }
+    
+    func getTotalYearlySpent() -> String {
+        let calendar = Calendar.current
+        let currentYear = calendar.component(.year, from: Date())
+        
+        let yearlyTransactions = financeViewModel.transactions.filter { transaction in
+            calendar.component(.year, from: transaction.date) == currentYear
+        }
+        
+        let total = yearlyTransactions.reduce(0) { $0 + $1.amount }
+        return String(format: "%.2f", total)
+    }
+    
+    func getTopSpendingCategories() -> [(String, String)] {
+        let calendar = Calendar.current
+        let currentYear = calendar.component(.year, from: Date())
+        
+        // Group transactions by subcategory
+        let groupedTransactions = Dictionary(grouping: financeViewModel.transactions) { $0.subcategory }
+        
+        // Calculate total for each subcategory
+        let categoryTotals = groupedTransactions.map { (category, transactions) in
+            let yearTotal = transactions
+                .filter { calendar.component(.year, from: $0.date) == currentYear }
+                .reduce(0) { $0 + $1.amount }
+            return (category, yearTotal)
+        }
+        
+        // Sort by amount and take top 5
+        let topCategories = categoryTotals
+            .sorted { $0.1 > $1.1 }
+            .prefix(5)
+            .map { (category, amount) in
+                (category, String(format: "$%.2f", amount))
+            }
+        
+        return Array(topCategories)
+    }
 }
 
-// Example component for yearly charts (replace with actual implementation)
+struct ChartData: Identifiable {
+    let id = UUID()
+    let label: String
+    let value: Double
+}
+
 struct YearlySummaryChart: View {
     var title: String
     var color: String
-
+    var data: [ChartData]
+    
     var body: some View {
         VStack(spacing: 15) {
             Text(title)
                 .font(.headline)
                 .foregroundColor(Color(color))
             
-            // Placeholder for a chart
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color(color).opacity(0.3))
-                .frame(height: 200)
-                .overlay(
-                    Text("Chart Placeholder")
-                        .foregroundColor(Color(color))
-                        .font(.subheadline)
-                )
+            Chart {
+                ForEach(data) { item in
+                    BarMark(
+                        x: .value("Month", item.label),
+                        y: .value("Amount", item.value)
+                    )
+                    .foregroundStyle(Color(color))
+                }
+            }
+            .frame(height: 200)
         }
         .padding()
         .background(Color("secondaryYellow"))
@@ -73,7 +159,7 @@ struct YearlySummaryChart: View {
 struct SpendingSummaryView: View {
     var totalSpent: String
     var categories: [(String, String)]
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             // Total Spent Overall Section
@@ -153,8 +239,7 @@ struct SpendingSummaryView: View {
     }
 }
 
-
-// Preview
+// MARK: - Preview
 #Preview {
     FinanceYearView()
 }
