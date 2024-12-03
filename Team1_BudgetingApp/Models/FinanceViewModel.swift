@@ -7,10 +7,7 @@ import Combine
 class FinanceViewModel: ObservableObject {
     @Published var selectedDate: Date = Date()
     @Published var selectedMonth: Date = Date()
-    @Published var totalIncome: Double = 1000.00
-    @Published var needsTotal: Double = 400.00
-    @Published var wantsTotal: Double = 250.00
-    @Published var savingsTotal: Double = 150.00
+
     @Published var transactions: [Transaction] = []
     
     // Arbitrary Totals (Could be fetched or modified dynamically)
@@ -247,9 +244,7 @@ class FinanceViewModel: ObservableObject {
         recalculateDailyTotals()
         recalculateMonthlyTotals()
       
-        needsTotal = transactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
-        wantsTotal = transactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
-        savingsTotal = transactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
+
         remainingIncome = totalIncome - (needsTotal + wantsTotal + savingsTotal)
     }
     
