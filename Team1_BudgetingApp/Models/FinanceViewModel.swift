@@ -22,10 +22,10 @@ class FinanceViewModel: ObservableObject {
     let db = Firestore.firestore()
     
     init() {
-        fetchIncomeData()
+        observeIncomeData()
     }
     
-    func fetchIncomeData() {
+    func observeIncomeData() {
         guard let userId = Auth.auth().currentUser?.uid else {
             print("Error: User not authenticated")
             return
@@ -33,30 +33,27 @@ class FinanceViewModel: ObservableObject {
 
         let userDocRef = db.collection("users").document(userId)
 
-        userDocRef.getDocument { [weak self] document, error in
+        userDocRef.addSnapshotListener { [weak self] documentSnapshot, error in
             guard let self = self else { return }
             if let error = error {
-                print("Error fetching user data: \(error.localizedDescription)")
+                print("Error observing user data: \(error.localizedDescription)")
                 return
             }
 
-            if let document = document, document.exists {
-                if let data = document.data(),
-                   let userBudget = data["user_budget"] as? [String: Any] {
+            guard let document = documentSnapshot, document.exists,
+                  let data = document.data(),
+                  let userBudget = data["user_budget"] as? [String: Any] else {
+                print("User budget data does not exist")
+                return
+            }
 
-                    // Parse nested Firestore data
-                    self.totalIncome = userBudget["monthly_income"] as? Double ?? 0.0
-                    DispatchQueue.main.async {
-                        self.recalculateTotals()
-                    }
-                } else {
-                    print("User budget data does not exist")
-                }
-            } else {
-                print("Document does not exist")
+            DispatchQueue.main.async {
+                self.totalIncome = userBudget["monthly_income"] as? Double ?? 0.0
+                self.recalculateTotals()
             }
         }
     }
+
     
     var needsPercentage: CGFloat {
         guard totalIncome > 0 else { return 0 }
