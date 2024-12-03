@@ -111,6 +111,12 @@ class FinanceViewModel: ObservableObject {
         }
     }
     
+    var transactionsForSelectedDate: [Transaction] {
+           transactions.filter { transaction in
+               Calendar.current.isDate(transaction.date, inSameDayAs: selectedDate)
+           }
+       }
+    
     // Fetch user-specific transactions from Firestore
     func fetchTransactions() {
         guard let userId = Auth.auth().currentUser?.uid else {

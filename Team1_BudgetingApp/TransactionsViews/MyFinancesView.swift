@@ -94,7 +94,7 @@ struct MyFinancesView: View {
                         .padding(.top, 10)
                         
                         List {
-                            ForEach(viewModel.transactions) { transaction in
+                            ForEach(viewModel.transactionsForSelectedDate) { transaction in
                                 NavigationLink(destination: EditTransactionView(
                                     viewModel: viewModel,
                                     transactionId: transaction.id
