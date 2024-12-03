@@ -1,79 +1,43 @@
-//
-//  FinanceMonthView.swift
-//  Team1_BudgetingApp
-//
-//  Created by reem alkhalily on 10/19/24.
-//
-
 import SwiftUI
+import FirebaseFirestore
+import FirebaseAuth
 
+// MARK: - Main View
 struct FinanceMonthView: View {
+    @StateObject private var financeViewModel = FinanceViewModel()
+    @StateObject private var budgetViewModel = BudgetViewModel()
     
     var body: some View {
         ScrollView {
             VStack {
-//                SegmentedControlView(tabs: tabs, selectedTab: $selectedTab)
-                    FinanceMonthContentView()
-                
+                FinanceMonthContentView()
                 Spacer().frame(height: 30)
             }
             .padding(.bottom, 30)
         }
         .background(Color.white)
         .edgesIgnoringSafeArea(.top)
+        .environmentObject(financeViewModel)
+        .environmentObject(budgetViewModel)
+        .onAppear {
+            financeViewModel.fetchTransactions()
+            budgetViewModel.fetchBudgetData()
+        }
     }
 }
 
-// Reusable Component for Segmented Control
-struct SegmentedControlView: View {
-    let tabs: [String]
-    @Binding var selectedTab: String
+// MARK: - Monthly Finance Content
+struct FinanceMonthContentView: View {
+    @EnvironmentObject var financeViewModel: FinanceViewModel
+    @EnvironmentObject var budgetViewModel: BudgetViewModel
     
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(tabs, id: \.self) { tab in
-                Button(action: {
-                    selectedTab = tab
-                }) {
-                    Text(tab)
-                        .font(.footnote) // Smaller text size
-                        .fontWeight(.bold)
-                        .foregroundColor(selectedTab == tab ? Color("PrimaryBlack") : Color.gray)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 8)
-                        .background(
-                            ZStack {
-                                if selectedTab == tab {
-                                    Color.white
-                                        .cornerRadius(10)
-                                        .shadow(color: Color.gray.opacity(0.4), radius: 2, x: 0, y: 1)
-                                } else {
-                                    Color.clear
-                                }
-                            }
-                        )
-                }
-            }
-        }
-        .padding(4)
-        .background(Color.gray.opacity(0.2))
-        .cornerRadius(10)
-        .padding(.horizontal, 10)
-        .padding(.top, 15)
-    }
-}
-
-// Reusable Component for Monthly Finance Content
-struct FinanceMonthContentView: View {
-    var body: some View {
         VStack {
-            SectionTitleView(title: "September Summary", color: "primaryPink")
+            SectionTitleView(title: "Monthly Summary", color: "primaryPink")
             
-            // Donut Chart Placeholder
             DonutChartView()
                 .padding(.top, 20)
             
-            // Spending Categories List
             VStack(alignment: .leading, spacing: 10) {
                 SectionTitleView(title: "Your Spending Categories", color: "PrimaryBlack")
                     .padding(.top, 20)
@@ -82,34 +46,73 @@ struct FinanceMonthContentView: View {
                 SpendingCategoriesList()
             }
             
-            // Savings & Wants Status
-           VStack(spacing: 20) {
-               SectionTitleView(title: "You Saved", color: "PrimaryBlack")
-                   .frame(alignment: .leading)
-               
-               SavingsProgressView(
-                   title: "Savings Goal",
-                   icon: "checkmark.seal.fill",
-                   amount: "$1,145.40",
-                   percentage: 100,
-                   message: "Target Reached!",
-                   color: .green
-               )
-               
-               SavingsProgressView(
-                   title: "Wants Spending",
-                   icon: "exclamationmark.triangle.fill",
-                   amount: "$1,845.40",
-                   percentage: 120,
-                   message: "Amount Exceeded",
-                   color: .red
-               )
-           }
-           .padding(.top, 20)
+            VStack(spacing: 20) {
+                SectionTitleView(title: "Budget Goals", color: "PrimaryBlack")
+                    .frame(alignment: .leading)
+                
+                SavingsProgressView(
+                    title: "Savings Progress",
+                    icon: "banknote.fill",
+                    amount: String(format: "$%.2f", financeViewModel.savingsTotal),
+                    percentage: budgetViewModel.savingsGoal,
+                    message: getSavingsMessage(),
+                    color: Color("primaryPink")  // Changed to primaryPink
+                )
+                
+                SavingsProgressView(
+                    title: "Needs Budget",
+                    icon: "cart.fill",
+                    amount: String(format: "$%.2f", financeViewModel.needsTotal),
+                    percentage: budgetViewModel.needsGoal,
+                    message: getNeedsMessage(),
+                    color: Color("primaryPink")  // Changed to primaryPink
+                )
+                
+                SavingsProgressView(
+                    title: "Wants Budget",
+                    icon: "gift.fill",
+                    amount: String(format: "$%.2f", financeViewModel.wantsTotal),
+                    percentage: budgetViewModel.wantsGoal,
+                    message: getWantsMessage(),
+                    color: Color("primaryPink")  // Changed to primaryPink
+                )
+            }
+            .padding(.top, 20)
         }
+    }
+    
+    private func getSavingsMessage() -> String {
+        let currentPercentage = financeViewModel.savingsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
+        return currentPercentage >= budgetViewModel.savingsGoal ? "On Track" : "Below Target"
+    }
+    
+    private func getNeedsMessage() -> String {
+        let currentPercentage = financeViewModel.needsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
+        return currentPercentage <= budgetViewModel.needsGoal ? "Within Budget" : "Over Budget"
+    }
+    
+    private func getWantsMessage() -> String {
+        let currentPercentage = financeViewModel.wantsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
+        return currentPercentage <= budgetViewModel.wantsGoal ? "Within Budget" : "Over Budget"
+    }
+    
+    private func getSavingsColor() -> Color {
+        let currentPercentage = financeViewModel.savingsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
+        return currentPercentage >= budgetViewModel.savingsGoal ? .green : .blue
+    }
+    
+    private func getNeedsColor() -> Color {
+        let currentPercentage = financeViewModel.needsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
+        return currentPercentage <= budgetViewModel.needsGoal ? .blue : .red
+    }
+    
+    private func getWantsColor() -> Color {
+        let currentPercentage = financeViewModel.wantsTotal / Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: ""))! * 100
+        return currentPercentage <= budgetViewModel.wantsGoal ? .blue : .red
     }
 }
 
+// MARK: - Progress Views
 struct SavingsProgressView: View {
     var title: String
     var icon: String
@@ -137,10 +140,8 @@ struct SavingsProgressView: View {
                     .foregroundColor(color)
             }
             
-            // Progress Bar
             ReportProgressBar(value: percentage, color: color)
             
-            // Status message
             Text(message)
                 .font(.subheadline)
                 .foregroundColor(color)
@@ -157,6 +158,7 @@ struct SavingsProgressView: View {
     }
 }
 
+// MARK: - Progress Bar
 struct ReportProgressBar: View {
     var value: Double
     var color: Color
@@ -179,23 +181,39 @@ struct ReportProgressBar: View {
     }
 }
 
-// Reusable Component for Donut Chart
+// MARK: - Donut Chart
 struct DonutChartView: View {
+    @EnvironmentObject var financeViewModel: FinanceViewModel
+    @EnvironmentObject var budgetViewModel: BudgetViewModel
+    
+    var totalSpent: Double {
+        financeViewModel.needsTotal + financeViewModel.wantsTotal + financeViewModel.savingsTotal
+    }
+    
     var body: some View {
         ZStack {
-            Circle().trim(from: 0.0, to: 0.28).stroke(Color("BillsColor"), lineWidth: 20)
-            Circle().trim(from: 0.28, to: 0.53).stroke(Color("HealthColor"), lineWidth: 20)
-            Circle().trim(from: 0.53, to: 0.67).stroke(Color("GasColor"), lineWidth: 20)
-            Circle().trim(from: 0.67, to: 0.75).stroke(Color("EntertainmentColor"), lineWidth: 20)
-            Circle().trim(from: 0.75, to: 0.85).stroke(Color("MiscellaneousColor"), lineWidth: 20)
-            Circle().trim(from: 0.85, to: 1.0).stroke(Color("primaryLightPink"), lineWidth: 20)
+            Circle()
+                .trim(from: 0, to: CGFloat(financeViewModel.needsTotal / totalSpent))
+                .stroke(Color("BillsColor"), lineWidth: 20)
+                .rotationEffect(.degrees(-90))
             
-            // Text in the center of the donut chart
+            Circle()
+                .trim(from: CGFloat(financeViewModel.needsTotal / totalSpent),
+                      to: CGFloat((financeViewModel.needsTotal + financeViewModel.wantsTotal) / totalSpent))
+                .stroke(Color("wantsColor"), lineWidth: 20)
+                .rotationEffect(.degrees(-90))
+            
+            Circle()
+                .trim(from: CGFloat((financeViewModel.needsTotal + financeViewModel.wantsTotal) / totalSpent),
+                      to: 1)
+                .stroke(Color("savingsColor"), lineWidth: 20)
+                .rotationEffect(.degrees(-90))
+            
             VStack {
-                Text("You've Spent")
+                Text("Total Spent")
                     .foregroundColor(Color("PrimaryBlack"))
                     .font(.subheadline)
-                Text("$724.07")
+                Text(String(format: "$%.2f", totalSpent))
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(Color("PrimaryBlack"))
@@ -205,63 +223,38 @@ struct DonutChartView: View {
     }
 }
 
-// Reusable Component for Section Titles
-struct SectionTitleView: View {
-    var title: String
-    var color: String
-    
-    var body: some View {
-        Text(title)
-            .font(.title3).bold()
-            .foregroundColor(Color(color))
-            .padding(.top, 5)
-    }
-}
-
+// MARK: - Spending Categories
 struct SpendingCategoriesList: View {
+    @EnvironmentObject var financeViewModel: FinanceViewModel
+    
+    var totalSpent: Double {
+        financeViewModel.needsTotal + financeViewModel.wantsTotal + financeViewModel.savingsTotal
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             SpendingCategoryView(
+                icon: "banknote.fill",
+                color: "savingsColor",
+                label: "Savings",
+                amount: String(format: "$%.2f", financeViewModel.savingsTotal),
+                percentage: String(format: "%.0f%%", (financeViewModel.savingsTotal / totalSpent) * 100)
+            )
+            
+            SpendingCategoryView(
                 icon: "cart.fill",
-                color: "primaryPink",
-                label: "Groceries",
-                amount: "$233.00",
-                percentage: "32%"
-            )
-            SpendingCategoryView(
-                icon: "film.fill",
-                color: "EntertainmentColor",
-                label: "Entertainment",
-                amount: "$56.78",
-                percentage: "8%"
-            )
-            SpendingCategoryView(
-                icon: "bolt.fill",
                 color: "BillsColor",
-                label: "Bills/Utilities",
-                amount: "$289.29",
-                percentage: "40%"
+                label: "Needs",
+                amount: String(format: "$%.2f", financeViewModel.needsTotal),
+                percentage: String(format: "%.0f%%", (financeViewModel.needsTotal / totalSpent) * 100)
             )
+            
             SpendingCategoryView(
-                icon: "car.fill",
-                color: "GasColor",
-                label: "Gas",
-                amount: "$40.00",
-                percentage: "5%"
-            )
-            SpendingCategoryView(
-                icon: "heart.fill",
-                color: "HealthColor",
-                label: "Health/Wellness",
-                amount: "$26.00",
-                percentage: "4%"
-            )
-            SpendingCategoryView(
-                icon: "ellipsis.circle.fill",
-                color: "MiscellaneousColor",
-                label: "Miscellaneous",
-                amount: "$79.00",
-                percentage: "11%"
+                icon: "gift.fill",
+                color: "wantsColor",
+                label: "Wants",
+                amount: String(format: "$%.2f", financeViewModel.wantsTotal),
+                percentage: String(format: "%.0f%%", (financeViewModel.wantsTotal / totalSpent) * 100)
             )
         }
         .padding()
@@ -269,10 +262,10 @@ struct SpendingCategoriesList: View {
         .cornerRadius(12)
         .shadow(color: .gray.opacity(0.2), radius: 4, x: 0, y: 2)
         .padding(.horizontal)
-        .frame(maxWidth: .infinity)
     }
 }
 
+// MARK: - Category View
 struct SpendingCategoryView: View {
     var icon: String
     var color: String
@@ -282,7 +275,6 @@ struct SpendingCategoryView: View {
     
     var body: some View {
         HStack(spacing: 15) {
-            // Icon inside colored circle
             ZStack {
                 Circle()
                     .fill(Color(color))
@@ -292,7 +284,6 @@ struct SpendingCategoryView: View {
                     .font(.system(size: 16))
             }
             
-            // Category name and amount
             VStack(alignment: .leading, spacing: 2) {
                 Text(label)
                     .foregroundColor(Color("SecondaryBlack"))
@@ -305,7 +296,6 @@ struct SpendingCategoryView: View {
             
             Spacer()
             
-            // Display percentage
             Text(percentage)
                 .foregroundColor(Color("GrayText"))
                 .font(.footnote)
@@ -323,31 +313,19 @@ struct SpendingCategoryView: View {
     }
 }
 
-// Reusable Component for Status
-struct StatusView: View {
-    var amount: String
-    var message: String
-    var color: Color
+// MARK: - Section Title
+struct SectionTitleView: View {
+    var title: String
+    var color: String
     
     var body: some View {
-        HStack {
-            Text(amount).foregroundColor(Color("GrayText"))
-            Spacer()
-            Text(message)
-                .foregroundColor(color)
-                .padding(.horizontal, 10)
-                .cornerRadius(8)
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 10)
-        .background(Color("secondaryYellow"))
-        .cornerRadius(10)
-        .padding(.horizontal, 15)
-        .padding(.vertical, 5)
+        Text(title)
+            .font(.title3).bold()
+            .foregroundColor(Color(color))
+            .padding(.top, 5)
     }
 }
 
-// Preview
 #Preview {
     FinanceMonthView()
 }
