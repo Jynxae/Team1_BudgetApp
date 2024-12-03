@@ -6,6 +6,8 @@ import Combine
 
 class FinanceViewModel: ObservableObject {
     @Published var selectedDate: Date = Date()
+    @Published var selectedMonth: Date = Date()
+    @Published var transactions: [Transaction] = []
     
     // Arbitrary Totals (Could be fetched or modified dynamically)
     @Published var totalIncome: Double = 0.00
@@ -14,7 +16,7 @@ class FinanceViewModel: ObservableObject {
     @Published var savingsTotal: Double = 0.00
     @Published var remainingIncome: Double = 0.00
     
-    @Published var transactions: [Transaction] = [] // Updated to start empty
+    // MARK: - Computed Properties
     
     let db = Firestore.firestore()
     
@@ -53,12 +55,6 @@ class FinanceViewModel: ObservableObject {
         }
     }
     
-    // Compute Remaining Income
-    var remainingTotal: Double {
-        totalIncome - (needsTotal + wantsTotal + savingsTotal)
-    }
-    
-    // Compute percentages
     var needsPercentage: CGFloat {
         guard totalIncome > 0 else { return 0 }
         return CGFloat(needsTotal / totalIncome)
@@ -79,16 +75,47 @@ class FinanceViewModel: ObservableObject {
         return CGFloat(remainingIncome / totalIncome)
     }
     
-    // Date Navigation Functions
+    // MARK: - Transaction Filtering
+    
+    var transactionsForSelectedDate: [Transaction] {
+        transactions.filter { transaction in
+            Calendar.current.isDate(transaction.date, inSameDayAs: selectedDate)
+        }
+    }
+    
+    var transactionsForSelectedMonth: [Transaction] {
+        transactions.filter { transaction in
+            Calendar.current.isDate(transaction.date, equalTo: selectedMonth, toGranularity: .month)
+        }
+    }
+    
+    // MARK: - Date Navigation
+    
     func moveToPreviousDay() {
         selectedDate = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate) ?? selectedDate
+        recalculateDailyTotals()
     }
     
     func moveToNextDay() {
         selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate) ?? selectedDate
+        recalculateDailyTotals()
     }
     
-    // Date Formatting
+    func moveToPreviousMonth() {
+        selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? selectedMonth
+        recalculateMonthlyTotals()
+    }
+    
+    func moveToNextMonth() {
+        let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? selectedMonth
+        if nextMonth <= Date() {
+            selectedMonth = nextMonth
+            recalculateMonthlyTotals()
+        }
+    }
+    
+    // MARK: - Date Formatting
+    
     func dateString(for date: Date) -> String {
         if Calendar.current.isDateInToday(date) {
             return "Today"
@@ -101,20 +128,55 @@ class FinanceViewModel: ObservableObject {
         }
     }
     
-    // Determine if the selected date is in the future
+    func monthString(for date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter.string(from: date)
+    }
+    
     var isFutureDate: Bool {
         let currentDate = Calendar.current.startOfDay(for: Date())
         let selectedDateStartOfDay = Calendar.current.startOfDay(for: selectedDate)
         return selectedDateStartOfDay >= currentDate
     }
-
-    // Add a new transaction
+    
+    // MARK: - Transaction Management
+    
     func addTransaction(_ transaction: Transaction) {
-        transactions.append(transaction)
-        recalculateTotals()
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("Error: User is not signed in.")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let data: [String: Any] = [
+            "id": transaction.id.uuidString,
+            "name": transaction.name,
+            "type": transaction.type.rawValue,
+            "subcategory": transaction.subcategory,
+            "date": Timestamp(date: transaction.date),
+            "notes": transaction.notes,
+            "amount": transaction.amount,
+            "isRecurring": transaction.isRecurring,
+            "recurrenceFrequency": transaction.recurrenceFrequency?.rawValue ?? ""
+        ]
+        
+        db.collection("users")
+            .document(userId)
+            .collection("transactions")
+            .document(transaction.id.uuidString)
+            .setData(data) { error in
+                if let error = error {
+                    print("Error adding transaction: \(error.localizedDescription)")
+                } else {
+                    DispatchQueue.main.async {
+                        self.transactions.append(transaction)
+                        self.recalculateTotals()
+                    }
+                }
+            }
     }
-
-    // Delete a single transaction and remove it from Firestore
+    
     func deleteTransaction(_ transaction: Transaction) {
         guard let userId = Auth.auth().currentUser?.uid else {
             print("Error: User is not signed in.")
@@ -128,28 +190,81 @@ class FinanceViewModel: ObservableObject {
             .document(transaction.id.uuidString)
             .delete { error in
                 if let error = error {
-                    print("Error deleting transaction from Firestore: \(error.localizedDescription)")
+                    print("Error deleting transaction: \(error.localizedDescription)")
                 } else {
-                    print("Transaction successfully deleted from Firestore.")
                     DispatchQueue.main.async {
-                        // Remove the transaction locally
+                        self.transactions.removeAll { $0.id == transaction.id }
+                        self.recalculateTotals()
+                    }
+                }
+            }
+    }
+    
+    func updateTransaction(transaction: Transaction) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("Error: User is not signed in.")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let data: [String: Any] = [
+            "id": transaction.id.uuidString,
+            "name": transaction.name,
+            "type": transaction.type.rawValue,
+            "subcategory": transaction.subcategory,
+            "date": Timestamp(date: transaction.date),
+            "notes": transaction.notes,
+            "amount": transaction.amount,
+            "isRecurring": transaction.isRecurring,
+            "recurrenceFrequency": transaction.recurrenceFrequency?.rawValue ?? ""
+        ]
+        
+        db.collection("users")
+            .document(userId)
+            .collection("transactions")
+            .document(transaction.id.uuidString)
+            .setData(data) { error in
+                if let error = error {
+                    print("Error updating transaction: \(error.localizedDescription)")
+                } else {
+                    DispatchQueue.main.async {
                         if let index = self.transactions.firstIndex(where: { $0.id == transaction.id }) {
-                            self.transactions.remove(at: index)
+                            self.transactions[index] = transaction
                             self.recalculateTotals()
                         }
                     }
                 }
             }
     }
-
     
-    func updateTransaction(transaction: Transaction) {
-        if let index = transactions.firstIndex(where: { $0.id == transaction.id }) {
-            transactions[index] = transaction
-        }
+    // MARK: - Total Calculations
+    
+    func recalculateTotals() {
+        recalculateDailyTotals()
+        recalculateMonthlyTotals()
+      
+        needsTotal = transactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
+        wantsTotal = transactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
+        savingsTotal = transactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
+        remainingIncome = totalIncome - (needsTotal + wantsTotal + savingsTotal)
     }
     
-    // Fetch user-specific transactions from Firestore
+    private func recalculateDailyTotals() {
+        let dailyTransactions = transactionsForSelectedDate
+        needsTotal = dailyTransactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
+        wantsTotal = dailyTransactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
+        savingsTotal = dailyTransactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
+    }
+    
+    private func recalculateMonthlyTotals() {
+        let monthlyTransactions = transactionsForSelectedMonth
+        needsTotal = monthlyTransactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
+        wantsTotal = monthlyTransactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
+        savingsTotal = monthlyTransactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
+    }
+    
+    // MARK: - Data Fetching
+    
     func fetchTransactions() {
         guard let userId = Auth.auth().currentUser?.uid else {
             print("Error: User is not signed in.")
@@ -206,13 +321,4 @@ class FinanceViewModel: ObservableObject {
                 }
             }
     }
-    
-    // Recalculate Totals based on transactions
-    func recalculateTotals() {
-        needsTotal = transactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
-        wantsTotal = transactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
-        savingsTotal = transactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
-        remainingIncome = totalIncome - (needsTotal + wantsTotal + savingsTotal)
-    }
-
 }
