@@ -42,7 +42,7 @@ struct WelcomeView: View {
         }
 
         // Fetch user data using BudgetViewModel
-        budgetViewModel.fetchBudgetData(forUser: userId)
+        budgetViewModel.fetchBudgetData()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             hasCompletedOnboarding = !budgetViewModel.earningFrequency.isEmpty
             isLoading = false
@@ -222,11 +222,13 @@ struct OnboardingCarouselView: View {
                         Text("Next")
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color("primaryPink"))
+                            .background(currentTab == 1 && inputIncome.isEmpty ? Color.gray : Color("primaryPink"))
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
+                    .disabled(currentTab == 1 && inputIncome.isEmpty)
                 }
+                
                 else {
                     Button(action: {
                         if allFieldsValid() {
