@@ -35,6 +35,7 @@ struct ResetPasswordView: View {
                     TextField("Email", text: $email)
                         .padding(.vertical, 2)
                         .padding(12)
+                        .autocapitalization(.none)
                     Image(systemName: "envelope")
                         .foregroundColor(Color("primaryPink"))
                         .padding(.trailing, 15)
@@ -44,10 +45,6 @@ struct ResetPasswordView: View {
                 .shadow(radius: 1)
                 .padding(.horizontal, 30)
                 .padding(.top, 20)
-                
-                // Code Input
-                
-
                 
                 // Reset Button
                 Button(action: {
