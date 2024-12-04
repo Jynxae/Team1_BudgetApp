@@ -92,13 +92,28 @@ class FinanceViewModel: ObservableObject {
     // MARK: - Date Navigation
     
     func moveToPreviousDay() {
+        let currentMonth = Calendar.current.component(.month, from: selectedDate)
         selectedDate = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate) ?? selectedDate
-        recalculateDailyTotals()
+        let newMonth = Calendar.current.component(.month, from: selectedDate)
+        if newMonth != currentMonth {
+            selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? selectedMonth
+            recalculateMonthlyTotals()
+        }
+//        recalculateDailyTotals()
     }
     
     func moveToNextDay() {
+        let currentMonth = Calendar.current.component(.month, from: selectedDate)
         selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate) ?? selectedDate
-        recalculateDailyTotals()
+        let newMonth = Calendar.current.component(.month, from: selectedDate)
+        if newMonth != currentMonth {
+            let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? selectedMonth
+            if nextMonth <= Date() {
+                selectedMonth = nextMonth
+                recalculateMonthlyTotals()
+            }
+        }
+//        recalculateDailyTotals()
     }
     
     func moveToPreviousMonth() {
@@ -258,6 +273,8 @@ class FinanceViewModel: ObservableObject {
         needsTotal = monthlyTransactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
         wantsTotal = monthlyTransactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
         savingsTotal = monthlyTransactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
+        
+        remainingIncome = totalIncome - (needsTotal + wantsTotal + savingsTotal)
     }
     
     // MARK: - Data Fetching
