@@ -129,6 +129,13 @@ class FinanceViewModel: ObservableObject {
         }
     }
     
+    var hasPreviousTransactions: Bool {
+        guard let firstTransactionDate = transactions.min(by: { $0.date < $1.date })?.date else {
+            return false
+        }
+        return Calendar.current.startOfDay(for: selectedDate) > Calendar.current.startOfDay(for: firstTransactionDate)
+    }
+    
     // MARK: - Date Formatting
     
     func dateString(for date: Date) -> String {
