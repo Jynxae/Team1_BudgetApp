@@ -39,8 +39,9 @@ struct FinanceMonthContentView: View {
                     financeViewModel.moveToPreviousMonth()
                 }) {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.primary)
+                        .foregroundColor(!financeViewModel.hasPreviousTransactionsMonth ? .gray : .primary)
                 }
+                .disabled(!financeViewModel.hasPreviousTransactionsMonth)
                 
                 Text(financeViewModel.monthString(for: financeViewModel.selectedMonth))
                     .font(.title3)
@@ -51,8 +52,9 @@ struct FinanceMonthContentView: View {
                     financeViewModel.moveToNextMonth()
                 }) {
                     Image(systemName: "chevron.right")
-                        .foregroundColor(.primary)
+                        .foregroundColor(financeViewModel.isFutureMonth ? .gray : .primary)
                 }
+                .disabled(financeViewModel.isFutureMonth)
             }
             .padding(.vertical, 10)
             
@@ -77,27 +79,27 @@ struct FinanceMonthContentView: View {
                     title: "Savings Progress",
                     icon: "banknote.fill",
                     amount: String(format: "$%.2f", financeViewModel.transactionsForSelectedMonth.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }),
-                    percentage: budgetViewModel.savingsGoal,
+                    percentage: (financeViewModel.transactionsForSelectedMonth.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount } / (budgetViewModel.savingsGoal / 100 * Double(budgetViewModel.monthlyIncome)!)) * 100,
                     message: getSavingsMessage(),
-                    color: Color("primaryPink")
+                    color: getSavingsMessage() == "Goal Reached!" ? .green : Color("primaryPink")
                 )
                 
                 SavingsProgressView(
                     title: "Needs Budget",
                     icon: "cart.fill",
                     amount: String(format: "$%.2f", financeViewModel.transactionsForSelectedMonth.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }),
-                    percentage: budgetViewModel.needsGoal,
+                    percentage: (financeViewModel.transactionsForSelectedMonth.filter { $0.type == .need }.reduce(0) { $0 + $1.amount } / (budgetViewModel.needsGoal / 100 * Double(budgetViewModel.monthlyIncome)!)) * 100,
                     message: getNeedsMessage(),
-                    color: Color("primaryPink")
+                    color: getNeedsMessage() == "Over Budget" ? .red : Color("primaryPink")
                 )
                 
                 SavingsProgressView(
                     title: "Wants Budget",
                     icon: "gift.fill",
                     amount: String(format: "$%.2f", financeViewModel.transactionsForSelectedMonth.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }),
-                    percentage: budgetViewModel.wantsGoal,
+                    percentage: (financeViewModel.transactionsForSelectedMonth.filter { $0.type == .want }.reduce(0) { $0 + $1.amount } / (budgetViewModel.wantsGoal / 100 * Double(budgetViewModel.monthlyIncome)!)) * 100,
                     message: getWantsMessage(),
-                    color: Color("primaryPink")
+                    color: getWantsMessage() == "Over Budget" ? .red : Color("primaryPink")
                 )
             }
             .padding(.top, 20)
@@ -108,7 +110,7 @@ struct FinanceMonthContentView: View {
         let monthlyTransactions = financeViewModel.transactionsForSelectedMonth
         let savingsTotal = monthlyTransactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
         let currentPercentage = savingsTotal / (Double(budgetViewModel.monthlyIncome.replacingOccurrences(of: "$", with: "")) ?? 1) * 100
-        return currentPercentage >= budgetViewModel.savingsGoal ? "On Track" : "Below Target"
+        return currentPercentage >= budgetViewModel.savingsGoal ? "Goal Reached!" : "Below Target"
     }
     
     private func getNeedsMessage() -> String {
@@ -278,7 +280,7 @@ struct SavingsProgressView: View {
 }
 
 struct ReportProgressBar: View {
-    var value: Double
+    var value: Double = 0.0
     var color: Color
     
     var body: some View {

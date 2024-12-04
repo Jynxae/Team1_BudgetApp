@@ -129,6 +129,15 @@ class FinanceViewModel: ObservableObject {
         }
     }
     
+    var hasPreviousTransactionsMonth: Bool {
+        let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? selectedMonth
+        let hasTransactions = transactions.contains { transaction in
+            Calendar.current.isDate(transaction.date, equalTo: previousMonth, toGranularity: .month)
+        }
+        
+        return hasTransactions
+    }
+        
     var hasPreviousTransactions: Bool {
         guard let firstTransactionDate = transactions.min(by: { $0.date < $1.date })?.date else {
             return false
@@ -160,6 +169,21 @@ class FinanceViewModel: ObservableObject {
         let currentDate = Calendar.current.startOfDay(for: Date())
         let selectedDateStartOfDay = Calendar.current.startOfDay(for: selectedDate)
         return selectedDateStartOfDay >= currentDate
+    }
+    
+    var isFutureMonth: Bool {
+        let currentMonth = Calendar.current.dateComponents([.year, .month], from: Date())
+        let selectedMonth = Calendar.current.dateComponents([.year, .month], from: selectedDate)
+        
+        // Compare year and month components
+        if let currentYear = currentMonth.year,
+           let currentMonth = currentMonth.month,
+           let selectedYear = selectedMonth.year,
+           let selectedMonth = selectedMonth.month {
+            return (selectedYear > currentYear) ||
+                   (selectedYear == currentYear && selectedMonth > currentMonth)
+        }
+        return false
     }
     
     // MARK: - Transaction Management
