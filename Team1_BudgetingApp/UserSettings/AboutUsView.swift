@@ -2,19 +2,7 @@ import SwiftUI
 
 struct AboutUsView: View {
     var body: some View {
-        // Use HeaderView for the top section
-        VStack{
-            Spacer()
-                    .frame(height: 5)
-                Text("About Us")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding(.top, 3)
-                    .padding(.bottom, 10)
-        }
-        .frame(maxWidth: .infinity)
-        .background(Color("primaryLightPink"))
+        Spacer()
         
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -48,12 +36,37 @@ struct AboutUsView: View {
                         .padding(.top, 20)
                     
                     Text("""
-                    We are a group of passionate developers dedicated to building user-friendly and effective solutions. Our team is committed to providing the best experience for our users, continuously improving  the app based on your feedback.
+                    We are a team of passionate developers dedicated to building user-friendly and effective solutions. Our team is committed to providing the best experience for our users, continuously improving  the app based on your feedback.
                     
                     Feel free to reach out to us for any suggestions or support. We’d love to hear from you!
                     """)
                         .font(.body)
                         .foregroundColor(Color("GrayText"))
+                    
+                    HStack {
+                        VStack {
+                            Image("reem")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            Text("Reem Alkhalily")
+                                .foregroundColor(Color("primaryPink"))
+                                .bold()
+                                .font(.subheadline)
+                        }
+                        
+                        Spacer()
+                        
+                        VStack {
+                            Image("sue")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            Text("Suchanut Namcharoen")
+                                .foregroundColor(Color("primaryPink"))
+                                .bold()
+                                .font(.subheadline)
+                        }
+                    }
+                    .padding()
                 }
                 .padding(.horizontal)
                 

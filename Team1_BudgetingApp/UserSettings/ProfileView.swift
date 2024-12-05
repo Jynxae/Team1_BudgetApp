@@ -19,21 +19,7 @@ struct ProfileView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Spacer().frame(height: 15)
-
-                // Header
-                VStack {
-                    Text("My Profile")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top, 50)
-                        .padding(.bottom, 10)
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color("primaryLightPink"))
-
-                Spacer().frame(height: 50)
+                Spacer()
 
                 // Profile Icon
                 Image(systemName: "person.circle.fill")

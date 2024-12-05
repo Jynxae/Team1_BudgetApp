@@ -17,12 +17,21 @@ class FinanceViewModel: ObservableObject {
     @Published var savingsTotal: Double = 0.00
     @Published var remainingIncome: Double = 0.00
     
+    private var recurringTransactionTimer: Timer?
+    
     // MARK: - Computed Properties
     
     let db = Firestore.firestore()
     
     init() {
         observeIncomeData()
+        startRecurringTransactionTimer()
+    }
+    
+    private func startRecurringTransactionTimer() {
+        recurringTransactionTimer = Timer.scheduledTimer(withTimeInterval: 24 * 60 * 60, repeats: true) { [weak self] _ in
+            self?.processRecurringTransactions()
+        }
     }
     
     func observeIncomeData() {
@@ -87,6 +96,10 @@ class FinanceViewModel: ObservableObject {
         transactions.filter { transaction in
             Calendar.current.isDate(transaction.date, equalTo: selectedMonth, toGranularity: .month)
         }
+    }
+    
+    var recurringTransactions: [Transaction] {
+        transactions.filter { $0.isRecurring }
     }
     
     // MARK: - Date Navigation
@@ -283,6 +296,38 @@ class FinanceViewModel: ObservableObject {
             }
     }
     
+    func processRecurringTransactions() {
+        let today = Calendar.current.startOfDay(for: Date())
+        
+        for transaction in recurringTransactions {
+            guard let nextDate = transaction.nextScheduledDate(from: transaction.date),
+                  Calendar.current.isDate(nextDate, inSameDayAs: today) else {
+                continue // Skip if the next date is not today
+            }
+            
+            // Mark the previous transaction as non-recurring
+            var updatedTransaction = transaction
+            updatedTransaction.isRecurring = false
+            updateTransaction(transaction: updatedTransaction)
+            
+            // Create a new transaction with the next date
+            let newTransaction = Transaction(
+                id: UUID(),
+                name: transaction.name,
+                type: transaction.type,
+                subcategory: transaction.subcategory,
+                date: nextDate,
+                notes: transaction.notes,
+                amount: transaction.amount,
+                isRecurring: true, // Keep it recurring
+                recurrenceFrequency: transaction.recurrenceFrequency
+            )
+            
+            // Add the new transaction to Firestore
+            addTransaction(newTransaction)
+        }
+    }
+    
     // MARK: - Total Calculations
     
     func recalculateTotals() {
@@ -363,6 +408,7 @@ class FinanceViewModel: ObservableObject {
                         )
                     }
                     self.recalculateTotals()
+                    self.processRecurringTransactions() // Check for recurring transactions
                 }
             }
     }

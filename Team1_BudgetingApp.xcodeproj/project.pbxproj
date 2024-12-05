@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		801690702CFD85B700A67DC7 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8016906F2CFD85B700A67DC7 /* WelcomeView.swift */; };
-		804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804CE99C2CBC871F00886E44 /* BudgetIcons.swift */; };
 		B488C5B62CF951B500125F3B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B488C5B52CF951B500125F3B /* GoogleService-Info.plist */; };
 		B488C5B92CF9526D00125F3B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B488C5B82CF9526D00125F3B /* FirebaseAnalytics */; };
 		B488C5BB2CF9526D00125F3B /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = B488C5BA2CF9526D00125F3B /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -34,29 +32,15 @@
 		B488C5E32CF9526D00125F3B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = B488C5E22CF9526D00125F3B /* FirebaseStorage */; };
 		B488C5E52CF9526D00125F3B /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = B488C5E42CF9526D00125F3B /* FirebaseStorageCombine-Community */; };
 		B488C5E72CF9526D00125F3B /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = B488C5E62CF9526D00125F3B /* FirebaseVertexAI */; };
-		B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C912CC4501C0079B12C /* ProfileView.swift */; };
-		B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C932CC457EF0079B12C /* EditBudgetView.swift */; };
-		B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */; };
-		B4998CBF2CC86B980079B12C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998CBE2CC86B980079B12C /* SettingsView.swift */; };
-		B4998CC12CC871EA0079B12C /* AboutUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4998CC02CC871EA0079B12C /* AboutUsView.swift */; };
 		B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E44DF52CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift */; };
-		B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */; };
 		B4E44DFA2CA7D0FB00C219B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */; };
 		B4E44DFD2CA7D0FB00C219B6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4E44DFC2CA7D0FB00C219B6 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8016906F2CFD85B700A67DC7 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		804CE99C2CBC871F00886E44 /* BudgetIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetIcons.swift; sourceTree = "<group>"; };
 		B488C5B52CF951B500125F3B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B4998C912CC4501C0079B12C /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		B4998C932CC457EF0079B12C /* EditBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBudgetView.swift; sourceTree = "<group>"; };
-		B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
-		B4998CBE2CC86B980079B12C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		B4998CC02CC871EA0079B12C /* AboutUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsView.swift; sourceTree = "<group>"; };
 		B4E44DF22CA7D0FA00C219B6 /* Team1_BudgetingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Team1_BudgetingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4E44DF52CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team1_BudgetingAppApp.swift; sourceTree = "<group>"; };
-		B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B4E44DFC2CA7D0FB00C219B6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,13 +56,28 @@
 			);
 			target = B4E44DF12CA7D0FA00C219B6 /* Team1_BudgetingApp */;
 		};
+		80B4B79E2D01855200E392A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FinanceReportViews/FinanceMonthView.swift,
+				FinanceReportViews/FinanceReportsView.swift,
+				FinanceReportViews/FinanceYearView.swift,
+				RecurringTransactionsViews/AddRecurringTransactionView.swift,
+				RecurringTransactionsViews/RecurringTransactionsView.swift,
+				TransactionsViews/AddTransactionView.swift,
+				TransactionsViews/EditTransactionView.swift,
+				TransactionsViews/MyFinancesView.swift,
+			);
+			target = B4E44DF12CA7D0FA00C219B6 /* Team1_BudgetingApp */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8076391E2CC717E400F80452 /* FinanceReportViews */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FinanceReportViews; sourceTree = "<group>"; };
-		807639212CC7194200F80452 /* LoginSignupViews */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (807639222CC7197C00F80452 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = LoginSignupViews; sourceTree = "<group>"; };
-		807639382CC8575700F80452 /* TransactionsViews */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TransactionsViews; sourceTree = "<group>"; };
+		807639212CC7194200F80452 /* AuthViews */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (807639222CC7197C00F80452 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AuthViews; sourceTree = "<group>"; };
 		8076393C2CC857A200F80452 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
+		80B4B7932D0184C200E392A0 /* General */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = General; sourceTree = "<group>"; };
+		80B4B7942D0184F800E392A0 /* UserSettings */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UserSettings; sourceTree = "<group>"; };
+		80B4B7962D01854B00E392A0 /* Finance */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (80B4B79E2D01855200E392A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Finance; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,21 +135,14 @@
 			isa = PBXGroup;
 			children = (
 				B4E44DF52CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift */,
-				B4E44DF72CA7D0FA00C219B6 /* ContentView.swift */,
-				B4998CBE2CC86B980079B12C /* SettingsView.swift */,
-				B4998CC02CC871EA0079B12C /* AboutUsView.swift */,
-				B4998C9B2CC5B1D20079B12C /* SplashScreenView.swift */,
-				B4998C912CC4501C0079B12C /* ProfileView.swift */,
-				B4998C932CC457EF0079B12C /* EditBudgetView.swift */,
+				80B4B7932D0184C200E392A0 /* General */,
 				8076393C2CC857A200F80452 /* Models */,
-				807639212CC7194200F80452 /* LoginSignupViews */,
-				8076391E2CC717E400F80452 /* FinanceReportViews */,
-				807639382CC8575700F80452 /* TransactionsViews */,
-				804CE99C2CBC871F00886E44 /* BudgetIcons.swift */,
+				807639212CC7194200F80452 /* AuthViews */,
+				80B4B7962D01854B00E392A0 /* Finance */,
+				80B4B7942D0184F800E392A0 /* UserSettings */,
 				B4E44DF92CA7D0FB00C219B6 /* Assets.xcassets */,
 				B488C5B52CF951B500125F3B /* GoogleService-Info.plist */,
 				B4E44DFB2CA7D0FB00C219B6 /* Preview Content */,
-				8016906F2CFD85B700A67DC7 /* WelcomeView.swift */,
 			);
 			path = Team1_BudgetingApp;
 			sourceTree = "<group>";
@@ -179,9 +171,9 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				8076391E2CC717E400F80452 /* FinanceReportViews */,
-				807639382CC8575700F80452 /* TransactionsViews */,
 				8076393C2CC857A200F80452 /* Models */,
+				80B4B7932D0184C200E392A0 /* General */,
+				80B4B7942D0184F800E392A0 /* UserSettings */,
 			);
 			name = Team1_BudgetingApp;
 			productName = Team1_BudgetingApp;
@@ -242,15 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4998CBF2CC86B980079B12C /* SettingsView.swift in Sources */,
-				804CE99D2CBC871F00886E44 /* BudgetIcons.swift in Sources */,
-				B4E44DF82CA7D0FA00C219B6 /* ContentView.swift in Sources */,
-				B4998C922CC4501C0079B12C /* ProfileView.swift in Sources */,
 				B4E44DF62CA7D0FA00C219B6 /* Team1_BudgetingAppApp.swift in Sources */,
-				B4998C9C2CC5B1D20079B12C /* SplashScreenView.swift in Sources */,
-				B4998C942CC457EF0079B12C /* EditBudgetView.swift in Sources */,
-				801690702CFD85B700A67DC7 /* WelcomeView.swift in Sources */,
-				B4998CC12CC871EA0079B12C /* AboutUsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,8 +374,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -419,8 +402,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

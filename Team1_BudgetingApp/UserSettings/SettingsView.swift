@@ -42,24 +42,10 @@ struct SettingsView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 0) {
                 // Header with title
-                VStack{
-                    Spacer()
-                        .frame(height: 70)
-                    Text("Settings")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top, 8)
-                        .padding(.bottom, 10)
-                }
-                .frame(maxWidth: .infinity)
-                .background(Color("primaryLightPink"))
-                
-                Spacer()
-                    .frame(height: 50)
-                
+                SettingsHeaderView()
+                                
                 // Profile Icon and Welcome Text
                 VStack(spacing: 10) {
                     Image(systemName: "person.circle.fill")
@@ -67,7 +53,7 @@ struct SettingsView: View {
                         .frame(width: 80, height: 80)
                         .foregroundColor(Color("primaryPink"))
                         .background(Circle().fill(Color.white))
-                        .padding(.top, -30)
+                        .padding(.top)
                     
                     Text("Welcome, \(viewModel.userName)")
                         .font(.system(size: 24))
@@ -87,11 +73,15 @@ struct SettingsView: View {
                     NavigationLink(destination: AboutUsView()) {
                         SettingsRow(icon: "info.circle.fill", text: "About Us", color: Color("primaryPink"))
                     }
+                    
+                    // Navigate to Recurring Transactions
+                    NavigationLink(destination: RecurringTransactionsView()) {
+                        SettingsRow(icon: "arrow.trianglehead.2.clockwise.rotate.90.circle.fill", text: "Recurring Transactions", color: Color("primaryPink"))
+                    }
                 }
                 .padding(.top, 20)
                 
                 Spacer()
-                    .frame(height: 300)
                 
                 // Logout Button
                 Button(action: {
@@ -141,6 +131,23 @@ struct SettingsRow: View {
         .cornerRadius(10)
         .shadow(radius: 1)
         .padding(.horizontal, 30)
+    }
+}
+
+struct SettingsHeaderView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+                .frame(height: 80)
+            Text("Settings")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding(.top, 8)
+                .padding(.bottom, 10)
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color(.primaryLightPink))
     }
 }
 

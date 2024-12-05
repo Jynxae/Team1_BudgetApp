@@ -64,7 +64,7 @@ struct EditBudgetView: View {
                         }
                     }
                     .padding(.bottom, 10)
-                    .padding(.top, 20)
+                    .padding(.top, 8)
                     .padding(.horizontal)
                 }
                 .frame(maxWidth: .infinity)
