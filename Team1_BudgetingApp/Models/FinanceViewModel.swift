@@ -92,13 +92,28 @@ class FinanceViewModel: ObservableObject {
     // MARK: - Date Navigation
     
     func moveToPreviousDay() {
+        let currentMonth = Calendar.current.component(.month, from: selectedDate)
         selectedDate = Calendar.current.date(byAdding: .day, value: -1, to: selectedDate) ?? selectedDate
-        recalculateDailyTotals()
+        let newMonth = Calendar.current.component(.month, from: selectedDate)
+        if newMonth != currentMonth {
+            selectedMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? selectedMonth
+            recalculateMonthlyTotals()
+        }
+//        recalculateDailyTotals()
     }
     
     func moveToNextDay() {
+        let currentMonth = Calendar.current.component(.month, from: selectedDate)
         selectedDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedDate) ?? selectedDate
-        recalculateDailyTotals()
+        let newMonth = Calendar.current.component(.month, from: selectedDate)
+        if newMonth != currentMonth {
+            let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: selectedMonth) ?? selectedMonth
+            if nextMonth <= Date() {
+                selectedMonth = nextMonth
+                recalculateMonthlyTotals()
+            }
+        }
+//        recalculateDailyTotals()
     }
     
     func moveToPreviousMonth() {
@@ -112,6 +127,22 @@ class FinanceViewModel: ObservableObject {
             selectedMonth = nextMonth
             recalculateMonthlyTotals()
         }
+    }
+    
+    var hasPreviousTransactionsMonth: Bool {
+        let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: selectedMonth) ?? selectedMonth
+        let hasTransactions = transactions.contains { transaction in
+            Calendar.current.isDate(transaction.date, equalTo: previousMonth, toGranularity: .month)
+        }
+        
+        return hasTransactions
+    }
+        
+    var hasPreviousTransactions: Bool {
+        guard let firstTransactionDate = transactions.min(by: { $0.date < $1.date })?.date else {
+            return false
+        }
+        return Calendar.current.startOfDay(for: selectedDate) > Calendar.current.startOfDay(for: firstTransactionDate)
     }
     
     // MARK: - Date Formatting
@@ -138,6 +169,21 @@ class FinanceViewModel: ObservableObject {
         let currentDate = Calendar.current.startOfDay(for: Date())
         let selectedDateStartOfDay = Calendar.current.startOfDay(for: selectedDate)
         return selectedDateStartOfDay >= currentDate
+    }
+    
+    var isFutureMonth: Bool {
+        let currentMonth = Calendar.current.dateComponents([.year, .month], from: Date())
+        let selectedMonth = Calendar.current.dateComponents([.year, .month], from: selectedDate)
+        
+        // Compare year and month components
+        if let currentYear = currentMonth.year,
+           let currentMonth = currentMonth.month,
+           let selectedYear = selectedMonth.year,
+           let selectedMonth = selectedMonth.month {
+            return (selectedYear > currentYear) ||
+                   (selectedYear == currentYear && selectedMonth > currentMonth)
+        }
+        return false
     }
     
     // MARK: - Transaction Management
@@ -258,6 +304,8 @@ class FinanceViewModel: ObservableObject {
         needsTotal = monthlyTransactions.filter { $0.type == .need }.reduce(0) { $0 + $1.amount }
         wantsTotal = monthlyTransactions.filter { $0.type == .want }.reduce(0) { $0 + $1.amount }
         savingsTotal = monthlyTransactions.filter { $0.type == .savings }.reduce(0) { $0 + $1.amount }
+        
+        remainingIncome = totalIncome - (needsTotal + wantsTotal + savingsTotal)
     }
     
     // MARK: - Data Fetching

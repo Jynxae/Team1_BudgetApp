@@ -147,8 +147,9 @@ struct MyFinancesView: View {
                viewModel.moveToPreviousDay()
            }) {
                Image(systemName: "chevron.left")
-                   .foregroundColor(.primary)
+                   .foregroundColor(!viewModel.hasPreviousTransactions ? .gray : .primary)
            }
+           .disabled(!viewModel.hasPreviousTransactions)
            
            Text(viewModel.dateString(for: viewModel.selectedDate))
                .font(.headline)
