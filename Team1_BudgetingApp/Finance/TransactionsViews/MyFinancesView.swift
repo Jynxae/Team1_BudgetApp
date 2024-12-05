@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MyFinancesView: View {
     
-    @StateObject private var viewModel = FinanceViewModel()
+    @ObservedObject var viewModel: FinanceViewModel
     @State private var showingAddTransaction = false // State to control sheet presentation
     @State private var transactionToDelete: Transaction? = nil
 

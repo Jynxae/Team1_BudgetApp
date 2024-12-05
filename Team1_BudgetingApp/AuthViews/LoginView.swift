@@ -8,6 +8,7 @@ struct LoginView: View {
     @Binding var isSignedIn: Bool
     @State private var errorMessage: String? // To display error messages
     @State private var showWelcomeView: Bool = false // Tracks if WelcomeView should be shown
+    @ObservedObject var financeViewModel: FinanceViewModel
 
     var body: some View {
             NavigationStack {
@@ -109,7 +110,7 @@ struct LoginView: View {
                         .foregroundColor(Color("primaryPink"))
                     }
                     .navigationDestination(isPresented: $showWelcomeView) {
-                        WelcomeView(isSignedIn: $isSignedIn)
+                        WelcomeView(financeViewModel: financeViewModel, isSignedIn: $isSignedIn)
                     }
                 }
             }
@@ -144,6 +145,6 @@ struct LoginView: View {
         }
 }
 
-#Preview {
-    LoginView(isSignedIn: .constant(false))
-}
+//#Preview {
+//    LoginView(isSignedIn: .constant(false))
+//}

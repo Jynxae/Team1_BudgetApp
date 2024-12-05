@@ -13,6 +13,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct ContentView: View {
     @State private var selectedTab: Int = 0
     @State private var isSignedIn: Bool = false
+    @StateObject private var financeViewModel = FinanceViewModel()
     
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
@@ -21,7 +22,7 @@ struct ContentView: View {
         VStack {
             if isSignedIn {
                 TabView(selection: $selectedTab) {
-                    MyFinancesView(selectedTab: $selectedTab).tabItem {
+                    MyFinancesView(viewModel: financeViewModel, selectedTab: $selectedTab).tabItem {
                         Image(systemName: "house.fill")
                             .font(.system(size: 24)) // Adjust the size as needed
                         Text("Home")
@@ -60,7 +61,7 @@ struct ContentView: View {
                 .transition(.opacity)
                 .animation(.easeInOut, value: isSignedIn)
             } else {
-                LoginView(isSignedIn: $isSignedIn)
+                LoginView(isSignedIn: $isSignedIn, financeViewModel: financeViewModel)
             }
         }
         .onAppear {

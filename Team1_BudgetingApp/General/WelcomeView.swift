@@ -12,6 +12,7 @@ import FirebaseAuth
 
 struct WelcomeView: View {
     @StateObject private var budgetViewModel = BudgetViewModel() // Create ViewModel instance
+    @ObservedObject var financeViewModel: FinanceViewModel
     @State private var isLoading = true
     @State private var hasCompletedOnboarding = false
     @Binding var isSignedIn: Bool
@@ -28,6 +29,7 @@ struct WelcomeView: View {
                 OnboardingCarouselView(
                     hasCompletedOnboarding: $hasCompletedOnboarding,
                     budgetViewModel: budgetViewModel,
+                    financeViewModel: financeViewModel,
                     isSignedIn: $isSignedIn
                 )
             }
@@ -53,6 +55,7 @@ struct WelcomeView: View {
 struct OnboardingCarouselView: View {
     @Binding var hasCompletedOnboarding: Bool
     @ObservedObject var budgetViewModel: BudgetViewModel
+    @ObservedObject var financeViewModel: FinanceViewModel
     @Environment(\.dismiss) private var dismiss // Used to close the WelcomeView
 
     @State private var inputIncome: String = ""
@@ -268,7 +271,11 @@ struct OnboardingCarouselView: View {
             print("Error: User not authenticated")
             return
         }
-
+        
+        let income = Double(inputIncome) ?? 0.0
+        financeViewModel.totalIncome = income
+        financeViewModel.remainingIncome = income
+        
         let db = Firestore.firestore()
         db.collection("users")
             .document(userId)
@@ -312,8 +319,8 @@ struct BudgetInputField: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        WelcomeView(isSignedIn: .constant(false))
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        WelcomeView(isSignedIn: .constant(false))
+//    }
+//}
