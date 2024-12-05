@@ -21,7 +21,6 @@ struct RecurringTransactionsView: View {
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(Color("primaryPink"))
-                            .padding(.bottom, 5)
                         
                         Spacer()
                         
@@ -37,12 +36,13 @@ struct RecurringTransactionsView: View {
                                     .fontWeight(.semibold)
                             }
                         }
+                        .contentShape(Rectangle())
                         .sheet(isPresented: $showingAddRecurringTransaction) {
                             AddRecurringTransactionView(viewModel: viewModel)
                         }
                     }
+                    .offset(y: -20)
                     .padding(.horizontal)
-                    .padding(.top, -20)
                                         
                     // Recurring Transactions List Section
                     VStack {
@@ -99,7 +99,7 @@ struct RecurringTransactionsView: View {
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
                         
-//                        Spacer()
+                        Spacer()
                     }
                 }
                 .background(LinearGradient(
