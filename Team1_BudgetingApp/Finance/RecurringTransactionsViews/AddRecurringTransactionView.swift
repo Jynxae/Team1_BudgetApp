@@ -1,9 +1,17 @@
+//
+//  AddRecurringTransactionView.swift
+//  Team1_BudgetingApp
+//
+//  Created by Sue on 12/4/24.
+//
+
+
 import SwiftUI
 import FirebaseCore
 import Firebase
 import FirebaseAuth
 
-struct AddTransactionView: View {
+struct AddRecurringTransactionView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: FinanceViewModel
@@ -18,11 +26,10 @@ struct AddTransactionView: View {
     @State private var isExpanded: Bool = false
     
     // Recurring Transaction
-    @State private var isRecurring: Bool = false
     @State private var recurrenceFrequency: RecurrenceFrequency = .monthly
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-        
+    
     // Subcategories based on Transaction Type
     var subcategories: [String] {
         switch type {
@@ -45,8 +52,7 @@ struct AddTransactionView: View {
                 )
                 .ignoresSafeArea()
                 
-                VStack(spacing: 15) {
-                    Spacer()
+                VStack(spacing: 15) {                    
                     // Transaction Name
                     VStack {
                         TextField("Transaction Name", text: $name)
@@ -59,7 +65,7 @@ struct AddTransactionView: View {
                     .frame(maxWidth: 345)
                     
                     // Transaction Type
-                    VStack() {
+                    VStack {
                         Text("Category")
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -71,20 +77,18 @@ struct AddTransactionView: View {
                                 VStack {
                                     Button(action: {
                                         type = transactionType
-                                        print("\(transactionType) selected")
                                     }) {
                                         ZStack {
                                             Circle()
                                                 .fill(type == transactionType ? colorForType(transactionType) : .white)
                                                 .frame(width: 70, height: 70)
                                                 .shadow(radius: 1)
-
+                                            
                                             Image(systemName: iconName(for: transactionType))
                                                 .foregroundColor(type == transactionType ? .white : .secondary)
                                                 .font(.system(size: 34))
                                         }
                                     }
-                                    
                                     Text("\(transactionType.rawValue)")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
@@ -157,38 +161,15 @@ struct AddTransactionView: View {
                                         }
                                     }
                                 }
-                                .frame(maxWidth: 315, maxHeight: 150) // Adjust maxWidth to align with button
+                                .frame(maxWidth: 315, maxHeight: 150)
                                 .background(Color.white)
                                 .cornerRadius(8)
                                 .shadow(radius: 1)
-                                .padding(.top, 10) // Adds some space between button and dropdown
+                                .padding(.top, 10)
                             }
                             .transition(.opacity)
                         }
                     }
-                    
-                    // Transaction Date
-                    HStack {
-                        DatePicker(selection: $date, displayedComponents: .date) {
-                            HStack {
-                                Image(systemName: "calendar")
-                                    .foregroundColor(Color.primaryPink)
-                                    .padding(.top, 1)
-                                Text("Transaction Date: ")
-                                    .foregroundColor(Color.primaryPink)
-                                    .fontWeight(.semibold)
-                            }
-
-                        }
-                        .padding()
-
-                    }
-                    .frame(maxWidth: 345)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white)
-                            .shadow(radius: 1)
-                    )
                     
                     // Add Amount
                     VStack {
@@ -213,45 +194,53 @@ struct AddTransactionView: View {
                     .shadow(radius: 1)
                     .frame(maxWidth: 345)
                     
-                    // Add Notes
-                    VStack {
-                        ZStack(alignment: .topLeading) {
-                            
-                            // Placeholder text
-                            TextEditor(text: self.$notes)
-                                .foregroundColor(self.notes == "Enter your note here..." ? .gray : .primary)
-                                .cornerRadius(12)
-                                .padding()
-                                .onAppear {
-                                    // remove the placeholder text when keyboard appears
-                                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (noti) in
-                                        withAnimation {
-                                            if self.notes == "Enter your note here..." {
-                                                self.notes = ""
-                                            }
-                                        }
-                                    }
-                                    
-                                    // put back the placeholder text if the user dismisses the keyboard without adding any text
-                                    NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { (noti) in
-                                        withAnimation {
-                                            if self.notes == "" {
-                                                self.notes = "Enter your note here..."
-                                            }
-                                        }
-                                    }
-                                }
+                    // Transaction Date
+                    HStack {
+                        DatePicker(selection: $date, displayedComponents: .date) {
+                            HStack {
+                                Image(systemName: "calendar")
+                                    .foregroundColor(Color.primaryPink)
+                                    .padding(.top, 1)
+                                Text("Starting on: ")
+                                    .foregroundColor(Color.primaryPink)
+                                    .fontWeight(.semibold)
+                            }
                         }
+                        .padding()
                     }
-                    .frame(maxWidth: 345, maxHeight: 150)
+                    .frame(maxWidth: 345)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.white)
                             .shadow(radius: 1)
                     )
-
+                    
+                    // Recurrence Frequency
+                    VStack {
+                        Text("Recurrence Frequency")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color.primaryPink)
+                            .padding(.leading, 15)
+                            .padding(.top, 10)
+                        
+                        Picker("Frequency", selection: $recurrenceFrequency) {
+                            ForEach(RecurrenceFrequency.allCases, id: \.self) { frequency in
+                                Text(frequency.rawValue.capitalized)
+                                    .tag(frequency)
+                            }
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                        .padding()
+                    }
+                    .frame(maxWidth: 345)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.white)
+                            .shadow(radius: 1)
+                    )
                 }
-                .navigationTitle("Add New Transaction")
+                .navigationTitle("Add Recurring Transaction")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -260,7 +249,7 @@ struct AddTransactionView: View {
                         }
                     }
                     ToolbarItem(placement: .principal) {
-                        Text("Add New Transaction")
+                        Text("Add Recurring Transaction")
                             .foregroundColor(Color.primaryPink)
                             .fontWeight(.bold)
                     }
@@ -279,15 +268,12 @@ struct AddTransactionView: View {
                     )
                 }
             }
-            
         }
     }
     
     private func handleAddTransaction() {
-        print("remaining income: ")
-        print(viewModel.remainingIncome)
         guard let amountValue = Double(amount), amountValue > 0 else {
-            alertMessage = "Invalid transaction amount."
+            alertMessage = "Invalid amount."
             showAlert = true
             return
         }
@@ -297,162 +283,26 @@ struct AddTransactionView: View {
             showAlert = true
             return
         }
-        addTransaction()
+        
+        let newTransaction = Transaction(
+            name: name,
+            type: type,
+            subcategory: subcategory,
+            date: date,
+            notes: notes,
+            amount: amountValue,
+            isRecurring: true,
+            recurrenceFrequency: recurrenceFrequency
+        )
+        
+        viewModel.addTransaction(newTransaction)
+        presentationMode.wrappedValue.dismiss()
     }
     
-    // Validation for Form
-    var isFormValid: Bool {
+    private var isFormValid: Bool {
         !name.trimmingCharacters(in: .whitespaces).isEmpty &&
         !subcategory.isEmpty &&
         Double(amount) != nil &&
         Double(amount)! > 0
-    }
-    
-    // Function to Add Transaction
-    private func addTransaction() {
-        guard let amountDouble = Double(amount) else { return }
-        
-        // Create a new transaction
-        let newTransaction = Transaction(
-            name: name.trimmingCharacters(in: .whitespaces),
-            type: type,
-            subcategory: subcategory,
-            date: date,
-            notes: notes.trimmingCharacters(in: .whitespacesAndNewlines),
-            amount: amountDouble,
-            isRecurring: isRecurring,
-            recurrenceFrequency: isRecurring ? recurrenceFrequency : nil
-        )
-        
-        // Add the transaction locally to the view model
-        viewModel.addTransaction(newTransaction)
-        
-        // Get the currently signed-in user's UID
-        guard let userId = Auth.auth().currentUser?.uid else {
-            print("Error: User is not signed in.")
-            return
-        }
-        
-        // Save the transaction to the user's transactions subcollection in Firestore
-        let db = Firestore.firestore()
-        let transactionData: [String: Any] = [
-            "id": newTransaction.id.uuidString,
-            "name": newTransaction.name,
-            "type": newTransaction.type.rawValue,
-            "subcategory": newTransaction.subcategory,
-            "date": Timestamp(date: newTransaction.date),
-            "notes": newTransaction.notes,
-            "amount": newTransaction.amount,
-            "isRecurring": newTransaction.isRecurring,
-            "recurrenceFrequency": newTransaction.recurrenceFrequency?.rawValue ?? ""
-        ]
-        
-        db.collection("users")
-            .document(userId)
-            .collection("transactions")
-            .document(newTransaction.id.uuidString)
-            .setData(transactionData) { error in
-                if let error = error {
-                    print("Error saving transaction: \(error.localizedDescription)")
-                } else {
-                    print("Transaction successfully saved!")
-                }
-            }
-        
-        // Dismiss the view
-        presentationMode.wrappedValue.dismiss()
-    }
-
-
-}
-
-struct DropDownMenu: View {
-    
-    let options: [String]
-    
-    var menuWdith: CGFloat  =  150
-    var buttonHeight: CGFloat  =  50
-    var maxItemDisplayed: Int  =  3
-    
-    @Binding  var selectedOptionIndex: Int
-    @Binding  var showDropdown: Bool
-    
-    @State  private  var scrollPosition: Int?
-    
-    var body: some  View {
-        VStack {
-            
-            VStack(spacing: 0) {
-                // selected item
-                Button(action: {
-                    withAnimation {
-                        showDropdown.toggle()
-                    }
-                }, label: {
-                    HStack(spacing: nil) {
-                        Text(options[selectedOptionIndex])
-                        Spacer()
-                        Image(systemName: "chevron.down")
-                            .rotationEffect(.degrees((showDropdown ?  -180 : 0)))
-                    }
-                })
-                .padding(.horizontal, 20)
-                .frame(width: menuWdith, height: buttonHeight, alignment: .leading)
-                
-                
-                // selection menu
-                if (showDropdown) {
-                    let scrollViewHeight: CGFloat  = options.count > maxItemDisplayed ? (buttonHeight*CGFloat(maxItemDisplayed)) : (buttonHeight*CGFloat(options.count))
-                    ScrollView {
-                        LazyVStack(spacing: 0) {
-                            ForEach(0..<options.count, id: \.self) { index in
-                                Button(action: {
-                                    withAnimation {
-                                        selectedOptionIndex = index
-                                        showDropdown.toggle()
-                                    }
-                                    
-                                }, label: {
-                                    HStack {
-                                        Text(options[index])
-                                        Spacer()
-                                        if (index == selectedOptionIndex) {
-                                            Image(systemName: "checkmark.circle.fill")
-                                            
-                                        }
-                                    }
-                                    
-                                })
-                                .padding(.horizontal, 20)
-                                .frame(width: menuWdith, height: buttonHeight, alignment: .leading)
-                                
-                            }
-                        }
-                        .scrollTargetLayout()
-                    }
-                    .scrollPosition(id: $scrollPosition)
-                    .scrollDisabled(options.count <=  3)
-                    .frame(height: scrollViewHeight)
-                    .onAppear {
-                        scrollPosition = selectedOptionIndex
-                    }
-                    
-                }
-                
-            }
-            .foregroundStyle(Color.white)
-            .background(RoundedRectangle(cornerRadius: 16).fill(Color.black))
-            
-        }
-        .frame(width: menuWdith, height: buttonHeight, alignment: .top)
-        .zIndex(100)
-        
-    }
-}
-
-
-struct AddTransactionView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddTransactionView(viewModel: FinanceViewModel())
     }
 }
